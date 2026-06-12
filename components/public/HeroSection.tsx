@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
@@ -76,6 +77,15 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
 
           {/* Left column: intro */}
           <Grid size={{ xs: 12, md: 8 }}>
+            <Box sx={{ mb: 3 }}>
+              <Image
+                src="/virva.png"
+                alt="Virva Svala"
+                width={100}
+                height={100}
+                style={{ borderRadius: '50%', objectFit: 'cover', border: '3px solid #e94560' }}
+              />
+            </Box>
             <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 700, mb: 1 }}>
               Virva Svala
             </Typography>
