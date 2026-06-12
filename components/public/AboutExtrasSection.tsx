@@ -1,6 +1,7 @@
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
 import Divider from '@mui/material/Divider'
+import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import type { Lang } from '@/lib/types'
@@ -40,9 +41,18 @@ export function AboutExtrasSection({ lang }: { lang: Lang }) {
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
           {lang === 'fi' ? 'Harrastukset ja vahvuudet' : 'Hobbies & Strengths'}
         </Typography>
-        <Typography variant="body1" sx={{ lineHeight: 1.8, maxWidth: 680 }}>
+        <Typography variant="body1" sx={{ lineHeight: 1.8, maxWidth: 680, mb: 1.5 }}>
           {lang === 'fi' ? hobbyFi : hobbyEn}
         </Typography>
+        <Link
+          href="https://www.virvasvala.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="body1"
+          sx={{ fontWeight: 500 }}
+        >
+          {lang === 'fi' ? 'Katso taiteellinen työskentelyni → virvasvala.com' : 'See my artistic work → virvasvala.com'}
+        </Link>
 
       </Container>
     </Box>
