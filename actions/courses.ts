@@ -11,12 +11,12 @@ const CourseSchema = z.object({
   institution_fi: z.string().min(1),
   institution_en: z.string().min(1),
   category: z.string().min(1),
-  credits: z.coerce.number().nullable().optional().default(null),
-  year: z.coerce.number().nullable().optional().default(null),
+  credits: z.preprocess((v) => (!v || v === '' ? null : v), z.coerce.number().nullable().optional().default(null)),
+  year: z.preprocess((v) => (!v || v === '' ? null : v), z.coerce.number().nullable().optional().default(null)),
   description_fi: z.string().default(''),
   description_en: z.string().default(''),
-  url: z.string().url().optional().nullable().transform((v) => v || null),
-  education_id: z.coerce.number().nullable().optional().default(null),
+  url: z.preprocess((v) => (!v || v === '' ? null : v), z.string().url().nullable().optional().default(null)),
+  education_id: z.preprocess((v) => (!v || v === '' ? null : v), z.coerce.number().nullable().optional().default(null)),
   sort_order: z.coerce.number().default(0),
 })
 
