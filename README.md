@@ -14,6 +14,7 @@ A personal portfolio website for software developer Virva Svala. Built with Next
 - **CV downloads** — direct PDF download links for both Finnish and English CVs from the hero section
 - **Profile photo** — circular avatar in the hero section
 - **Anchor sidebar** — desktop-only left-column navigation with smooth-scroll links to all homepage sections
+- **Online CV** — print-optimised `/cv` page with all content from the database; print or save as PDF via browser
 - **PDF attachments** — work certificates and study certificates can be attached to individual entries and downloaded from their detail pages
 - **Feedback form** — collapsible "anything unclear?" form on every detail page; submissions visible in admin at `/admin/feedback`
 - **Protected admin panel** — add, edit, and delete all content at `/admin` without touching code or redeploying
@@ -273,7 +274,7 @@ The contact form (`/contact`) is built and ready but disabled until a Resend API
 - [ ] GitHub integration — pinned repos pulled from the GitHub API
 - [x] Feedback / "Suggest edit" form on detail pages — collapsible form, admin inbox at `/admin/feedback`
 - [ ] RAG chat — portfolio bot powered by Claude API + sqlite-vec embeddings
-- [ ] Dynamic CV print view (`@media print`)
+- [x] Dynamic CV print view — `/cv` page with `@media print`, always up to date from database
 - [ ] Privacy-friendly analytics (Plausible / Umami)
 
 ---

@@ -166,6 +166,14 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
               >
                 {lang === 'fi' ? 'Lataa CV (EN)' : 'Download CV (EN)'}
               </Button>
+              <Button
+                component="a"
+                href="/cv"
+                variant="outlined"
+                sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
+              >
+                {lang === 'fi' ? 'Katso CV verkossa' : 'View CV online'}
+              </Button>
             </Stack>
           </Grid>
 
