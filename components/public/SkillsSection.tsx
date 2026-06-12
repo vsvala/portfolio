@@ -3,12 +3,13 @@ import Chip from '@mui/material/Chip'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Container from '@mui/material/Container'
+import LinearProgress from '@mui/material/LinearProgress'
 import type { Lang } from '@/lib/types'
 
 const skills = {
-  frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js'],
+  frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
   backend: ['Node.js', 'SQL', 'Python', 'Java'],
-  tools: ['Git', 'Adobe Creative Cloud', 'Leaflet', 'MapLibre'],
+  tools: ['Git', 'Adobe Creative Cloud', 'GitHub Copilot', 'Claude Code'],
 }
 
 const categoryLabels = {
@@ -18,10 +19,10 @@ const categoryLabels = {
 }
 
 const languages = [
-  { fi: 'Suomi', en: 'Finnish', level: 'Äidinkieli / Native' },
-  { fi: 'Englanti', en: 'English', level: 'Sujuva / Fluent' },
-  { fi: 'Ruotsi', en: 'Swedish', level: 'Hyvä / Good' },
-  { fi: 'Ranska', en: 'French', level: 'Perusteet / Basic' },
+  { fi: 'Suomi', en: 'Finnish', levelFi: 'Äidinkieli', levelEn: 'Native', pct: 100 },
+  { fi: 'Englanti', en: 'English', levelFi: 'Sujuva', levelEn: 'Fluent', pct: 85 },
+  { fi: 'Ruotsi', en: 'Swedish', levelFi: 'Hyvä', levelEn: 'Good', pct: 60 },
+  { fi: 'Ranska', en: 'French', levelFi: 'Perusteet', levelEn: 'Basic', pct: 30 },
 ]
 
 const exchangeStudies = [
@@ -56,12 +57,28 @@ export function SkillsSection({ lang }: { lang: Lang }) {
         <Typography variant="h5" sx={{ fontWeight: 600 }} gutterBottom>
           {lang === 'fi' ? 'Kielitaito' : 'Languages'}
         </Typography>
-        <Stack sx={{ gap: 1, mb: 4 }}>
+        <Stack sx={{ gap: 2, mb: 4, maxWidth: 400 }}>
           {languages.map((l) => (
-            <Stack key={l.fi} direction="row" sx={{ justifyContent: 'space-between', maxWidth: 360 }}>
-              <Typography variant="body1">{lang === 'fi' ? l.fi : l.en}</Typography>
-              <Typography variant="body1" color="text.secondary">{l.level}</Typography>
-            </Stack>
+            <Box key={l.fi}>
+              <Stack direction="row" sx={{ justifyContent: 'space-between', mb: 0.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                  {lang === 'fi' ? l.fi : l.en}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {lang === 'fi' ? l.levelFi : l.levelEn}
+                </Typography>
+              </Stack>
+              <LinearProgress
+                variant="determinate"
+                value={l.pct}
+                sx={{
+                  height: 8,
+                  borderRadius: 4,
+                  backgroundColor: 'rgba(26,26,46,0.12)',
+                  '& .MuiLinearProgress-bar': { backgroundColor: '#e94560', borderRadius: 4 },
+                }}
+              />
+            </Box>
           ))}
         </Stack>
 
