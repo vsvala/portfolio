@@ -21,6 +21,7 @@ This file defines the agent roles and responsibilities for this portfolio projec
 | **Pages Agent** | Public pages (`app/(public)/**`), admin pages (`app/admin/**`), `loading.tsx`, `error.tsx` | Phases 3–4 |
 | **Reviewer Agent** | Code quality, TypeScript errors, security, MUI v9 compatibility, build verification | Phase 5 — Polish |
 | **Security Agent** | Input validation, XSS/injection prevention, spam protection, auth hardening, public exposure audit | Any phase |
+| **Test Agent** | End-to-end tests (Playwright), smoke tests for all public routes, admin CRUD flows, language toggle, anchor navigation, form validation, mobile responsiveness | Phase 5+ — Ongoing |
 
 ---
 
