@@ -7,6 +7,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import EmailIcon from '@mui/icons-material/Email'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import PhoneIcon from '@mui/icons-material/Phone'
+import PaletteIcon from '@mui/icons-material/Palette'
 
 const introFi = `Olen ohjelmistosuunnittelija ja tietojenkäsittelytieteen maisteri Helsingin yliopistosta (2025), taustaltani kuvataiteen opettaja. Minulla on yli 6 vuotta käytännön kokemusta ohjelmistosuunnittelijan työstä Forecalla, jossa vastasin kuluttajapuolen sääpalveluiden, B2B-kehittäjäportaalin sekä dynaamisten sääsovellusten Full Stack -kehityksestä ja ylläpidosta. Ydinosaamiseeni kuuluu moderni web-kehitys — erityisesti Node.js, React, TypeScript ja Next.js. Teknisen osaamiseni lisäksi minulla on poikkeuksellisen vahva visuaalinen silmä taideopettajataustani ansiosta.`
 
@@ -65,6 +66,18 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
             size="small"
           >
             github.com/vsvala
+          </Button>
+          <Button
+            component="a"
+            href="https://virvasvala.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            startIcon={<PaletteIcon />}
+            sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
+            variant="outlined"
+            size="small"
+          >
+            virvasvala.com
           </Button>
         </Stack>
 

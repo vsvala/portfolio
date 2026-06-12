@@ -14,6 +14,7 @@ import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { CertificationsSection } from '@/components/public/CertificationsSection'
+import { AboutExtrasSection } from '@/components/public/AboutExtrasSection'
 
 export default async function HomePage() {
   const cookieStore = await cookies()
@@ -83,6 +84,9 @@ export default async function HomePage() {
           <CertificationsSection lang={lang} />
         </Container>
       </Box>
+
+      {/* Civic activities, hobbies & strengths */}
+      <AboutExtrasSection lang={lang} />
 
       {/* Hackathon preview */}
       <Box sx={{ py: 6 }}>
