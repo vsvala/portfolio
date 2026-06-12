@@ -12,6 +12,7 @@ import List from '@mui/material/List'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import MenuIcon from '@mui/icons-material/Menu'
+import GitHubIcon from '@mui/icons-material/GitHub'
 import Box from '@mui/material/Box'
 import { LanguageToggle } from './LanguageToggle'
 
@@ -59,7 +60,17 @@ export function Nav({ lang }: { lang: 'fi' | 'en' }) {
                 {lang === 'fi' ? link.labelFi : link.labelEn}
               </Button>
             ))}
-            <Box sx={{ ml: 2 }}>
+            <IconButton
+              component="a"
+              href="https://github.com/vsvala"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="GitHub"
+              sx={{ color: 'white', ml: 1 }}
+            >
+              <GitHubIcon />
+            </IconButton>
+            <Box sx={{ ml: 1 }}>
               <LanguageToggle currentLang={lang} />
             </Box>
           </Box>
