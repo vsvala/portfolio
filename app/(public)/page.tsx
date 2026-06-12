@@ -55,7 +55,7 @@ export default async function HomePage() {
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
             <Box>
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                {lang === 'fi' ? 'Projektit' : 'Projects'}
+                Hackathon
               </Typography>
               <Typography variant="subtitle2" color="text.secondary">
                 Creative Coding &amp; Demoscene

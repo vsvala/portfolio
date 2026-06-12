@@ -7,8 +7,8 @@ import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
 
 export const metadata = {
-  title: 'Projektit — Virva Svala',
-  description: 'Virva Svalan ohjelmistoprojektit.',
+  title: 'Hackathon — Virva Svala',
+  description: 'Creative coding ja demoscene -projektit.',
 }
 
 export default async function ProjectsPage() {
@@ -19,7 +19,7 @@ export default async function ProjectsPage() {
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>
       <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-        {lang === 'fi' ? 'Projektit' : 'Projects'}
+        Hackathon
       </Typography>
       <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 4 }}>
         Creative Coding &amp; Demoscene
