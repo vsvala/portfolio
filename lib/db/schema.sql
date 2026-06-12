@@ -54,6 +54,23 @@ CREATE TABLE IF NOT EXISTS feedback (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS courses (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name_fi TEXT NOT NULL,
+  name_en TEXT NOT NULL,
+  institution_fi TEXT NOT NULL,
+  institution_en TEXT NOT NULL,
+  category TEXT NOT NULL DEFAULT 'other',
+  credits INTEGER,
+  year INTEGER,
+  description_fi TEXT NOT NULL DEFAULT '',
+  description_en TEXT NOT NULL DEFAULT '',
+  url TEXT,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS education (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   institution_fi TEXT NOT NULL,

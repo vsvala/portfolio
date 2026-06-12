@@ -50,6 +50,23 @@ export interface Education {
   updated_at: string
 }
 
+export interface Course {
+  id: number
+  name_fi: string
+  name_en: string
+  institution_fi: string
+  institution_en: string
+  category: string
+  credits: number | null
+  year: number | null
+  description_fi: string
+  description_en: string
+  url: string | null
+  sort_order: number
+  created_at: string
+  updated_at: string
+}
+
 export interface PdfDocument {
   id: number
   filename: string
