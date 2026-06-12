@@ -1,36 +1,186 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Virva Svala — Portfolio
+
+A personal portfolio website for software developer Virva Svala. Built with Next.js 16 App Router, Material UI, and SQLite — with a protected admin panel for managing all content without touching code.
+
+> **This project is an agentic coding exercise.**
+> The entire codebase was developed using [Claude Code](https://claude.ai/code) (Anthropic's AI coding agent) through a structured multi-agent workflow. Different agents were assigned to different layers of the stack (data, UI, auth, upload, pages) and worked in parallel or in sequence according to a pre-defined implementation plan. See [`AGENTS.md`](./AGENTS.md) for the agent roles and responsibilities.
+
+---
+
+## Features
+
+- **Bilingual (Finnish / English)** — all content has `_fi` and `_en` variants; a language toggle cookie switches the active language across all server-rendered pages
+- **Portfolio sections** — Work experience, Projects, Education, Skills — each with clickable cards linking to full detail views
+- **CV downloads** — direct PDF download links for both Finnish and English CVs from the hero section
+- **PDF attachments** — work certificates and study certificates can be attached to individual entries and downloaded from their detail pages
+- **Protected admin panel** — add, edit, and delete all content at `/admin` without touching code or redeploying
+- **File upload** — PDF documents uploaded through the admin panel are stored in `public/documents/` and linked to content entries
+- **Responsive** — mobile-first layout with a hamburger menu on small screens
+
+---
+
+## Tech Stack
+
+| Layer | Technology | Notes |
+| :--- | :--- | :--- |
+| Framework | Next.js 16.2.9 (App Router) | Uses `proxy.ts` instead of `middleware.ts`; dynamic params are Promises |
+| UI | Material UI v9 | `AppRouterCacheProvider` for SSR emotion fix; all layout props via `sx={{}}` |
+| Database | better-sqlite3 (SQLite) | WAL mode; schema auto-applied on startup; local dev only |
+| Auth | jose (JWT) | HS256, 7-day session cookie; single admin password |
+| Validation | Zod | All Server Action inputs validated before hitting the DB |
+| Forms | React 19 `useActionState` | Progressive enhancement; no separate form library |
+| Language | TypeScript (strict) | |
+| Deploy target | Vercel | SQLite → migrate to Turso or Neon Postgres for production |
+
+---
+
+## Project Structure
+
+```
+portfolio/
+├── proxy.ts                        # Auth middleware for /admin/* routes
+├── app/
+│   ├── layout.tsx                  # Root layout — MuiProvider only
+│   ├── (public)/                   # Route group: public pages with Nav + Footer
+│   │   ├── layout.tsx
+│   │   ├── page.tsx                # Homepage: Hero + Skills + section previews
+│   │   ├── work/[id]/page.tsx
+│   │   ├── projects/[id]/page.tsx
+│   │   └── education/[id]/page.tsx
+│   ├── admin/                      # Protected admin panel
+│   │   ├── layout.tsx              # AdminNav only (no public Nav)
+│   │   ├── login/page.tsx
+│   │   ├── page.tsx                # Dashboard with content counts
+│   │   ├── work/                   # List · New · Edit
+│   │   ├── projects/
+│   │   └── education/
+│   └── api/upload/route.ts         # PDF upload endpoint
+├── components/
+│   ├── providers/MuiProvider.tsx   # SSR emotion + ThemeProvider
+│   ├── public/                     # Nav, Footer, HeroSection, cards, SkillsSection
+│   ├── admin/                      # AdminNav, WorkForm, ProjectForm, EducationForm, DeleteButton
+│   └── ui/LinkButton.tsx           # 'use client' wrapper for MUI Button + Next.js Link
+├── lib/
+│   ├── db/
+│   │   ├── index.ts                # SQLite singleton
+│   │   ├── schema.sql              # Table definitions (auto-applied)
+│   │   └── queries/                # work.ts · projects.ts · education.ts · documents.ts
+│   ├── session.ts                  # JWT encrypt / decrypt
+│   ├── auth.ts                     # getSession(), requireAdmin()
+│   ├── types.ts                    # Shared TypeScript interfaces
+│   └── mui-theme.ts                # MUI theme (primary #1a1a2e, accent #e94560)
+├── actions/                        # Server Actions: auth · work · projects · education
+└── public/documents/               # Uploaded PDFs served as static files
+```
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- npm
+
+### Installation
+
+```bash
+git clone https://github.com/vsvala/portfolio.git
+cd portfolio
+npm install
+```
+
+### Environment Variables
+
+Create `.env.local` in the project root:
+
+```env
+SESSION_SECRET=<base64-encoded-32-byte-key>
+ADMIN_PASSWORD=<your-admin-password>
+```
+
+Generate a session secret:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+```
+
+### Run Locally
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000). The SQLite database (`portfolio.db`) is created automatically on first run.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build   # TypeScript check + production build
+npm run start   # Serve the production build
+```
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Admin Panel
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Navigate to [http://localhost:3000/admin/login](http://localhost:3000/admin/login) and enter the password from `.env.local`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+From the dashboard you can:
+- Add / edit / delete work experience entries
+- Add / edit / delete projects
+- Add / edit / delete education entries
+- Upload PDF documents (CV, work certificates, study certificates) and attach them to content entries
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## CV PDFs
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Place the CV files in `public/documents/` for the download buttons in the hero section to work:
+
+```
+public/documents/cv_26_virva_svala_fi.pdf
+public/documents/cv_26_virva_svala_en.pdf
+```
+
+---
+
+## Agentic Development Workflow
+
+This project was built as a hands-on exercise in **agentic software development** using Claude Code. The implementation followed a structured multi-agent plan:
+
+| Phase | Agents | What was built |
+| :--- | :--- | :--- |
+| 1 — Foundation | Single agent (sequential) | Dependencies, `.env.local`, types, DB schema, session, auth, proxy |
+| 2 — Core layers | 4 agents in parallel | Data queries, Server Actions, UI components, file upload |
+| 3 — Public pages | Pages Agent | Homepage, list pages, detail pages |
+| 4 — Admin UI | Pages Agent | Login, dashboard, CRUD forms for all content types |
+| 5 — Polish | Reviewer Agent | Build fixes, TypeScript errors, runtime bug fixes, CLAUDE.md |
+
+Each agent received a scoped task with clear input/output contracts. Shared knowledge (breaking API changes, MUI constraints, security rules) was captured in [`CLAUDE.md`](./CLAUDE.md) and [`AGENTS.md`](./AGENTS.md) so that every agent — and every future Claude Code session — starts with the same context.
+
+Notable issues discovered during development and now documented for future agents:
+- Next.js 16 uses `proxy.ts` instead of `middleware.ts`; dynamic `params` and `searchParams` are Promises
+- MUI v9 does not accept layout props (`gap`, `justifyContent`, `flexWrap`) directly on `Stack` — they must go in `sx={{}}`
+- React 19 / Next.js 16 forbids passing functions (like `Link`) as props across the Server/Client boundary — solved with a `LinkButton` client wrapper and `'use client'` card components
+- `proxy.ts` matcher must explicitly skip `/admin/login` to avoid an infinite redirect loop
+- Zod optional FK fields need `.default(null)` to avoid better-sqlite3 "Missing named parameter" errors
+
+---
+
+## Roadmap (V2+)
+
+- [ ] Dark mode toggle
+- [ ] Contact form (Resend API)
+- [ ] `/certifications` section — courses and certificates with progress tracking
+- [ ] GitHub integration — pinned repos pulled from the GitHub API
+- [ ] Feedback / "Suggest edit" form on detail pages
+- [ ] RAG chat — portfolio bot powered by Claude API + sqlite-vec embeddings
+- [ ] Dynamic CV print view (`@media print`)
+- [ ] Privacy-friendly analytics (Plausible / Umami)
+
+---
+
+## License
+
+Personal portfolio — not intended for reuse as a template.

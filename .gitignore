@@ -39,3 +39,17 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# SQLite database
+portfolio.db
+portfolio.db-shm
+portfolio.db-wal
+
+# Claude Code session data
+.claude/
+
+# Playwright test artifacts
+.playwright-mcp/
+
+# Uploaded documents (added via admin panel, not source code)
+public/documents/*.pdf
