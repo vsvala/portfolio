@@ -5,6 +5,7 @@ import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
+import Box from '@mui/material/Box'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import Link from 'next/link'
 import type { WorkExperience, Lang } from '@/lib/types'
@@ -36,10 +37,16 @@ export function WorkCard({ work, lang }: { work: WorkExperience; lang: Lang }) {
               )}
             </Stack>
           )}
-          <Typography variant="body2" sx={{ color: 'secondary.main', display: 'flex', alignItems: 'center', gap: 0.5 }}>
-            {lang === 'fi' ? 'Lue lisää' : 'Read more'}
-            <ArrowForwardIcon sx={{ fontSize: 14 }} />
-          </Typography>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1.5 }}>
+            <Box sx={{
+              display: 'inline-flex', alignItems: 'center', gap: 0.5,
+              border: '1px solid', borderColor: 'secondary.main', borderRadius: '20px',
+              px: 1.5, py: 0.4, color: 'secondary.main', fontSize: '0.75rem', fontWeight: 600,
+            }}>
+              {lang === 'fi' ? 'Lue lisää' : 'Read more'}
+              <ArrowForwardIcon sx={{ fontSize: 13 }} />
+            </Box>
+          </Box>
         </CardContent>
       </CardActionArea>
     </Card>
