@@ -52,11 +52,16 @@ export default async function HomePage() {
       {/* Projects preview */}
       <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
         <Container maxWidth="md">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              {lang === 'fi' ? 'Projektit' : 'Projects'}
-            </Typography>
-            <LinkButton href="/projects" variant="outlined" size="small">
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
+            <Box>
+              <Typography variant="h4" sx={{ fontWeight: 700 }}>
+                {lang === 'fi' ? 'Projektit' : 'Projects'}
+              </Typography>
+              <Typography variant="subtitle2" color="text.secondary">
+                Creative Coding &amp; Demoscene
+              </Typography>
+            </Box>
+            <LinkButton href="/projects" variant="outlined" size="small" sx={{ mt: 0.5 }}>
               {lang === 'fi' ? 'Kaikki' : 'See all'}
             </LinkButton>
           </Box>

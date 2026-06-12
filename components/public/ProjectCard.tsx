@@ -24,12 +24,20 @@ export function ProjectCard({ project, lang }: { project: Project; lang: Lang })
             </Typography>
             <Stack direction="row" onClick={(e) => e.stopPropagation()}>
               {project.url && (
-                <IconButton component="a" href={project.url} target="_blank" rel="noopener noreferrer" size="small">
+                <IconButton
+                  size="small"
+                  aria-label="Open project"
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(project.url!, '_blank', 'noopener,noreferrer') }}
+                >
                   <OpenInNewIcon fontSize="small" />
                 </IconButton>
               )}
               {project.repo_url && (
-                <IconButton component="a" href={project.repo_url} target="_blank" rel="noopener noreferrer" size="small">
+                <IconButton
+                  size="small"
+                  aria-label="Open repository"
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(project.repo_url!, '_blank', 'noopener,noreferrer') }}
+                >
                   <GitHubIcon fontSize="small" />
                 </IconButton>
               )}

@@ -18,8 +18,11 @@ export default async function ProjectsPage() {
 
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>
-      <Typography variant="h3" sx={{ fontWeight: 700, mb: 4 }}>
+      <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
         {lang === 'fi' ? 'Projektit' : 'Projects'}
+      </Typography>
+      <Typography variant="subtitle1" color="text.secondary" sx={{ mb: 4 }}>
+        Creative Coding &amp; Demoscene
       </Typography>
       <Grid container spacing={2}>
         {projects.map((p) => (
