@@ -85,22 +85,14 @@ export default async function HomePage() {
         </Container>
       </Box>
 
-      {/* Civic activities, hobbies & strengths */}
-      <AboutExtrasSection lang={lang} />
-
-      {/* Hackathon preview */}
-      <Box id="hackathon" sx={{ py: 6 }}>
+      {/* Projects preview */}
+      <Box id="projektit" sx={{ py: 6 }}>
         <Container maxWidth="md">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
-            <Box>
-              <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                Hackathon
-              </Typography>
-              <Typography variant="subtitle2" color="text.secondary">
-                Creative Coding &amp; Demoscene
-              </Typography>
-            </Box>
-            <LinkButton href="/projects" variant="outlined" size="small" sx={{ mt: 0.5 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              {lang === 'fi' ? 'Projektit' : 'Projects'}
+            </Typography>
+            <LinkButton href="/projects" variant="outlined" size="small">
               {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
             </LinkButton>
           </Box>
@@ -113,6 +105,9 @@ export default async function HomePage() {
           </Grid>
         </Container>
       </Box>
+
+      {/* Civic activities, hobbies & strengths */}
+      <AboutExtrasSection lang={lang} />
     </>
   )
 }
