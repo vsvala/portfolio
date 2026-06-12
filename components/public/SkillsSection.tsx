@@ -10,16 +10,16 @@ const skills = {
   frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
   backend: ['Node.js', 'SQL', 'Python', 'Java'],
   databases: ['PostgreSQL', 'MongoDB', 'SQLite'],
-  methods: ['Scrum', 'Kanban'],
   tools: ['Git', 'Adobe Creative Cloud', 'GitHub Copilot', 'Claude Code'],
+  methods: ['Scrum', 'Kanban'],
 }
 
 const categoryLabels = {
   frontend: { fi: 'Frontend', en: 'Frontend' },
   backend: { fi: 'Backend', en: 'Backend' },
   databases: { fi: 'Tietokannat', en: 'Databases' },
-  methods: { fi: 'Työtavat', en: 'Methods' },
   tools: { fi: 'Työkalut', en: 'Tools' },
+  methods: { fi: 'Työtavat', en: 'Methods' },
 }
 
 const languages = [
