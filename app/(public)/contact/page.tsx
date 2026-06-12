@@ -1,9 +1,9 @@
 import { cookies } from 'next/headers'
 import type { Lang } from '@/lib/types'
-import { ContactForm } from '@/components/public/ContactForm'
+// import { ContactForm } from '@/components/public/ContactForm'
 import Box from '@mui/material/Box'
 import Container from '@mui/material/Container'
-import Divider from '@mui/material/Divider'
+// import Divider from '@mui/material/Divider'
 import Grid from '@mui/material/Grid'
 import Link from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
@@ -42,7 +42,7 @@ export default async function ContactPage() {
 
       <Grid container spacing={6}>
         {/* Contact info */}
-        <Grid size={{ xs: 12, md: 5 }}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
             {lang === 'fi' ? 'Yhteystiedot' : 'Contact details'}
           </Typography>
@@ -58,17 +58,17 @@ export default async function ContactPage() {
           </Stack>
         </Grid>
 
+        {/* Contact form — disabled until Resend API key is configured
         <Grid size={{ xs: 12, md: 1 }} sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: 'center' }}>
           <Divider orientation="vertical" />
         </Grid>
-
-        {/* Contact form */}
         <Grid size={{ xs: 12, md: 6 }}>
           <Typography variant="h5" sx={{ fontWeight: 600, mb: 3 }}>
             {lang === 'fi' ? 'Lähetä viesti' : 'Send a message'}
           </Typography>
           <ContactForm lang={lang} />
         </Grid>
+        */}
       </Grid>
     </Container>
   )

@@ -35,17 +35,22 @@ export async function sendContactMessage(
   }
 
   try {
-    const { Resend } = await import('resend')
-    const resend = new Resend(apiKey)
-
-    await resend.emails.send({
-      from: 'Portfolio <onboarding@resend.dev>',
-      to: 'virva.svala@gmail.com',
-      replyTo: email,
-      subject: `Portfolio contact: ${name}`,
-      text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from: 'Portfolio <onboarding@resend.dev>',
+        to: 'virva.svala@gmail.com',
+        reply_to: email,
+        subject: `Portfolio contact: ${name}`,
+        text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
+      }),
     })
 
+    if (!res.ok) throw new Error(`Resend error: ${res.status}`)
     return { success: true }
   } catch {
     return { success: false, errors: {}, message: 'Sending failed. Please try again.' }
