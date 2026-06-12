@@ -18,7 +18,9 @@ import { LanguageToggle } from './LanguageToggle'
 const navLinks = [
   { href: '/', labelFi: 'Etusivu', labelEn: 'Home' },
   { href: '/work', labelFi: 'Työkokemus', labelEn: 'Experience' },
+  { href: '/#osaaminen', labelFi: 'Osaaminen', labelEn: 'Skills' },
   { href: '/education', labelFi: 'Koulutus', labelEn: 'Education' },
+  { href: '/#sertifikaatit', labelFi: 'Sertifikaatit', labelEn: 'Certifications' },
   { href: '/projects', labelFi: 'Hackathon', labelEn: 'Hackathon' },
 ]
 

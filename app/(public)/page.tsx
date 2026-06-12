@@ -49,7 +49,7 @@ export default async function HomePage() {
       </Box>
 
       {/* Skills */}
-      <Box sx={{ backgroundColor: 'grey.50' }}>
+      <Box id="osaaminen" sx={{ backgroundColor: 'grey.50' }}>
         <SkillsSection lang={lang} />
       </Box>
 
@@ -75,7 +75,7 @@ export default async function HomePage() {
       </Box>
 
       {/* Certifications */}
-      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
+      <Box id="sertifikaatit" sx={{ py: 6, backgroundColor: 'grey.50' }}>
         <Container maxWidth="md">
           <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
             {lang === 'fi' ? 'Sertifikaatit' : 'Certifications'}
