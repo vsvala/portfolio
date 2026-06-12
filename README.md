@@ -12,7 +12,10 @@ A personal portfolio website for software developer Virva Svala. Built with Next
 - **Bilingual (Finnish / English)** — all content has `_fi` and `_en` variants; a language toggle cookie switches the active language across all server-rendered pages
 - **Portfolio sections** — Work experience, Projects, Education, Skills — each with clickable cards linking to full detail views
 - **CV downloads** — direct PDF download links for both Finnish and English CVs from the hero section
+- **Profile photo** — circular avatar in the hero section
+- **Anchor sidebar** — desktop-only left-column navigation with smooth-scroll links to all homepage sections
 - **PDF attachments** — work certificates and study certificates can be attached to individual entries and downloaded from their detail pages
+- **Feedback form** — collapsible "anything unclear?" form on every detail page; submissions visible in admin at `/admin/feedback`
 - **Protected admin panel** — add, edit, and delete all content at `/admin` without touching code or redeploying
 - **File upload** — PDF documents uploaded through the admin panel are stored in `public/documents/` and linked to content entries
 - **Responsive** — mobile-first layout with a hamburger menu on small screens
