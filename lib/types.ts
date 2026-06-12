@@ -60,6 +60,18 @@ export interface PdfDocument {
   created_at: string
 }
 
+export interface Feedback {
+  id: number
+  target_type: 'work' | 'project' | 'education'
+  target_id: number
+  target_title: string
+  message: string
+  sender_name: string | null
+  sender_email: string | null
+  is_read: number
+  created_at: string
+}
+
 export interface SessionPayload {
   role: 'admin'
   exp: number

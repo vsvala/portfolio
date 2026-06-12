@@ -12,6 +12,7 @@ import Divider from '@mui/material/Divider'
 import DownloadIcon from '@mui/icons-material/Download'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { LinkButton } from '@/components/ui/LinkButton'
+import { FeedbackForm } from '@/components/public/FeedbackForm'
 
 export default async function WorkDetailPage({
   params,
@@ -84,6 +85,13 @@ export default async function WorkDetailPage({
           {lang === 'fi' ? certificate.label_fi : certificate.label_en}
         </Button>
       )}
+
+      <FeedbackForm
+        lang={lang}
+        targetType="work"
+        targetId={work.id}
+        targetTitle={lang === 'fi' ? `${work.role_fi} — ${work.company_name_fi}` : `${work.role_en} — ${work.company_name_en}`}
+      />
     </Container>
   )
 }

@@ -10,6 +10,7 @@ import Button from '@mui/material/Button'
 import DownloadIcon from '@mui/icons-material/Download'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { LinkButton } from '@/components/ui/LinkButton'
+import { FeedbackForm } from '@/components/public/FeedbackForm'
 
 export default async function EducationDetailPage({
   params,
@@ -66,6 +67,13 @@ export default async function EducationDetailPage({
           {lang === 'fi' ? document.label_fi : document.label_en}
         </Button>
       )}
+
+      <FeedbackForm
+        lang={lang}
+        targetType="education"
+        targetId={education.id}
+        targetTitle={lang === 'fi' ? `${education.degree_fi} — ${education.institution_fi}` : `${education.degree_en} — ${education.institution_en}`}
+      />
     </Container>
   )
 }

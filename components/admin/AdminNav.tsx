@@ -13,6 +13,7 @@ const links = [
   { href: '/admin/work', label: 'Työ' },
   { href: '/admin/projects', label: 'Projektit' },
   { href: '/admin/education', label: 'Koulutus' },
+  { href: '/admin/feedback', label: 'Palautteet' },
 ]
 
 export function AdminNav() {

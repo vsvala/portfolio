@@ -15,6 +15,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import { LinkButton } from '@/components/ui/LinkButton'
+import { FeedbackForm } from '@/components/public/FeedbackForm'
 
 export default async function ProjectDetailPage({
   params,
@@ -130,6 +131,13 @@ export default async function ProjectDetailPage({
           </Button>
         )}
       </Box>
+
+      <FeedbackForm
+        lang={lang}
+        targetType="project"
+        targetId={project.id}
+        targetTitle={lang === 'fi' ? project.title_fi : project.title_en}
+      />
     </Container>
   )
 }

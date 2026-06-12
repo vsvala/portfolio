@@ -42,6 +42,18 @@ CREATE TABLE IF NOT EXISTS projects (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS feedback (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  target_type TEXT NOT NULL CHECK (target_type IN ('work', 'project', 'education')),
+  target_id INTEGER NOT NULL,
+  target_title TEXT NOT NULL,
+  message TEXT NOT NULL,
+  sender_name TEXT,
+  sender_email TEXT,
+  is_read INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS education (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   institution_fi TEXT NOT NULL,
