@@ -49,8 +49,29 @@ export default async function HomePage() {
         </Container>
       </Box>
 
-      {/* Projects preview */}
+      {/* Education preview */}
       <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
+        <Container maxWidth="md">
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Typography variant="h4" sx={{ fontWeight: 700 }}>
+              {lang === 'fi' ? 'Koulutus' : 'Education'}
+            </Typography>
+            <LinkButton href="/education" variant="outlined" size="small">
+              {lang === 'fi' ? 'Kaikki' : 'See all'}
+            </LinkButton>
+          </Box>
+          <Grid container spacing={2}>
+            {education.map((e) => (
+              <Grid key={e.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                <EducationCard education={e} lang={lang} />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </Box>
+
+      {/* Projects / Hackathon preview */}
+      <Box sx={{ py: 6 }}>
         <Container maxWidth="md">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
             <Box>
@@ -69,27 +90,6 @@ export default async function HomePage() {
             {projects.map((p) => (
               <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4 }}>
                 <ProjectCard project={p} lang={lang} />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      </Box>
-
-      {/* Education preview */}
-      <Box sx={{ py: 6 }}>
-        <Container maxWidth="md">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-            <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              {lang === 'fi' ? 'Koulutus' : 'Education'}
-            </Typography>
-            <LinkButton href="/education" variant="outlined" size="small">
-              {lang === 'fi' ? 'Kaikki' : 'See all'}
-            </LinkButton>
-          </Box>
-          <Grid container spacing={2}>
-            {education.map((e) => (
-              <Grid key={e.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                <EducationCard education={e} lang={lang} />
               </Grid>
             ))}
           </Grid>
