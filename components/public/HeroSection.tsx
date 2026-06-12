@@ -1,5 +1,6 @@
 import Container from '@mui/material/Container'
 import Box from '@mui/material/Box'
+import Grid from '@mui/material/Grid'
 import Typography from '@mui/material/Typography'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
@@ -13,6 +14,16 @@ const introFi = `Olen ohjelmistosuunnittelija ja tietojenkäsittelytieteen maist
 
 const introEn = `I am a software developer and Master of Science in Computer Science from the University of Helsinki (2025), with a background as an art teacher. I have over 6 years of hands-on experience as a software developer at Foreca, where I was responsible for Full Stack development and maintenance of consumer weather services, a B2B developer portal, and dynamic weather applications. My core expertise lies in modern web development — particularly Node.js, React, TypeScript, and Next.js. In addition to my technical skills, I have an exceptionally strong visual eye from my background as an art teacher.`
 
+const anchorLinks = [
+  { href: '/#tyokokemus', fi: 'Työkokemus', en: 'Experience' },
+  { href: '/#osaaminen', fi: 'Osaaminen', en: 'Skills' },
+  { href: '/#koulutus', fi: 'Koulutus', en: 'Education' },
+  { href: '/#sertifikaatit', fi: 'Sertifikaatit', en: 'Certifications' },
+  { href: '/#jarjesto', fi: 'Järjestö- ja aktiivitoiminta', en: 'Civic Activities' },
+  { href: '/#harrastukset', fi: 'Harrastukset & vahvuudet', en: 'Hobbies & Strengths' },
+  { href: '/#hackathon', fi: 'Hackathon', en: 'Hackathon' },
+]
+
 export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
   return (
     <Box
@@ -23,87 +34,132 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
       }}
     >
       <Container maxWidth="md">
-        <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 700, mb: 1 }}>
-          Virva Svala
-        </Typography>
-        <Typography variant="h4" sx={{ color: '#e94560', fontWeight: 500, mb: 3 }}>
-          {lang === 'fi' ? 'Ohjelmistosuunnittelija' : 'Software Developer'}
-        </Typography>
-        <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.8, mb: 4, maxWidth: 700, opacity: 0.9 }}>
-          {lang === 'fi' ? introFi : introEn}
-        </Typography>
+        <Grid container spacing={4} sx={{ alignItems: 'flex-start' }}>
 
-        {/* Yhteystiedot */}
-        <Stack direction="row" sx={{ flexWrap: "wrap", mb: 4, gap: 2 }}>
-          <Button
-            component="a"
-            href="mailto:virva.svala@gmail.com"
-            startIcon={<EmailIcon />}
-            sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
-            variant="outlined"
-            size="small"
-          >
-            virva.svala@gmail.com
-          </Button>
-          <Button
-            component="a"
-            href="tel:+358505415604"
-            startIcon={<PhoneIcon />}
-            sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
-            variant="outlined"
-            size="small"
-          >
-            050-5415604
-          </Button>
-          <Button
-            component="a"
-            href="https://github.com/vsvala"
-            target="_blank"
-            rel="noopener noreferrer"
-            startIcon={<GitHubIcon />}
-            sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
-            variant="outlined"
-            size="small"
-          >
-            github.com/vsvala
-          </Button>
-          <Button
-            component="a"
-            href="https://virvasvala.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            startIcon={<PaletteIcon />}
-            sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
-            variant="outlined"
-            size="small"
-          >
-            virvasvala.com
-          </Button>
-        </Stack>
+          {/* Right column: anchor links, desktop only */}
+          <Grid size={{ xs: 12, md: 4 }} sx={{ display: { xs: 'none', md: 'block' } }}>
+            <Box
+              sx={{
+                borderRight: '2px solid rgba(233,69,96,0.4)',
+                pr: 3,
+                pt: 1,
+              }}
+            >
+              <Typography
+                variant="overline"
+                sx={{ color: 'rgba(255,255,255,0.5)', letterSpacing: 2, display: 'block', mb: 2 }}
+              >
+                {lang === 'fi' ? 'Sisältö' : 'Contents'}
+              </Typography>
+              <Stack sx={{ gap: 0.5 }}>
+                {anchorLinks.map((link) => (
+                  <Box
+                    key={link.href}
+                    component="a"
+                    href={link.href}
+                    sx={{
+                      color: 'rgba(255,255,255,0.75)',
+                      textDecoration: 'none',
+                      fontSize: '0.9rem',
+                      py: 0.5,
+                      display: 'block',
+                      transition: 'color 0.15s',
+                      '&:hover': { color: '#e94560' },
+                    }}
+                  >
+                    {lang === 'fi' ? link.fi : link.en}
+                  </Box>
+                ))}
+              </Stack>
+            </Box>
+          </Grid>
 
-        {/* CV-lataukset */}
-        <Stack direction="row" sx={{ flexWrap: "wrap", gap: 2 }}>
-          <Button
-            component="a"
-            href="/documents/cv_26_virva_svala_fi.pdf"
-            download
-            variant="contained"
-            startIcon={<DownloadIcon />}
-            sx={{ backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
-          >
-            {lang === 'fi' ? 'Lataa CV (FI)' : 'Download CV (FI)'}
-          </Button>
-          <Button
-            component="a"
-            href="/documents/cv_26_virva_svala_en.pdf"
-            download
-            variant="contained"
-            startIcon={<DownloadIcon />}
-            sx={{ backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
-          >
-            {lang === 'fi' ? 'Lataa CV (EN)' : 'Download CV (EN)'}
-          </Button>
-        </Stack>
+          {/* Left column: intro */}
+          <Grid size={{ xs: 12, md: 8 }}>
+            <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 700, mb: 1 }}>
+              Virva Svala
+            </Typography>
+            <Typography variant="h4" sx={{ color: '#e94560', fontWeight: 500, mb: 3 }}>
+              {lang === 'fi' ? 'Ohjelmistosuunnittelija' : 'Software Developer'}
+            </Typography>
+            <Typography variant="body1" sx={{ fontSize: '1.1rem', lineHeight: 1.8, mb: 4, opacity: 0.9 }}>
+              {lang === 'fi' ? introFi : introEn}
+            </Typography>
+
+            {/* Yhteystiedot */}
+            <Stack direction="row" sx={{ flexWrap: 'wrap', mb: 4, gap: 2 }}>
+              <Button
+                component="a"
+                href="mailto:virva.svala@gmail.com"
+                startIcon={<EmailIcon />}
+                sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
+                variant="outlined"
+                size="small"
+              >
+                virva.svala@gmail.com
+              </Button>
+              <Button
+                component="a"
+                href="tel:+358505415604"
+                startIcon={<PhoneIcon />}
+                sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
+                variant="outlined"
+                size="small"
+              >
+                050-5415604
+              </Button>
+              <Button
+                component="a"
+                href="https://github.com/vsvala"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<GitHubIcon />}
+                sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
+                variant="outlined"
+                size="small"
+              >
+                github.com/vsvala
+              </Button>
+              <Button
+                component="a"
+                href="https://virvasvala.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<PaletteIcon />}
+                sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
+                variant="outlined"
+                size="small"
+              >
+                virvasvala.com
+              </Button>
+            </Stack>
+
+            {/* CV-lataukset */}
+            <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 2 }}>
+              <Button
+                component="a"
+                href="/documents/cv_26_virva_svala_fi.pdf"
+                download
+                variant="contained"
+                startIcon={<DownloadIcon />}
+                sx={{ backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
+              >
+                {lang === 'fi' ? 'Lataa CV (FI)' : 'Download CV (FI)'}
+              </Button>
+              <Button
+                component="a"
+                href="/documents/cv_26_virva_svala_en.pdf"
+                download
+                variant="contained"
+                startIcon={<DownloadIcon />}
+                sx={{ backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
+              >
+                {lang === 'fi' ? 'Lataa CV (EN)' : 'Download CV (EN)'}
+              </Button>
+            </Stack>
+          </Grid>
+
+        </Grid>
       </Container>
     </Box>
   )

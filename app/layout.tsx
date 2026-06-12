@@ -29,7 +29,7 @@ export default async function RootLayout({
   const lang = (cookieStore.get('lang')?.value ?? 'fi') as 'fi' | 'en'
 
   return (
-    <html lang={lang} className={geist.variable}>
+    <html lang={lang} className={geist.variable} style={{ scrollBehavior: 'smooth' }}>
       <body className="min-h-screen flex flex-col bg-gray-50">
         <MuiProvider>{children}</MuiProvider>
       </body>

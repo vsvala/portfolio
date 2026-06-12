@@ -29,7 +29,7 @@ export default async function HomePage() {
       <HeroSection lang={lang} />
 
       {/* Work preview */}
-      <Box sx={{ py: 6 }}>
+      <Box id="tyokokemus" sx={{ py: 6 }}>
         <Container maxWidth="md">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
@@ -55,7 +55,7 @@ export default async function HomePage() {
       </Box>
 
       {/* Education preview */}
-      <Box sx={{ py: 6 }}>
+      <Box id="koulutus" sx={{ py: 6 }}>
         <Container maxWidth="md">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
@@ -89,7 +89,7 @@ export default async function HomePage() {
       <AboutExtrasSection lang={lang} />
 
       {/* Hackathon preview */}
-      <Box sx={{ py: 6 }}>
+      <Box id="hackathon" sx={{ py: 6 }}>
         <Container maxWidth="md">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
             <Box>

@@ -22,37 +22,39 @@ export function AboutExtrasSection({ lang }: { lang: Lang }) {
     <Box sx={{ py: 6 }}>
       <Container maxWidth="md">
 
-        {/* Järjestö ja aktiivitoiminta */}
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
-          {lang === 'fi' ? 'Järjestö- ja aktiivitoiminta' : 'Civic & Volunteer Activities'}
-        </Typography>
-        <Stack sx={{ gap: 1, mb: 5 }}>
-          {civicActivities.map((a) => (
-            <Stack key={a.year + a.en} direction="row" sx={{ justifyContent: 'space-between', gap: 2, maxWidth: 600 }}>
-              <Typography variant="body1">{lang === 'fi' ? a.fi : a.en}</Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>{a.year}</Typography>
-            </Stack>
-          ))}
-        </Stack>
+        <Box id="jarjesto">
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
+            {lang === 'fi' ? 'Järjestö- ja aktiivitoiminta' : 'Civic & Volunteer Activities'}
+          </Typography>
+          <Stack sx={{ gap: 1, mb: 5 }}>
+            {civicActivities.map((a) => (
+              <Stack key={a.year + a.en} direction="row" sx={{ justifyContent: 'space-between', gap: 2, maxWidth: 600 }}>
+                <Typography variant="body1">{lang === 'fi' ? a.fi : a.en}</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>{a.year}</Typography>
+              </Stack>
+            ))}
+          </Stack>
+        </Box>
 
         <Divider sx={{ mb: 5 }} />
 
-        {/* Harrastukset ja vahvuudet */}
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
-          {lang === 'fi' ? 'Harrastukset ja vahvuudet' : 'Hobbies & Strengths'}
-        </Typography>
-        <Typography variant="body1" sx={{ lineHeight: 1.8, maxWidth: 680, mb: 1.5 }}>
-          {lang === 'fi' ? hobbyFi : hobbyEn}
-        </Typography>
-        <Link
-          href="https://www.virvasvala.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          variant="body1"
-          sx={{ fontWeight: 500 }}
-        >
-          {lang === 'fi' ? 'Katso taiteellinen työskentelyni → virvasvala.com' : 'See my artistic work → virvasvala.com'}
-        </Link>
+        <Box id="harrastukset">
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 2 }}>
+            {lang === 'fi' ? 'Harrastukset ja vahvuudet' : 'Hobbies & Strengths'}
+          </Typography>
+          <Typography variant="body1" sx={{ lineHeight: 1.8, maxWidth: 680, mb: 1.5 }}>
+            {lang === 'fi' ? hobbyFi : hobbyEn}
+          </Typography>
+          <Link
+            href="https://www.virvasvala.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            variant="body1"
+            sx={{ fontWeight: 500 }}
+          >
+            {lang === 'fi' ? 'Katso taiteellinen työskentelyni → virvasvala.com' : 'See my artistic work → virvasvala.com'}
+          </Link>
+        </Box>
 
       </Container>
     </Box>
