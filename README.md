@@ -25,12 +25,12 @@ A personal portfolio website for software developer Virva Svala. Built with Next
 | :--- | :--- | :--- |
 | Framework | Next.js 16.2.9 (App Router) | Uses `proxy.ts` instead of `middleware.ts`; dynamic params are Promises |
 | UI | Material UI v9 | `AppRouterCacheProvider` for SSR emotion fix; all layout props via `sx={{}}` |
-| Database | better-sqlite3 (SQLite) | WAL mode; schema auto-applied on startup; local dev only |
+| Database | Turso (libSQL / SQLite) | `@libsql/client`; local dev also works with SQLite via same client |
 | Auth | jose (JWT) | HS256, 7-day session cookie; single admin password |
 | Validation | Zod | All Server Action inputs validated before hitting the DB |
 | Forms | React 19 `useActionState` | Progressive enhancement; no separate form library |
 | Language | TypeScript (strict) | |
-| Deploy target | Vercel | SQLite → migrate to Turso or Neon Postgres for production |
+| Deploy target | Vercel + Turso | Serverless functions on Vercel, database on Turso (EU West) |
 
 ---
 
@@ -62,9 +62,9 @@ portfolio/
 │   └── ui/LinkButton.tsx           # 'use client' wrapper for MUI Button + Next.js Link
 ├── lib/
 │   ├── db/
-│   │   ├── index.ts                # SQLite singleton
-│   │   ├── schema.sql              # Table definitions (auto-applied)
-│   │   └── queries/                # work.ts · projects.ts · education.ts · documents.ts
+│   │   ├── index.ts                # Turso/libSQL client (TURSO_URL + TURSO_AUTH_TOKEN)
+│   │   ├── schema.sql              # Table definitions
+│   │   └── queries/                # work.ts · projects.ts · education.ts · documents.ts · feedback.ts
 │   ├── session.ts                  # JWT encrypt / decrypt
 │   ├── auth.ts                     # getSession(), requireAdmin()
 │   ├── types.ts                    # Shared TypeScript interfaces
@@ -97,6 +97,8 @@ Create `.env.local` in the project root:
 ```env
 SESSION_SECRET=<base64-encoded-32-byte-key>
 ADMIN_PASSWORD=<your-admin-password>
+TURSO_URL=libsql://<your-db>.turso.io
+TURSO_AUTH_TOKEN=<your-turso-token>
 ```
 
 Generate a session secret:
@@ -111,7 +113,7 @@ node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). The SQLite database (`portfolio.db`) is created automatically on first run.
+Open [http://localhost:3000](http://localhost:3000).
 
 ### Build
 
@@ -131,6 +133,53 @@ From the dashboard you can:
 - Add / edit / delete projects
 - Add / edit / delete education entries
 - Upload PDF documents (CV, work certificates, study certificates) and attach them to content entries
+
+---
+
+## Deployment (Vercel + Turso)
+
+### 1 — Create a Turso database
+
+```bash
+# Install Turso CLI
+curl -sSfL https://get.tur.so/install.sh | bash
+
+# Login and create database
+turso auth login
+turso db create portfolio
+
+# Apply schema
+turso db shell portfolio < lib/db/schema.sql
+
+# Get credentials
+turso db show portfolio --url      # → TURSO_URL
+turso db tokens create portfolio   # → TURSO_AUTH_TOKEN
+```
+
+Seed initial data:
+
+```bash
+node scripts/seed-turso.mjs
+```
+
+### 2 — Deploy to Vercel
+
+```bash
+npx vercel --prod
+```
+
+### 3 — Add environment variables in Vercel
+
+In the Vercel dashboard → **Settings → Environment Variables**, add all four variables for the **Production** environment:
+
+| Variable | Value |
+| :--- | :--- |
+| `TURSO_URL` | `libsql://portfolio-<name>.turso.io` |
+| `TURSO_AUTH_TOKEN` | token from `turso db tokens create` |
+| `SESSION_SECRET` | base64 32-byte key |
+| `ADMIN_PASSWORD` | your admin password |
+
+Redeploy after adding variables.
 
 ---
 
@@ -192,7 +241,7 @@ The contact form (`/contact`) is built and ready but disabled until a Resend API
 - [x] Contact form (Resend API) — implemented, enable by adding `RESEND_API_KEY`
 - [ ] `/certifications` section — courses and certificates with progress tracking
 - [ ] GitHub integration — pinned repos pulled from the GitHub API
-- [ ] Feedback / "Suggest edit" form on detail pages
+- [x] Feedback / "Suggest edit" form on detail pages — collapsible form, admin inbox at `/admin/feedback`
 - [ ] RAG chat — portfolio bot powered by Claude API + sqlite-vec embeddings
 - [ ] Dynamic CV print view (`@media print`)
 - [ ] Privacy-friendly analytics (Plausible / Umami)
