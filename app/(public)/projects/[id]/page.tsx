@@ -26,10 +26,10 @@ export default async function ProjectDetailPage({
   const cookieStore = await cookies()
   const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
 
-  const project = getProjectById(Number(id))
+  const project = await getProjectById(Number(id))
   if (!project) notFound()
 
-  const document = project.document_id ? getDocumentById(project.document_id) : null
+  const document = project.document_id ? await getDocumentById(project.document_id) : null
   const technologies = JSON.parse(project.technologies) as string[]
 
   return (

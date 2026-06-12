@@ -31,18 +31,18 @@ export async function submitFeedback(_prev: ActionState, formData: FormData): Pr
   }
 
   const { honeypot: _h, ...data } = parsed.data
-  createFeedback(data)
+  await createFeedback(data)
   return { success: true }
 }
 
 export async function markReadAction(id: number): Promise<void> {
   await requireAdmin()
-  markFeedbackRead(id)
+  await markFeedbackRead(id)
   revalidatePath('/admin/feedback')
 }
 
 export async function deleteFeedbackAction(id: number): Promise<void> {
   await requireAdmin()
-  deleteFeedback(id)
+  await deleteFeedback(id)
   revalidatePath('/admin/feedback')
 }

@@ -21,10 +21,10 @@ export default async function EducationDetailPage({
   const cookieStore = await cookies()
   const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
 
-  const education = getEducationById(Number(id))
+  const education = await getEducationById(Number(id))
   if (!education) notFound()
 
-  const document = education.document_id ? getDocumentById(education.document_id) : null
+  const document = education.document_id ? await getDocumentById(education.document_id) : null
   const endLabel = education.end_date
     ? education.end_date.slice(0, 4)
     : lang === 'fi' ? 'nykyinen' : 'present'

@@ -38,7 +38,7 @@ export async function createWorkAction(
   if (!parsed.success) {
     return { success: false, errors: parsed.error.flatten().fieldErrors }
   }
-  const result = createWork(parsed.data as Parameters<typeof createWork>[0])
+  const result = await createWork(parsed.data as Parameters<typeof createWork>[0])
   revalidate()
   return { success: true, data: { id: result.id } }
 }
@@ -53,13 +53,13 @@ export async function updateWorkAction(
   if (!parsed.success) {
     return { success: false, errors: parsed.error.flatten().fieldErrors }
   }
-  updateWork(id, parsed.data)
+  await updateWork(id, parsed.data)
   revalidate()
   return { success: true }
 }
 
 export async function deleteWorkAction(id: number): Promise<void> {
   await requireAdmin()
-  deleteWork(id)
+  await deleteWork(id)
   revalidate()
 }

@@ -15,7 +15,7 @@ export default async function AdminProjectEditPage({
 }) {
   await requireAdmin()
   const { id } = await params
-  const project = getProjectById(Number(id))
+  const project = await getProjectById(Number(id))
   if (!project) notFound()
 
   const boundAction = updateProjectAction.bind(null, project.id)

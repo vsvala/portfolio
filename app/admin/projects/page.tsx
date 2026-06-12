@@ -14,7 +14,7 @@ import { LinkButton } from '@/components/ui/LinkButton'
 
 export default async function AdminProjectsPage() {
   await requireAdmin()
-  const projects = getAllProjects()
+  const projects = await getAllProjects()
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>

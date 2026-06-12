@@ -15,7 +15,7 @@ export default async function AdminEducationEditPage({
 }) {
   await requireAdmin()
   const { id } = await params
-  const education = getEducationById(Number(id))
+  const education = await getEducationById(Number(id))
   if (!education) notFound()
 
   const boundAction = updateEducationAction.bind(null, education.id)

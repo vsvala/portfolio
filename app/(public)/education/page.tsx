@@ -14,7 +14,7 @@ export const metadata = {
 export default async function EducationPage() {
   const cookieStore = await cookies()
   const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
-  const education = getAllEducation()
+  const education = await getAllEducation()
 
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>

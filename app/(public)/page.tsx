@@ -20,9 +20,9 @@ export default async function HomePage() {
   const cookieStore = await cookies()
   const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
 
-  const work = getAllWork().slice(0, 3)
-  const projects = getAllProjects().slice(0, 3)
-  const education = getAllEducation().slice(0, 3)
+  const work = (await getAllWork()).slice(0, 3)
+  const projects = (await getAllProjects()).slice(0, 3)
+  const education = (await getAllEducation()).slice(0, 3)
 
   return (
     <>

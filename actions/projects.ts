@@ -39,7 +39,7 @@ export async function createProjectAction(
     return { success: false, errors: parsed.error.flatten().fieldErrors }
   }
   const data = { ...parsed.data, url: parsed.data.url || null, repo_url: parsed.data.repo_url || null }
-  const result = createProject(data as Parameters<typeof createProject>[0])
+  const result = await createProject(data as Parameters<typeof createProject>[0])
   revalidate()
   return { success: true, data: { id: result.id } }
 }
@@ -54,13 +54,13 @@ export async function updateProjectAction(
   if (!parsed.success) {
     return { success: false, errors: parsed.error.flatten().fieldErrors }
   }
-  updateProject(id, parsed.data)
+  await updateProject(id, parsed.data)
   revalidate()
   return { success: true }
 }
 
 export async function deleteProjectAction(id: number): Promise<void> {
   await requireAdmin()
-  deleteProject(id)
+  await deleteProject(id)
   revalidate()
 }

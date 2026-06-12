@@ -15,7 +15,7 @@ export default async function AdminWorkEditPage({
 }) {
   await requireAdmin()
   const { id } = await params
-  const work = getWorkById(Number(id))
+  const work = await getWorkById(Number(id))
   if (!work) notFound()
 
   const boundAction = updateWorkAction.bind(null, work.id)

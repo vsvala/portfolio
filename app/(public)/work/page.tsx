@@ -14,7 +14,7 @@ export const metadata = {
 export default async function WorkPage() {
   const cookieStore = await cookies()
   const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
-  const work = getAllWork()
+  const work = await getAllWork()
 
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>

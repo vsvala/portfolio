@@ -2,26 +2,30 @@ import 'server-only'
 import db from '@/lib/db'
 import type { Feedback } from '@/lib/types'
 
-export function createFeedback(data: Omit<Feedback, 'id' | 'created_at' | 'is_read'>): void {
-  db.prepare(`
-    INSERT INTO feedback (target_type, target_id, target_title, message, sender_name, sender_email)
-    VALUES (@target_type, @target_id, @target_title, @message, @sender_name, @sender_email)
-  `).run(data)
+export async function createFeedback(data: Omit<Feedback, 'id' | 'created_at' | 'is_read'>): Promise<void> {
+  await db.execute({
+    sql: `INSERT INTO feedback (target_type, target_id, target_title, message, sender_name, sender_email)
+          VALUES (:target_type, :target_id, :target_title, :message, :sender_name, :sender_email)`,
+    args: data as Record<string, string | number | null>,
+  })
 }
 
-export function getAllFeedback(): Feedback[] {
-  return db.prepare(`SELECT * FROM feedback ORDER BY is_read ASC, created_at DESC`).all() as Feedback[]
+export async function getAllFeedback(): Promise<Feedback[]> {
+  const result = await db.execute(
+    `SELECT * FROM feedback ORDER BY is_read ASC, created_at DESC`
+  )
+  return result.rows as unknown as Feedback[]
 }
 
-export function markFeedbackRead(id: number): void {
-  db.prepare(`UPDATE feedback SET is_read = 1 WHERE id = ?`).run(id)
+export async function markFeedbackRead(id: number): Promise<void> {
+  await db.execute({ sql: `UPDATE feedback SET is_read = 1 WHERE id = ?`, args: [id] })
 }
 
-export function deleteFeedback(id: number): void {
-  db.prepare(`DELETE FROM feedback WHERE id = ?`).run(id)
+export async function deleteFeedback(id: number): Promise<void> {
+  await db.execute({ sql: `DELETE FROM feedback WHERE id = ?`, args: [id] })
 }
 
-export function unreadFeedbackCount(): number {
-  const row = db.prepare(`SELECT COUNT(*) as n FROM feedback WHERE is_read = 0`).get() as { n: number }
-  return row.n
+export async function unreadFeedbackCount(): Promise<number> {
+  const result = await db.execute(`SELECT COUNT(*) as n FROM feedback WHERE is_read = 0`)
+  return Number((result.rows[0] as unknown as { n: number }).n)
 }

@@ -32,7 +32,7 @@ export async function createEducationAction(
   if (!parsed.success) {
     return { success: false, errors: parsed.error.flatten().fieldErrors }
   }
-  const result = createEducation(parsed.data as Parameters<typeof createEducation>[0])
+  const result = await createEducation(parsed.data as Parameters<typeof createEducation>[0])
   revalidate()
   return { success: true, data: { id: result.id } }
 }
@@ -47,13 +47,13 @@ export async function updateEducationAction(
   if (!parsed.success) {
     return { success: false, errors: parsed.error.flatten().fieldErrors }
   }
-  updateEducation(id, parsed.data)
+  await updateEducation(id, parsed.data)
   revalidate()
   return { success: true }
 }
 
 export async function deleteEducationAction(id: number): Promise<void> {
   await requireAdmin()
-  deleteEducation(id)
+  await deleteEducation(id)
   revalidate()
 }

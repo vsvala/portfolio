@@ -10,7 +10,7 @@ import Stack from '@mui/material/Stack'
 
 export default async function FeedbackPage() {
   await requireAdmin()
-  const items = getAllFeedback()
+  const items = await getAllFeedback()
   const unread = items.filter((f) => !f.is_read).length
 
   return (

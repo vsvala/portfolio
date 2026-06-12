@@ -14,7 +14,7 @@ import { LinkButton } from '@/components/ui/LinkButton'
 
 export default async function AdminEducationPage() {
   await requireAdmin()
-  const education = getAllEducation()
+  const education = await getAllEducation()
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>

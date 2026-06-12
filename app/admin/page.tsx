@@ -12,10 +12,10 @@ import { LinkButton } from '@/components/ui/LinkButton'
 export default async function AdminDashboard() {
   await requireAdmin()
 
-  const workCount = getAllWork().length
-  const projectCount = getAllProjects().length
-  const educationCount = getAllEducation().length
-  const documentCount = getAllDocuments().length
+  const workCount = (await getAllWork()).length
+  const projectCount = (await getAllProjects()).length
+  const educationCount = (await getAllEducation()).length
+  const documentCount = (await getAllDocuments()).length
 
   const stats = [
     { label: 'Työkokemukset', count: workCount, href: '/admin/work', addHref: '/admin/work/new' },

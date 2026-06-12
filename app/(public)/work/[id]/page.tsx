@@ -23,11 +23,11 @@ export default async function WorkDetailPage({
   const cookieStore = await cookies()
   const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
 
-  const work = getWorkById(Number(id))
+  const work = await getWorkById(Number(id))
   if (!work) notFound()
 
   const certificate = work.certificate_document_id
-    ? getDocumentById(work.certificate_document_id)
+    ? await getDocumentById(work.certificate_document_id)
     : null
 
   const technologies = JSON.parse(work.technologies) as string[]
