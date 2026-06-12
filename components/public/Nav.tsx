@@ -18,8 +18,8 @@ import { LanguageToggle } from './LanguageToggle'
 const navLinks = [
   { href: '/', labelFi: 'Etusivu', labelEn: 'Home' },
   { href: '/work', labelFi: 'Työkokemus', labelEn: 'Experience' },
-  { href: '/projects', labelFi: 'Hackathon', labelEn: 'Hackathon' },
   { href: '/education', labelFi: 'Koulutus', labelEn: 'Education' },
+  { href: '/projects', labelFi: 'Hackathon', labelEn: 'Hackathon' },
 ]
 
 export function Nav({ lang }: { lang: 'fi' | 'en' }) {
