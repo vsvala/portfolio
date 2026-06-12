@@ -11,8 +11,6 @@ import Typography from '@mui/material/Typography'
 import EmailIcon from '@mui/icons-material/Email'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import PaletteIcon from '@mui/icons-material/Palette'
-import PhoneIcon from '@mui/icons-material/Phone'
-
 export const metadata = {
   title: 'Contact — Virva Svala',
   description: 'Ota yhteyttä / Get in touch with Virva Svala.',
@@ -20,7 +18,6 @@ export const metadata = {
 
 const contactItems = [
   { icon: <EmailIcon />, label: 'virva.svala@gmail.com', href: 'mailto:virva.svala@gmail.com' },
-  { icon: <PhoneIcon />, label: '050-5415604', href: 'tel:+358505415604' },
   { icon: <GitHubIcon />, label: 'github.com/vsvala', href: 'https://github.com/vsvala' },
   { icon: <PaletteIcon />, label: 'virvasvala.com', href: 'https://www.virvasvala.com' },
 ]
