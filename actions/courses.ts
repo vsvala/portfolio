@@ -16,6 +16,7 @@ const CourseSchema = z.object({
   description_fi: z.string().default(''),
   description_en: z.string().default(''),
   url: z.string().url().optional().nullable().transform((v) => v || null),
+  education_id: z.coerce.number().nullable().optional().default(null),
   sort_order: z.coerce.number().default(0),
 })
 

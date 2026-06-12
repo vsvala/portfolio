@@ -1,7 +1,7 @@
 'use client'
 import { useActionState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import type { ActionState, Course } from '@/lib/types'
+import type { ActionState, Course, Education } from '@/lib/types'
 import TextField from '@mui/material/TextField'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
@@ -15,6 +15,7 @@ type FormAction = (prev: any, fd: FormData) => Promise<ActionState<any>>
 interface Props {
   action: FormAction
   defaultValues?: Partial<Course>
+  educationOptions: Pick<Education, 'id' | 'institution_fi' | 'degree_fi'>[]
 }
 
 const categories = [
@@ -28,7 +29,7 @@ const categories = [
 
 const initial: ActionState = { success: false, errors: {} }
 
-export function CourseForm({ action, defaultValues }: Props) {
+export function CourseForm({ action, defaultValues, educationOptions }: Props) {
   const router = useRouter()
   const [state, formAction, pending] = useActionState(action as FormAction, initial)
 
@@ -88,8 +89,16 @@ export function CourseForm({ action, defaultValues }: Props) {
         <Grid size={{ xs: 12, sm: 4 }}>
           <TextField fullWidth type="number" label="Järjestys" name="sort_order" defaultValue={defaultValues?.sort_order ?? 0} />
         </Grid>
-        <Grid size={{ xs: 12 }}>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField fullWidth label="Linkki kurssisivulle (URL)" name="url" placeholder="https://..." defaultValue={defaultValues?.url ?? ''} />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
+          <TextField fullWidth select label="Liitä koulutukseen (valinnainen)" name="education_id" defaultValue={defaultValues?.education_id ?? ''}>
+            <MenuItem value="">— ei liitosta —</MenuItem>
+            {educationOptions.map((e) => (
+              <MenuItem key={e.id} value={e.id}>{e.degree_fi} — {e.institution_fi}</MenuItem>
+            ))}
+          </TextField>
         </Grid>
       </Grid>
 

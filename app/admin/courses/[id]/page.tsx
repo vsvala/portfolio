@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import { requireAdmin } from '@/lib/auth'
 import { getCourseById } from '@/lib/db/queries/courses'
+import { getAllEducation } from '@/lib/db/queries/education'
 import { updateCourseAction } from '@/actions/courses'
 import { CourseForm } from '@/components/admin/CourseForm'
 import Container from '@mui/material/Container'
@@ -15,7 +16,7 @@ export default async function AdminCourseEditPage({
 }) {
   await requireAdmin()
   const { id } = await params
-  const course = await getCourseById(Number(id))
+  const [course, education] = await Promise.all([getCourseById(Number(id)), getAllEducation()])
   if (!course) notFound()
 
   const boundAction = updateCourseAction.bind(null, course.id)
@@ -26,7 +27,7 @@ export default async function AdminCourseEditPage({
         Takaisin
       </LinkButton>
       <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>Muokkaa kurssia</Typography>
-      <CourseForm action={boundAction} defaultValues={course} />
+      <CourseForm action={boundAction} defaultValues={course} educationOptions={education} />
     </Container>
   )
 }

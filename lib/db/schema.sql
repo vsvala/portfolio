@@ -66,6 +66,7 @@ CREATE TABLE IF NOT EXISTS courses (
   description_fi TEXT NOT NULL DEFAULT '',
   description_en TEXT NOT NULL DEFAULT '',
   url TEXT,
+  education_id INTEGER REFERENCES education(id) ON DELETE SET NULL,
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
