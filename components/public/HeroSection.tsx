@@ -140,7 +140,7 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
                 variant="outlined"
                 size="small"
               >
-                virvasvala.com
+                {lang === 'fi' ? 'Tutustu taiteeseeni' : 'Explore my art'}
               </Button>
             </Stack>
 

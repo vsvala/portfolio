@@ -36,7 +36,7 @@ export default async function HomePage() {
               {lang === 'fi' ? 'Työkokemus' : 'Experience'}
             </Typography>
             <LinkButton href="/work" variant="outlined" size="small">
-              {lang === 'fi' ? 'Kaikki' : 'See all'}
+              {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
             </LinkButton>
           </Box>
           <Grid container spacing={2}>
@@ -62,7 +62,7 @@ export default async function HomePage() {
               {lang === 'fi' ? 'Koulutus' : 'Education'}
             </Typography>
             <LinkButton href="/education" variant="outlined" size="small">
-              {lang === 'fi' ? 'Kaikki' : 'See all'}
+              {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
             </LinkButton>
           </Box>
           <Grid container spacing={2}>
@@ -101,7 +101,7 @@ export default async function HomePage() {
               </Typography>
             </Box>
             <LinkButton href="/projects" variant="outlined" size="small" sx={{ mt: 0.5 }}>
-              {lang === 'fi' ? 'Kaikki' : 'See all'}
+              {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
             </LinkButton>
           </Box>
           <Grid container spacing={2}>
