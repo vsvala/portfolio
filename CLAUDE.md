@@ -13,7 +13,28 @@ npm run lint     # ESLint
 npm run start    # serve the production build
 ```
 
-No test suite in this repo. TypeScript errors surface through `npm run build`. E2E tests (Playwright, 32 tests) live on branch `test/e2e-playwright` in worktree `/Users/virva/portfolio-test` — run with `npm test` there.
+E2E tests (Playwright) live on branch `test/e2e-playwright` in worktree `/Users/virva/portfolio-test`:
+
+```bash
+cd /Users/virva/portfolio-test
+npm test          # run all tests (requires dev server on :3000)
+npm run test:ui   # interactive UI mode
+```
+
+TypeScript errors surface through `npm run build`.
+
+## Testing Rules — MANDATORY
+
+These rules apply to every code change, no exceptions:
+
+1. **New feature → write tests.** Every new public page, form, or user-facing feature must have corresponding Playwright tests added in `/Users/virva/portfolio-test/tests/e2e/`.
+2. **Run tests after every code change** — before considering any task done.
+3. **Run tests before every `git commit`** — do not commit if tests fail.
+
+Workflow:
+```
+code change → npm run build (TypeScript check) → npm test (in portfolio-test) → git commit
+```
 
 ## Next.js 16 Breaking Changes
 

@@ -51,6 +51,20 @@ This file defines the agent roles and responsibilities for this portfolio projec
 - **XSS**: all user input goes through Zod before any use. No `dangerouslySetInnerHTML` in the codebase.
 - **CSRF**: Next.js Server Actions have built-in CSRF protection via `SameSite` cookie and origin check.
 
+### Testing Rules — MANDATORY
+
+Every agent must follow these rules without exception:
+
+1. **New feature → write Playwright tests** in `/Users/virva/portfolio-test/tests/e2e/` covering the new public page, form, or user interaction.
+2. **Run tests after every code change**: `cd /Users/virva/portfolio-test && npm test`
+3. **Run tests before every `git commit`** — never commit failing tests.
+4. **Fix failing tests before moving on** — do not proceed to the next task if tests are red.
+
+Required workflow for every change:
+```
+implement → npm run build → npm test (in portfolio-test worktree) → git commit
+```
+
 ### proxy.ts Redirect Loop
 - The proxy must skip auth for `/admin/login`, otherwise an infinite redirect loop occurs
 - Always include: `if (request.nextUrl.pathname === '/admin/login') return NextResponse.next()`
@@ -67,6 +81,7 @@ This file defines the agent roles and responsibilities for this portfolio projec
 - **Collaboration:** The Pages or Coder Agent may call others: `"Ask the Data Agent to review this query"` or `"Ask the UI Agent to fix the responsiveness"`
 - **Quality control:** The **Reviewer Agent** must verify code before committing or advancing to the next phase
 - **Build before advancing:** Always run `npm run build` before moving to the next phase — TypeScript errors are caught there
+- **Tests before commit:** Always run `npm test` in `/Users/virva/portfolio-test` before committing — see **Testing Rules** above
 
 ---
 
