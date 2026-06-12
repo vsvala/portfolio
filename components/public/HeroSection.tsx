@@ -81,9 +81,9 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
               <Image
                 src="/virva.png"
                 alt="Virva Svala"
-                width={100}
-                height={100}
-                style={{ borderRadius: '50%', objectFit: 'cover', border: '3px solid #e94560' }}
+                width={160}
+                height={160}
+                style={{ borderRadius: '50%', objectFit: 'cover' }}
               />
             </Box>
             <Typography variant="h1" sx={{ fontSize: { xs: '2.5rem', md: '3.5rem' }, fontWeight: 700, mb: 1 }}>
