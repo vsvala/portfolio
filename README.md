@@ -205,6 +205,7 @@ This project was built as a hands-on exercise in **agentic software development*
 | 3 — Public pages | Pages Agent | Homepage, list pages, detail pages |
 | 4 — Admin UI | Pages Agent | Login, dashboard, CRUD forms for all content types |
 | 5 — Polish | Reviewer Agent | Build fixes, TypeScript errors, runtime bug fixes, CLAUDE.md |
+| 6 — Testing | Test Agent | 32 Playwright E2E tests on branch `test/e2e-playwright` |
 
 Each agent received a scoped task with clear input/output contracts. Shared knowledge (breaking API changes, MUI constraints, security rules) was captured in [`CLAUDE.md`](./CLAUDE.md) and [`AGENTS.md`](./AGENTS.md) so that every agent — and every future Claude Code session — starts with the same context.
 
@@ -214,6 +215,32 @@ Notable issues discovered during development and now documented for future agent
 - React 19 / Next.js 16 forbids passing functions (like `Link`) as props across the Server/Client boundary — solved with a `LinkButton` client wrapper and `'use client'` card components
 - `proxy.ts` matcher must explicitly skip `/admin/login` to avoid an infinite redirect loop
 - Zod optional FK fields need `.default(null)` to avoid better-sqlite3 "Missing named parameter" errors
+
+---
+
+## Testing
+
+End-to-end tests live in a separate git worktree on branch `test/e2e-playwright` at `/Users/virva/portfolio-test`.
+
+```bash
+# In the test worktree
+cd /Users/virva/portfolio-test
+
+npm test          # run all tests (headless)
+npm run test:ui   # open Playwright UI mode
+```
+
+The dev server must be running (`npm run dev` in the main repo) before running tests, or Playwright will start it automatically via `webServer` in `playwright.config.ts`.
+
+**Test coverage (32 tests):**
+
+| File | What it covers |
+| :--- | :--- |
+| `smoke.spec.ts` | All public routes return HTTP 200; 404 for unknown routes |
+| `navigation.spec.ts` | Nav links, GitHub icon, language toggle FI↔EN, logo |
+| `homepage.spec.ts` | Hero, CV buttons, anchor sidebar, section IDs, card links |
+| `admin.spec.ts` | Auth redirect, login form, wrong password error, successful login |
+| `feedback.spec.ts` | Feedback button and form on work, projects, and education detail pages |
 
 ---
 

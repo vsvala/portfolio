@@ -13,7 +13,7 @@ npm run lint     # ESLint
 npm run start    # serve the production build
 ```
 
-No test suite. TypeScript errors surface through `npm run build`.
+No test suite in this repo. TypeScript errors surface through `npm run build`. E2E tests (Playwright, 32 tests) live on branch `test/e2e-playwright` in worktree `/Users/virva/portfolio-test` — run with `npm test` there.
 
 ## Next.js 16 Breaking Changes
 
