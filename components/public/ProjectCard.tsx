@@ -55,7 +55,7 @@ export function ProjectCard({ project, lang }: { project: Project; lang: Lang })
               ))}
             </Stack>
           )}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
             <Box sx={{
               display: 'inline-flex', alignItems: 'center', gap: 0.5,
               border: '1px solid', borderColor: 'secondary.main', borderRadius: '20px',

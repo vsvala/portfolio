@@ -26,7 +26,7 @@ export function EducationCard({ education, lang }: { education: Education; lang:
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             {education.start_date.slice(0, 4)} – {endYear}
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1.5 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 1.5 }}>
             <Box sx={{
               display: 'inline-flex', alignItems: 'center', gap: 0.5,
               border: '1px solid', borderColor: 'secondary.main', borderRadius: '20px',

@@ -37,7 +37,7 @@ export function WorkCard({ work, lang }: { work: WorkExperience; lang: Lang }) {
               )}
             </Stack>
           )}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1.5 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 1.5 }}>
             <Box sx={{
               display: 'inline-flex', alignItems: 'center', gap: 0.5,
               border: '1px solid', borderColor: 'secondary.main', borderRadius: '20px',
