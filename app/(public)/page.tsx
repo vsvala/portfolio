@@ -13,6 +13,7 @@ import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
 import { LinkButton } from '@/components/ui/LinkButton'
+import { CertificationsSection } from '@/components/public/CertificationsSection'
 
 export default async function HomePage() {
   const cookieStore = await cookies()
@@ -87,6 +88,15 @@ export default async function HomePage() {
               </Grid>
             ))}
           </Grid>
+        </Container>
+      </Box>
+      {/* Certifications */}
+      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
+        <Container maxWidth="md">
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
+            {lang === 'fi' ? 'Sertifikaatit' : 'Certifications'}
+          </Typography>
+          <CertificationsSection lang={lang} />
         </Container>
       </Box>
     </>
