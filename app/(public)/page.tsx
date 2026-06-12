@@ -70,8 +70,18 @@ export default async function HomePage() {
         </Container>
       </Box>
 
-      {/* Projects / Hackathon preview */}
+      {/* Certifications */}
       <Box sx={{ py: 6 }}>
+        <Container maxWidth="md">
+          <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
+            {lang === 'fi' ? 'Sertifikaatit' : 'Certifications'}
+          </Typography>
+          <CertificationsSection lang={lang} />
+        </Container>
+      </Box>
+
+      {/* Projects / Hackathon preview */}
+      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
         <Container maxWidth="md">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
             <Box>
@@ -93,15 +103,6 @@ export default async function HomePage() {
               </Grid>
             ))}
           </Grid>
-        </Container>
-      </Box>
-      {/* Certifications */}
-      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
-        <Container maxWidth="md">
-          <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
-            {lang === 'fi' ? 'Sertifikaatit' : 'Certifications'}
-          </Typography>
-          <CertificationsSection lang={lang} />
         </Container>
       </Box>
     </>
