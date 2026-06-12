@@ -22,9 +22,9 @@ export async function getCourseById(id: number): Promise<Course | undefined> {
 
 export async function createCourse(data: Omit<Course, 'id' | 'created_at' | 'updated_at'>): Promise<number> {
   const result = await db.execute({
-    sql: `INSERT INTO courses (name_fi, name_en, institution_fi, institution_en, category, credits, year, description_fi, description_en, url, education_id, sort_order)
-          VALUES (:name_fi, :name_en, :institution_fi, :institution_en, :category, :credits, :year, :description_fi, :description_en, :url, :education_id, :sort_order)`,
-    args: { ...data, credits: data.credits ?? null, year: data.year ?? null, url: data.url ?? null, education_id: data.education_id ?? null },
+    sql: `INSERT INTO courses (name_fi, name_en, institution_fi, institution_en, category, credits, year, description_fi, description_en, url, grade, education_id, sort_order)
+          VALUES (:name_fi, :name_en, :institution_fi, :institution_en, :category, :credits, :year, :description_fi, :description_en, :url, :grade, :education_id, :sort_order)`,
+    args: { ...data, credits: data.credits ?? null, year: data.year ?? null, url: data.url ?? null, grade: data.grade ?? null, education_id: data.education_id ?? null },
   })
   return Number(result.lastInsertRowid)
 }
@@ -33,8 +33,8 @@ export async function updateCourse(id: number, data: Omit<Course, 'id' | 'create
   await db.execute({
     sql: `UPDATE courses SET name_fi=:name_fi, name_en=:name_en, institution_fi=:institution_fi, institution_en=:institution_en,
           category=:category, credits=:credits, year=:year, description_fi=:description_fi, description_en=:description_en,
-          url=:url, education_id=:education_id, sort_order=:sort_order, updated_at=datetime('now') WHERE id=:id`,
-    args: { ...data, id, credits: data.credits ?? null, year: data.year ?? null, url: data.url ?? null, education_id: data.education_id ?? null },
+          url=:url, grade=:grade, education_id=:education_id, sort_order=:sort_order, updated_at=datetime('now') WHERE id=:id`,
+    args: { ...data, id, credits: data.credits ?? null, year: data.year ?? null, url: data.url ?? null, grade: data.grade ?? null, education_id: data.education_id ?? null },
   })
 }
 

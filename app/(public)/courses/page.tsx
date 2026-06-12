@@ -97,6 +97,9 @@ export default async function CoursesPage() {
                     {c.credits && (
                       <Chip label={`${c.credits} op`} size="small" sx={{ backgroundColor: 'rgba(26,26,46,0.07)' }} />
                     )}
+                    {c.grade && (
+                      <Chip label={c.grade} size="small" sx={{ backgroundColor: 'rgba(233,69,96,0.12)', color: '#e94560', fontWeight: 700 }} />
+                    )}
                   </Box>
                 </Box>
 

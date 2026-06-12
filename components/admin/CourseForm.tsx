@@ -86,7 +86,10 @@ export function CourseForm({ action, defaultValues, educationOptions }: Props) {
         <Grid size={{ xs: 12, sm: 2 }}>
           <TextField fullWidth type="number" label="Vuosi" name="year" placeholder="2023" defaultValue={defaultValues?.year ?? ''} />
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
+        <Grid size={{ xs: 12, sm: 2 }}>
+          <TextField fullWidth label="Arvosana" name="grade" placeholder="5 / Hyv." defaultValue={defaultValues?.grade ?? ''} />
+        </Grid>
+        <Grid size={{ xs: 12, sm: 2 }}>
           <TextField fullWidth type="number" label="Järjestys" name="sort_order" defaultValue={defaultValues?.sort_order ?? 0} />
         </Grid>
         <Grid size={{ xs: 12, sm: 6 }}>

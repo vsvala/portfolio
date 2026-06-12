@@ -16,6 +16,7 @@ const CourseSchema = z.object({
   description_fi: z.string().default(''),
   description_en: z.string().default(''),
   url: z.preprocess((v) => (!v || v === '' ? null : v), z.string().url().nullable().optional().default(null)),
+  grade: z.preprocess((v) => (!v || v === '' ? null : v), z.string().nullable().optional().default(null)),
   education_id: z.preprocess((v) => (!v || v === '' ? null : v), z.coerce.number().nullable().optional().default(null)),
   sort_order: z.coerce.number().default(0),
 })

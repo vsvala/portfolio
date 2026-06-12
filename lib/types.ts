@@ -62,6 +62,7 @@ export interface Course {
   description_fi: string
   description_en: string
   url: string | null
+  grade: string | null
   education_id: number | null
   sort_order: number
   created_at: string
