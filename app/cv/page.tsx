@@ -80,7 +80,7 @@ export default async function CvPage() {
           {isFi ? 'Ohjelmistosuunnittelija' : 'Software Developer'}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          virva.svala@gmail.com · github.com/vsvala · virvasvala.com
+          virva.svala(at)gmail.com · github.com/vsvala · virvasvala.com
         </Typography>
       </Box>
 

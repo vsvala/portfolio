@@ -106,7 +106,7 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
                 variant="outlined"
                 size="small"
               >
-                virva.svala@gmail.com
+                virva.svala(at)gmail.com
               </Button>
 
               <Button
