@@ -58,6 +58,21 @@ export function SkillsSection({ lang }: { lang: Lang }) {
           ))}
         </Stack>
 
+        <Box
+          sx={{
+            borderLeft: '3px solid rgba(233,69,96,0.4)',
+            pl: 2,
+            mb: 5,
+            color: 'text.secondary',
+          }}
+        >
+          <Typography variant="body2">
+            {lang === 'fi'
+              ? 'Lisäksi yliopistokursseilta kokemusta: Ruby on Rails, R sekä Java Spring Boot.'
+              : 'Additional university coursework in: Ruby on Rails, R, and Java Spring Boot.'}
+          </Typography>
+        </Box>
+
         <Typography variant="h5" sx={{ fontWeight: 600 }} gutterBottom>
           {lang === 'fi' ? 'Kielitaito' : 'Languages'}
         </Typography>
