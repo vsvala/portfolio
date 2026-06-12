@@ -75,6 +75,7 @@ export interface PdfDocument {
   label_en: string
   document_type: 'cv' | 'work_certificate' | 'study_certificate' | 'other'
   file_size: number
+  is_protected: number
   created_at: string
 }
 

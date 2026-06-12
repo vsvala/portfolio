@@ -13,6 +13,7 @@ import DownloadIcon from '@mui/icons-material/Download'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { FeedbackForm } from '@/components/public/FeedbackForm'
+import { ProtectedDownload } from '@/components/public/ProtectedDownload'
 
 export default async function WorkDetailPage({
   params,
@@ -74,16 +75,25 @@ export default async function WorkDetailPage({
       )}
 
       {certificate && (
-        <Button
-          component="a"
-          href={`/documents/${certificate.filename}`}
-          download
-          variant="contained"
-          startIcon={<DownloadIcon />}
-          sx={{ mt: 2 }}
-        >
-          {lang === 'fi' ? certificate.label_fi : certificate.label_en}
-        </Button>
+        certificate.is_protected ? (
+          <ProtectedDownload
+            filename={certificate.filename}
+            labelFi={certificate.label_fi}
+            labelEn={certificate.label_en}
+            lang={lang}
+          />
+        ) : (
+          <Button
+            component="a"
+            href={`/documents/${certificate.filename}`}
+            download
+            variant="contained"
+            startIcon={<DownloadIcon />}
+            sx={{ mt: 2 }}
+          >
+            {lang === 'fi' ? certificate.label_fi : certificate.label_en}
+          </Button>
+        )
       )}
 
       <FeedbackForm
