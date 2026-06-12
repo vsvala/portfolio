@@ -41,7 +41,7 @@ export function FeedbackForm({ lang, targetType, targetId, targetTitle }: Props)
         onClick={() => setOpen((o) => !o)}
         sx={{ color: 'text.secondary', mb: 1 }}
       >
-        {lang === 'fi' ? 'Lähetä palaute tästä osiosta' : 'Suggest an edit or leave feedback'}
+        {lang === 'fi' ? 'Jäikö jotain epäselväksi tai halusitko tietää jotain lisää?' : 'Anything unclear or want to know more?'}
       </Button>
 
       <Collapse in={open}>
@@ -57,8 +57,8 @@ export function FeedbackForm({ lang, targetType, targetId, targetTitle }: Props)
 
           <Typography variant="body2" color="text.secondary">
             {lang === 'fi'
-              ? 'Huomasitko virheen tai haluatko ehdottaa muutosta? Voit jättää nimettömän viestin.'
-              : 'Spotted an error or want to suggest a change? You can leave an anonymous message.'}
+              ? 'Oliko jotain muuta mitä olisit halunnut tietää tästä osiosta? Voit jättää viestin nimettömästi.'
+              : 'Was there something else you wanted to know about this section? You can leave a message anonymously.'}
           </Typography>
 
           <TextField

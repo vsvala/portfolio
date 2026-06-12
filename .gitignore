@@ -53,3 +53,6 @@ portfolio.db-wal
 
 # Uploaded documents (added via admin panel, not source code)
 public/documents/*.pdf
+public/documents/*.jpg
+public/documents/*.jpeg
+public/documents/*.png
