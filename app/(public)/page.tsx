@@ -85,14 +85,14 @@ export default async function HomePage() {
         </Container>
       </Box>
 
-      {/* Projects preview */}
-      <Box id="projektit" sx={{ py: 6 }}>
+      {/* Hackathon preview */}
+      <Box id="hackathon" sx={{ py: 6 }}>
         <Container maxWidth="md">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              {lang === 'fi' ? 'Projektit' : 'Projects'}
+              Hackathon
             </Typography>
-            <LinkButton href="/projects" variant="outlined" size="small">
+            <LinkButton href="/projects#hackathon" variant="outlined" size="small">
               {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
             </LinkButton>
           </Box>

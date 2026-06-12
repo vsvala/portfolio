@@ -20,9 +20,9 @@ const anchorLinks = [
   { href: '/#osaaminen', fi: 'Osaaminen', en: 'Skills' },
   { href: '/#koulutus', fi: 'Koulutus', en: 'Education' },
   { href: '/#sertifikaatit', fi: 'Sertifikaatit', en: 'Certifications' },
+  { href: '/#hackathon', fi: 'Hackathon', en: 'Hackathon' },
   { href: '/#jarjesto', fi: 'Järjestö- ja aktiivitoiminta', en: 'Civic Activities' },
   { href: '/#harrastukset', fi: 'Harrastukset & vahvuudet', en: 'Hobbies & Strengths' },
-  { href: '/#hackathon', fi: 'Hackathon', en: 'Hackathon' },
 ]
 
 export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
