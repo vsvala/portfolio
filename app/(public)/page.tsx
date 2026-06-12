@@ -26,7 +26,6 @@ export default async function HomePage() {
   return (
     <>
       <HeroSection lang={lang} />
-      <SkillsSection lang={lang} />
 
       {/* Work preview */}
       <Box sx={{ py: 6 }}>
@@ -49,8 +48,13 @@ export default async function HomePage() {
         </Container>
       </Box>
 
+      {/* Skills */}
+      <Box sx={{ backgroundColor: 'grey.50' }}>
+        <SkillsSection lang={lang} />
+      </Box>
+
       {/* Education preview */}
-      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
+      <Box sx={{ py: 6 }}>
         <Container maxWidth="md">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
@@ -71,7 +75,7 @@ export default async function HomePage() {
       </Box>
 
       {/* Certifications */}
-      <Box sx={{ py: 6 }}>
+      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
         <Container maxWidth="md">
           <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
             {lang === 'fi' ? 'Sertifikaatit' : 'Certifications'}
@@ -80,8 +84,8 @@ export default async function HomePage() {
         </Container>
       </Box>
 
-      {/* Projects / Hackathon preview */}
-      <Box sx={{ py: 6, backgroundColor: 'grey.50' }}>
+      {/* Hackathon preview */}
+      <Box sx={{ py: 6 }}>
         <Container maxWidth="md">
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
             <Box>
