@@ -6,15 +6,17 @@ import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
+import Stack from '@mui/material/Stack'
+import MuiLink from '@mui/material/Link'
 
 export const metadata = {
   title: 'Projektit — Virva Svala',
-  description: 'Opiskeluprojektit, omat projektit ja hackathon-demot.',
+  description: 'Omat sivuprojektit, opiskeluprojektit ja hackathon-demot.',
 }
 
 const categories = [
-  { key: 'university', labelFi: 'Opiskeluprojektit', labelEn: 'University Projects' },
-  { key: 'personal',   labelFi: 'Omat projektit',    labelEn: 'Personal Projects' },
+  { key: 'personal',   labelFi: 'Omat projektit',          labelEn: 'Personal Projects' },
+  { key: 'university', labelFi: 'Opiskeluprojektit',        labelEn: 'University Projects' },
   { key: 'hackathon',  labelFi: 'Hackathon & Creative Coding', labelEn: 'Hackathon & Creative Coding' },
 ]
 
@@ -34,11 +36,40 @@ export default async function ProjectsPage() {
       <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
         {lang === 'fi' ? 'Projektit' : 'Projects'}
       </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mb: 6 }}>
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
         {lang === 'fi'
-          ? 'Opiskeluprojekteja, omia sivuprojekteja ja hackathon-demoja.'
-          : 'University coursework projects, personal side projects and hackathon demos.'}
+          ? 'Omia sivuprojekteja, opiskeluprojekteja ja hackathon-demoja.'
+          : 'Personal side projects, university coursework projects and hackathon demos.'}
       </Typography>
+
+      {/* Anchor navigation */}
+      {activeCategories.length > 1 && (
+        <Stack direction="row" sx={{ gap: 2, mb: 6, flexWrap: 'wrap' }}>
+          {activeCategories.map((cat) => (
+            <MuiLink
+              key={cat.key}
+              href={`#${cat.key}`}
+              underline="none"
+              sx={{
+                fontSize: '0.8rem',
+                fontWeight: 600,
+                letterSpacing: 1,
+                textTransform: 'uppercase',
+                color: 'text.secondary',
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: '20px',
+                px: 2,
+                py: 0.5,
+                '&:hover': { borderColor: 'secondary.main', color: 'secondary.main' },
+                transition: 'all 0.15s',
+              }}
+            >
+              {lang === 'fi' ? cat.labelFi : cat.labelEn}
+            </MuiLink>
+          ))}
+        </Stack>
+      )}
 
       {activeCategories.length === 0 && (
         <Typography color="text.secondary">
@@ -47,7 +78,7 @@ export default async function ProjectsPage() {
       )}
 
       {activeCategories.map((cat) => (
-        <Box key={cat.key} sx={{ mb: 7 }}>
+        <Box key={cat.key} id={cat.key} sx={{ mb: 7, scrollMarginTop: '80px' }}>
           <Typography
             variant="overline"
             sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 3 }}
