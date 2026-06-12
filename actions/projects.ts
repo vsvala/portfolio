@@ -20,6 +20,7 @@ const ProjectSchema = z.object({
   }),
   url: z.string().url().optional().nullable().or(z.literal('')),
   repo_url: z.string().url().optional().nullable().or(z.literal('')),
+  category: z.string().default('hackathon'),
   document_id: z.coerce.number().nullable().optional().default(null),
   sort_order: z.coerce.number().default(0),
 })

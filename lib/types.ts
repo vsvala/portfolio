@@ -28,6 +28,7 @@ export interface Project {
   technologies: string
   url: string | null
   repo_url: string | null
+  category: string
   document_id: number | null
   sort_order: number
   created_at: string

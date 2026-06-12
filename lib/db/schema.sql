@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS projects (
   technologies TEXT NOT NULL DEFAULT '[]',
   url TEXT,
   repo_url TEXT,
+  category TEXT NOT NULL DEFAULT 'hackathon',
   document_id INTEGER REFERENCES pdf_documents(id) ON DELETE SET NULL,
   sort_order INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now')),

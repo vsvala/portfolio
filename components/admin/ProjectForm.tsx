@@ -3,6 +3,7 @@ import { useActionState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import type { ActionState, Project } from '@/lib/types'
 import TextField from '@mui/material/TextField'
+import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Alert from '@mui/material/Alert'
@@ -72,7 +73,14 @@ export function ProjectForm({ action, defaultValues }: Props) {
         <Grid size={{ xs: 12, sm: 6 }}>
           <TextField fullWidth label="GitHub repo URL" name="repo_url" placeholder="https://github.com/..." defaultValue={defaultValues?.repo_url ?? ''} />
         </Grid>
-        <Grid size={{ xs: 12, sm: 8 }}>
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <TextField fullWidth select label="Kategoria" name="category" defaultValue={defaultValues?.category ?? 'hackathon'}>
+            <MenuItem value="university">Opiskeluprojekti</MenuItem>
+            <MenuItem value="personal">Oma projekti</MenuItem>
+            <MenuItem value="hackathon">Hackathon</MenuItem>
+          </TextField>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 6 }}>
           <TextField
             fullWidth
             label="Teknologiat (pilkulla erotettu)"
@@ -81,7 +89,7 @@ export function ProjectForm({ action, defaultValues }: Props) {
             defaultValue={techs}
           />
         </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
+        <Grid size={{ xs: 12, sm: 2 }}>
           <TextField fullWidth required type="number" label="Järjestys" name="sort_order" defaultValue={defaultValues?.sort_order ?? 0} />
         </Grid>
       </Grid>

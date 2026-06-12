@@ -20,7 +20,7 @@ const navLinks = [
   { href: '/', labelFi: 'Etusivu', labelEn: 'Home' },
   { href: '/work', labelFi: 'Työkokemus', labelEn: 'Experience' },
   { href: '/education', labelFi: 'Koulutus', labelEn: 'Education' },
-  { href: '/projects', labelFi: 'Hackathon', labelEn: 'Hackathon' },
+  { href: '/projects', labelFi: 'Projektit', labelEn: 'Projects' },
   { href: '/contact', labelFi: 'Yhteystiedot', labelEn: 'Contact' },
 ]
 

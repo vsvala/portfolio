@@ -24,11 +24,11 @@ export async function createProject(
     sql: `INSERT INTO projects
            (title_fi, title_en, description_fi, description_en,
             long_description_fi, long_description_en, technologies,
-            url, repo_url, document_id, sort_order)
+            url, repo_url, category, document_id, sort_order)
          VALUES
            (:title_fi, :title_en, :description_fi, :description_en,
             :long_description_fi, :long_description_en, :technologies,
-            :url, :repo_url, :document_id, :sort_order)`,
+            :url, :repo_url, :category, :document_id, :sort_order)`,
     args: data as Record<string, string | number | null>,
   })
   return (await getProjectById(Number(result.lastInsertRowid)))!
@@ -49,6 +49,7 @@ export async function updateProject(
            technologies        = COALESCE(:technologies,        technologies),
            url                 = COALESCE(:url,                 url),
            repo_url            = COALESCE(:repo_url,            repo_url),
+           category            = COALESCE(:category,            category),
            document_id         = COALESCE(:document_id,         document_id),
            sort_order          = COALESCE(:sort_order,          sort_order),
            updated_at          = datetime('now')
