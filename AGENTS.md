@@ -20,6 +20,7 @@ This file defines the agent roles and responsibilities for this portfolio projec
 | **Upload Agent** | `app/api/upload/route.ts`, PDF handling, `public/documents/` management | Phase 2 — Upload |
 | **Pages Agent** | Public pages (`app/(public)/**`), admin pages (`app/admin/**`), `loading.tsx`, `error.tsx` | Phases 3–4 |
 | **Reviewer Agent** | Code quality, TypeScript errors, security, MUI v9 compatibility, build verification | Phase 5 — Polish |
+| **Security Agent** | Input validation, XSS/injection prevention, spam protection, auth hardening, public exposure audit | Any phase |
 
 ---
 
@@ -38,6 +39,16 @@ This file defines the agent roles and responsibilities for this portfolio projec
 ### Server/Client Boundary
 - `component={Link}` cannot be passed from a Server Component — use `<LinkButton>` from `components/ui/LinkButton.tsx`
 - Card components (`WorkCard`, `ProjectCard`, `EducationCard`) must be `'use client'` because they use `component={Link}` on `CardActionArea`
+
+### Security Agent checklist
+- **Contact form**: Zod validates + caps all fields (name ≤100, email ≤200, message ≤2000). Honeypot field blocks bots. Email sent as plain text only — no HTML interpolation to avoid injection.
+- **mailto: links** — intentionally public on a portfolio. Acceptable trade-off: recruiters can click directly; spam-bot harvesting risk is accepted.
+- **Admin auth**: plain-text password in env var, compared in `actions/auth.ts`. Acceptable for personal single-user admin. Do not add to git.
+- **Resend `from` address**: use `onboarding@resend.dev` for dev only. In production, verify a domain in Resend dashboard and update `actions/contact.ts`.
+- **HTML in emails**: never interpolate user input into HTML email body — use `text:` only.
+- **Public documents**: PDFs in `public/documents/` are intentionally public (CV downloads). Do not store sensitive files there.
+- **XSS**: all user input goes through Zod before any use. No `dangerouslySetInnerHTML` in the codebase.
+- **CSRF**: Next.js Server Actions have built-in CSRF protection via `SameSite` cookie and origin check.
 
 ### proxy.ts Redirect Loop
 - The proxy must skip auth for `/admin/login`, otherwise an infinite redirect loop occurs
@@ -80,6 +91,7 @@ V2+      [Future]       Dark mode · contact form · /certifications
 
 | Files / Directories | Owner |
 | :--- | :--- |
+| `actions/contact.ts`, `components/public/ContactForm.tsx` | Security Agent / Pages Agent |
 | `lib/db/schema.sql`, `lib/db/index.ts` | Architect Agent |
 | `lib/db/queries/*.ts` | Data Agent |
 | `actions/*.ts` | Data Agent |

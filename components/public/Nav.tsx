@@ -23,6 +23,7 @@ const navLinks = [
   { href: '/education', labelFi: 'Koulutus', labelEn: 'Education' },
   { href: '/#sertifikaatit', labelFi: 'Sertifikaatit', labelEn: 'Certifications' },
   { href: '/projects', labelFi: 'Hackathon', labelEn: 'Hackathon' },
+  { href: '/contact', labelFi: 'Yhteystiedot', labelEn: 'Contact' },
 ]
 
 export function Nav({ lang }: { lang: 'fi' | 'en' }) {
