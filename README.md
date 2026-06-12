@@ -168,10 +168,28 @@ Notable issues discovered during development and now documented for future agent
 
 ---
 
+## Enabling the Contact Form
+
+The contact form (`/contact`) is built and ready but disabled until a Resend API key is configured.
+
+**Steps to enable:**
+
+1. Create a free account at [resend.com](https://resend.com)
+2. Copy your API key and add it to `.env.local`:
+   ```env
+   RESEND_API_KEY=re_xxxxxxxxxxxx
+   ```
+3. Open `app/(public)/contact/page.tsx` and uncomment the form block (the `{/* Contact form — disabled ... */}` section)
+4. Restart the dev server — the form will appear on the right side of the Contact page
+
+> **Production note:** The `from` address in `actions/contact.ts` uses `onboarding@resend.dev` (Resend's sandbox sender). For production, verify your own domain in the Resend dashboard and update the `from` field to e.g. `Portfolio <noreply@yourdomain.com>`.
+
+---
+
 ## Roadmap (V2+)
 
 - [ ] Dark mode toggle
-- [ ] Contact form (Resend API)
+- [x] Contact form (Resend API) — implemented, enable by adding `RESEND_API_KEY`
 - [ ] `/certifications` section — courses and certificates with progress tracking
 - [ ] GitHub integration — pinned repos pulled from the GitHub API
 - [ ] Feedback / "Suggest edit" form on detail pages
