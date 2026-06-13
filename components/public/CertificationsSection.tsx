@@ -19,9 +19,24 @@ interface Certification {
   year: string
   technologies: string[]
   imageUrl: string
+  credentialUrl?: string
 }
 
 const certifications: Certification[] = [
+  {
+    title_fi: 'Claude Code: A Highly Agentic Coding Assistant',
+    title_en: 'Claude Code: A Highly Agentic Coding Assistant',
+    issuer_fi: 'DeepLearning.AI',
+    issuer_en: 'DeepLearning.AI',
+    description_fi:
+      'Kurssi kattaa Claude Coden käytön tekoälyavusteisessa ohjelmistokehityksessä: agenttiset työnkulut, MCP-integraatiot, hookit ja automaatio.',
+    description_en:
+      'Course covering Claude Code for AI-assisted software development: agentic workflows, MCP integrations, hooks, and automation.',
+    year: '2026',
+    technologies: ['Claude Code', 'AI', 'MCP', 'Agentic Workflows'],
+    imageUrl: '/images/certificate-claudecode.png',
+    credentialUrl: 'https://learn.deeplearning.ai/accomplishments/dd8f1d3e-9145-4828-973f-409bf6c7ee92',
+  },
   {
     title_fi: 'Full Stack Open',
     title_en: 'Full Stack Open',
@@ -47,7 +62,7 @@ export function CertificationsSection({ lang }: { lang: Lang }) {
         >
           <CardActionArea
             component="a"
-            href={cert.imageUrl}
+            href={cert.credentialUrl ?? cert.imageUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
