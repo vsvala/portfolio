@@ -79,7 +79,7 @@ export default async function HomePage() {
       <Box id="sertifikaatit" sx={{ py: 6, backgroundColor: 'grey.50' }}>
         <Container maxWidth="md">
           <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
-            {lang === 'fi' ? 'Sertifikaatit' : 'Certifications'}
+            {lang === 'fi' ? 'Saavutukset & sertifikaatit' : 'Achievements & Certifications'}
           </Typography>
           <CertificationsSection lang={lang} />
         </Container>

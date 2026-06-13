@@ -19,7 +19,7 @@ const anchorLinks = [
   { href: '/#tyokokemus', fi: 'Työkokemus', en: 'Experience' },
   { href: '/#osaaminen', fi: 'Osaaminen', en: 'Skills' },
   { href: '/#koulutus', fi: 'Koulutus', en: 'Education' },
-  { href: '/#sertifikaatit', fi: 'Sertifikaatit', en: 'Certifications' },
+  { href: '/#sertifikaatit', fi: 'Saavutukset & sertifikaatit', en: 'Achievements & Certifications' },
   { href: '/#hackathon', fi: 'Hackathon', en: 'Hackathon' },
   { href: '/#jarjesto', fi: 'Järjestö- ja aktiivitoiminta', en: 'Civic Activities' },
   { href: '/#harrastukset', fi: 'Harrastukset & vahvuudet', en: 'Hobbies & Strengths' },
