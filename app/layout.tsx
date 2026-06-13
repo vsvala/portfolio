@@ -26,7 +26,7 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as 'fi' | 'en'
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as 'fi' | 'en'
 
   return (
     <html lang={lang} className={geist.variable} style={{ scrollBehavior: 'smooth' }}>

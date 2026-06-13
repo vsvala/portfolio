@@ -24,7 +24,7 @@ export default async function ProjectDetailPage({
 }) {
   const { id } = await params
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
 
   const project = await getProjectById(Number(id))
   if (!project) notFound()

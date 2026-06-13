@@ -4,7 +4,7 @@ import { Footer } from '@/components/public/Footer'
 
 export default async function PublicLayout({ children }: { children: React.ReactNode }) {
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as 'fi' | 'en'
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as 'fi' | 'en'
 
   return (
     <>

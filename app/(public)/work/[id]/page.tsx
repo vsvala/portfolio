@@ -22,7 +22,7 @@ export default async function WorkDetailPage({
 }) {
   const { id } = await params
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
 
   const work = await getWorkById(Number(id))
   if (!work) notFound()

@@ -26,7 +26,7 @@ const categoryOrder = ['programming', 'math', 'ai_data', 'systems', 'design', 'o
 
 export default async function CoursesPage() {
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
 
   const courses = await getAllCourses()
 

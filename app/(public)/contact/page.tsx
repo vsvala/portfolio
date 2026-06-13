@@ -24,7 +24,7 @@ const contactItems = [
 
 export default async function ContactPage() {
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
 
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>

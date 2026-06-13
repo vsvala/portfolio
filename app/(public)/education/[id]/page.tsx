@@ -35,7 +35,7 @@ export default async function EducationDetailPage({
 }) {
   const { id } = await params
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
 
   const education = await getEducationById(Number(id))
   if (!education) notFound()

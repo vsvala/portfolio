@@ -13,7 +13,7 @@ export const metadata = {
 
 export default async function EducationPage() {
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
   const education = await getAllEducation()
 
   return (

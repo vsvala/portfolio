@@ -18,7 +18,7 @@ import { AboutExtrasSection } from '@/components/public/AboutExtrasSection'
 
 export default async function HomePage() {
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
 
   const work = (await getAllWork()).slice(0, 3)
   const projects = (await getAllProjects()).slice(0, 3)

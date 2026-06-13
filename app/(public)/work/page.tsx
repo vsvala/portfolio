@@ -13,7 +13,7 @@ export const metadata = {
 
 export default async function WorkPage() {
   const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'fi') as Lang
+  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
   const work = await getAllWork()
 
   return (
