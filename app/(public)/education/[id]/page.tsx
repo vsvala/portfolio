@@ -28,7 +28,7 @@ const categoryLabels: Record<string, { fi: string; en: string }> = {
   other:       { fi: 'Muut', en: 'Other' },
 }
 
-const categoryOrder = ['programming', 'databases', 'ai_data', 'systems', 'math', 'design', 'other']
+const categoryOrder = ['programming', 'databases', 'design', 'ai_data', 'systems', 'math', 'other']
 
 export default async function EducationDetailPage({
   params,
