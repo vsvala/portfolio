@@ -52,7 +52,7 @@ export function AboutExtrasSection({ lang }: { lang: Lang }) {
             variant="body1"
             sx={{ fontWeight: 500 }}
           >
-            {lang === 'fi' ? 'Katso taiteellinen työskentelyni → virvasvala.com' : 'See my artistic work → virvasvala.com'}
+            {lang === 'fi' ? 'Tutustu maalauksiini → virvasvala.com' : 'Explore my paintings → virvasvala.com'}
           </Link>
         </Box>
 
