@@ -11,6 +11,8 @@ import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
+import MuiLink from '@mui/material/Link'
+import Stack from '@mui/material/Stack'
 import DownloadIcon from '@mui/icons-material/Download'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
@@ -19,14 +21,15 @@ import { FeedbackForm } from '@/components/public/FeedbackForm'
 
 const categoryLabels: Record<string, { fi: string; en: string }> = {
   programming: { fi: 'Ohjelmointi', en: 'Programming' },
-  math: { fi: 'Matematiikka & tilastot', en: 'Mathematics & Statistics' },
-  ai_data: { fi: 'Tekoäly & data', en: 'AI & Data' },
-  systems: { fi: 'Järjestelmät & verkot', en: 'Systems & Networks' },
-  design: { fi: 'Suunnittelu & UX', en: 'Design & UX' },
-  other: { fi: 'Muut', en: 'Other' },
+  databases:   { fi: 'Tietokannat', en: 'Databases' },
+  ai_data:     { fi: 'Tekoäly & data', en: 'AI & Data' },
+  math:        { fi: 'Matematiikka & tilastot', en: 'Mathematics & Statistics' },
+  systems:     { fi: 'Järjestelmät & verkot', en: 'Systems & Networks' },
+  design:      { fi: 'Suunnittelu & UX', en: 'Design & UX' },
+  other:       { fi: 'Muut', en: 'Other' },
 }
 
-const categoryOrder = ['programming', 'math', 'ai_data', 'systems', 'design', 'other']
+const categoryOrder = ['programming', 'databases', 'ai_data', 'math', 'systems', 'design', 'other']
 
 export default async function EducationDetailPage({
   params,
@@ -87,11 +90,39 @@ export default async function EducationDetailPage({
       {courses.length > 0 && (
         <Box sx={{ mb: 4 }}>
           <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
-            {lang === 'fi' ? 'Opinnot' : 'Coursework'}
+            {lang === 'fi' ? 'Opinnot' : 'Courses'}
           </Typography>
 
+          {sortedCategories.length > 1 && (
+            <Stack direction="row" sx={{ gap: 2, mb: 4, flexWrap: 'wrap' }}>
+              {sortedCategories.map((cat) => (
+                <MuiLink
+                  key={cat}
+                  href={`#${cat}`}
+                  underline="none"
+                  sx={{
+                    fontSize: '0.8rem',
+                    fontWeight: 600,
+                    letterSpacing: 1,
+                    textTransform: 'uppercase',
+                    color: 'text.secondary',
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    borderRadius: '20px',
+                    px: 2,
+                    py: 0.5,
+                    '&:hover': { borderColor: 'secondary.main', color: 'secondary.main' },
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  {categoryLabels[cat]?.[lang] ?? cat}
+                </MuiLink>
+              ))}
+            </Stack>
+          )}
+
           {sortedCategories.map((cat) => (
-            <Box key={cat} sx={{ mb: 4 }}>
+            <Box key={cat} id={cat} sx={{ mb: 4, scrollMarginTop: '80px' }}>
               <Typography
                 variant="overline"
                 sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 1.5 }}
