@@ -58,7 +58,7 @@ export function CertificationsSection({ lang }: { lang: Lang }) {
       {certifications.map((cert) => (
         <Card
           key={cert.title_en}
-          sx={{ maxWidth: 480, width: '100%' }}
+          sx={{ flex: '1 1 300px', maxWidth: 480 }}
         >
           <CardActionArea
             component="a"
