@@ -131,7 +131,7 @@ export default async function EducationDetailPage({
           {/* Main content */}
           <Box sx={{ flex: 1 }}>
             <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
-              {lang === 'fi' ? 'Opinnot' : 'Courses'}
+              {lang === 'fi' ? 'Pääopinnot' : 'Main courses'}
             </Typography>
 
             {sortedCategories.map((cat) => (
