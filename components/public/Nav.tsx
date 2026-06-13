@@ -21,6 +21,7 @@ const navLinks = [
   { href: '/work', labelFi: 'Työkokemus', labelEn: 'Experience' },
   { href: '/education', labelFi: 'Koulutus', labelEn: 'Education' },
   { href: '/projects', labelFi: 'Projektit', labelEn: 'Projects' },
+  { href: '/recommendations', labelFi: 'Suositukset', labelEn: 'Recommendations' },
   { href: '/contact', labelFi: 'Yhteystiedot', labelEn: 'Contact' },
 ]
 

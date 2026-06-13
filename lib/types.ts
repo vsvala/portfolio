@@ -93,6 +93,18 @@ export interface Feedback {
   created_at: string
 }
 
+export interface Recommendation {
+  id: number
+  name: string
+  role: string
+  company: string
+  relationship: string
+  rec_date: string
+  text: string
+  sort_order: number
+  created_at: string
+}
+
 export interface SessionPayload {
   role: 'admin'
   exp: number

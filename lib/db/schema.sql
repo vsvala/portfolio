@@ -75,6 +75,18 @@ CREATE TABLE IF NOT EXISTS courses (
   updated_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS recommendations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  role TEXT NOT NULL,
+  company TEXT NOT NULL,
+  relationship TEXT NOT NULL,
+  rec_date TEXT NOT NULL,
+  text TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 CREATE TABLE IF NOT EXISTS education (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   institution_fi TEXT NOT NULL,
