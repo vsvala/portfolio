@@ -64,23 +64,31 @@ export default async function EducationDetailPage({
   ]
 
   return (
-    <Container maxWidth="md" sx={{ py: 6 }}>
-      <LinkButton href="/education" startIcon={<ArrowBackIcon />} sx={{ mb: 3 }} variant="text">
-        {lang === 'fi' ? 'Takaisin' : 'Back'}
-      </LinkButton>
+    <>
+      {/* Hero header */}
+      <Box sx={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 100%)', color: 'white', py: { xs: 5, md: 7 } }}>
+        <Container maxWidth="md">
+          <LinkButton
+            href="/education"
+            startIcon={<ArrowBackIcon />}
+            sx={{ mb: 3, color: 'rgba(255,255,255,0.7)', '&:hover': { color: 'white', backgroundColor: 'rgba(255,255,255,0.08)' } }}
+            variant="text"
+          >
+            {lang === 'fi' ? 'Takaisin' : 'Back'}
+          </LinkButton>
+          <Typography variant="h3" sx={{ fontWeight: 700, color: 'white' }}>
+            {lang === 'fi' ? education.degree_fi : education.degree_en}
+          </Typography>
+          <Typography variant="h5" sx={{ mt: 1, color: 'rgba(255,255,255,0.7)' }}>
+            {lang === 'fi' ? education.institution_fi : education.institution_en}
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 0.5, color: 'rgba(255,255,255,0.5)' }}>
+            {education.start_date.slice(0, 4)} – {endLabel}
+          </Typography>
+        </Container>
+      </Box>
 
-      <Typography variant="h3" sx={{ fontWeight: 700 }}>
-        {lang === 'fi' ? education.degree_fi : education.degree_en}
-      </Typography>
-      <Typography variant="h5" color="text.secondary" sx={{ mt: 1 }}>
-        {lang === 'fi' ? education.institution_fi : education.institution_en}
-      </Typography>
-      <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, mb: 3 }}>
-        {education.start_date.slice(0, 4)} – {endLabel}
-      </Typography>
-
-      <Divider sx={{ mb: 3 }} />
-
+    <Container maxWidth="md" sx={{ py: 5 }}>
       <Typography variant="body1" sx={{ lineHeight: 1.9, whiteSpace: 'pre-line', mb: 4 }}>
         {lang === 'fi' ? education.description_fi : education.description_en}
       </Typography>
@@ -149,6 +157,7 @@ export default async function EducationDetailPage({
                         border: '1px solid',
                         borderColor: 'divider',
                         borderRadius: 2,
+                        borderLeft: '3px solid #e94560',
                       }}
                     >
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2, flexWrap: 'wrap' }}>
@@ -195,5 +204,6 @@ export default async function EducationDetailPage({
         targetTitle={lang === 'fi' ? `${education.degree_fi} — ${education.institution_fi}` : `${education.degree_en} — ${education.institution_en}`}
       />
     </Container>
+    </>
   )
 }
