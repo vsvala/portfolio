@@ -89,12 +89,8 @@ export default async function EducationDetailPage({
       {/* Courses linked to this education */}
       {courses.length > 0 && (
         <Box sx={{ mb: 4 }}>
-          <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
-            {lang === 'fi' ? 'Opinnot' : 'Courses'}
-          </Typography>
-
           {sortedCategories.length > 1 && (
-            <Stack direction="row" sx={{ gap: 2, mb: 4, flexWrap: 'wrap' }}>
+            <Stack direction="row" sx={{ gap: 2, mb: 3, flexWrap: 'wrap' }}>
               {sortedCategories.map((cat) => (
                 <MuiLink
                   key={cat}
@@ -120,6 +116,10 @@ export default async function EducationDetailPage({
               ))}
             </Stack>
           )}
+
+          <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
+            {lang === 'fi' ? 'Opinnot' : 'Courses'}
+          </Typography>
 
           {sortedCategories.map((cat) => (
             <Box key={cat} id={cat} sx={{ mb: 4, scrollMarginTop: '80px' }}>
