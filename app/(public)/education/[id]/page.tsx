@@ -158,9 +158,7 @@ export default async function EducationDetailPage({
                           {lang === 'fi' ? c.name_fi : c.name_en}
                         </Typography>
                         <Box sx={{ display: 'flex', gap: 1 }}>
-                          {c.year && <Chip label={c.year} size="small" variant="outlined" />}
                           {c.credits && <Chip label={`${c.credits} op`} size="small" sx={{ backgroundColor: 'rgba(26,26,46,0.07)' }} />}
-                          {c.grade && <Chip label={c.grade} size="small" sx={{ backgroundColor: 'rgba(233,69,96,0.12)', color: '#e94560', fontWeight: 700 }} />}
                         </Box>
                       </Box>
                       {(c.description_fi || c.description_en) && (
