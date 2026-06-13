@@ -110,13 +110,13 @@ export default async function EducationDetailPage({
                     component="a"
                     href={`#${cat}`}
                     sx={{
-                      color: 'text.secondary',
+                      color: 'secondary.main',
                       textDecoration: 'none',
                       fontSize: '0.9rem',
                       py: 0.5,
                       display: 'block',
                       transition: 'color 0.15s',
-                      '&:hover': { color: 'secondary.main' },
+                      '&:hover': { opacity: 0.7 },
                     }}
                   >
                     {categoryLabels[cat]?.[lang] ?? cat}
