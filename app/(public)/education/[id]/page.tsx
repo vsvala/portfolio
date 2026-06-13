@@ -19,16 +19,18 @@ import { LinkButton } from '@/components/ui/LinkButton'
 import { FeedbackForm } from '@/components/public/FeedbackForm'
 
 const categoryLabels: Record<string, { fi: string; en: string }> = {
-  programming: { fi: 'Ohjelmointi', en: 'Programming' },
-  databases:   { fi: 'Tietokannat', en: 'Databases' },
-  ai_data:     { fi: 'Tekoäly & data', en: 'AI & Data' },
-  math:        { fi: 'Matematiikka & tilastot', en: 'Mathematics & Statistics' },
-  systems:     { fi: 'Järjestelmät & verkot', en: 'Systems & Networks' },
-  design:      { fi: 'Suunnittelu & UX', en: 'Design & UX' },
-  other:       { fi: 'Muut', en: 'Other' },
+  web_dev:        { fi: 'Web-kehitys', en: 'Web Development' },
+  programming:    { fi: 'Ohjelmointi', en: 'Programming' },
+  sw_engineering: { fi: 'Ohjelmistotuotanto & arkkitehtuuri', en: 'Software Engineering & Architecture' },
+  databases:      { fi: 'Tietokannat', en: 'Databases' },
+  design:         { fi: 'Suunnittelu & UX', en: 'Design & UX' },
+  ai_data:        { fi: 'Tekoäly & data', en: 'AI & Data' },
+  systems:        { fi: 'Järjestelmät & verkot', en: 'Systems & Networks' },
+  math:           { fi: 'Matematiikka & tilastot', en: 'Mathematics & Statistics' },
+  other:          { fi: 'Muut', en: 'Other' },
 }
 
-const categoryOrder = ['programming', 'databases', 'design', 'ai_data', 'systems', 'math', 'other']
+const categoryOrder = ['web_dev', 'programming', 'sw_engineering', 'databases', 'design', 'ai_data', 'systems', 'math', 'other']
 
 export default async function EducationDetailPage({
   params,
