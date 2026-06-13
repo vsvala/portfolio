@@ -11,7 +11,6 @@ import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import MuiLink from '@mui/material/Link'
 import Stack from '@mui/material/Stack'
 import DownloadIcon from '@mui/icons-material/Download'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
@@ -29,7 +28,7 @@ const categoryLabels: Record<string, { fi: string; en: string }> = {
   other:       { fi: 'Muut', en: 'Other' },
 }
 
-const categoryOrder = ['programming', 'databases', 'ai_data', 'math', 'systems', 'design', 'other']
+const categoryOrder = ['programming', 'databases', 'ai_data', 'systems', 'math', 'design', 'other']
 
 export default async function EducationDetailPage({
   params,
@@ -88,85 +87,98 @@ export default async function EducationDetailPage({
 
       {/* Courses linked to this education */}
       {courses.length > 0 && (
-        <Box sx={{ mb: 4 }}>
+        <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start', mb: 4 }}>
+
+          {/* Left sidebar nav */}
           {sortedCategories.length > 1 && (
-            <Stack direction="row" sx={{ gap: 2, mb: 3, flexWrap: 'wrap' }}>
-              {sortedCategories.map((cat) => (
-                <MuiLink
-                  key={cat}
-                  href={`#${cat}`}
-                  underline="none"
-                  sx={{
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    letterSpacing: 1,
-                    textTransform: 'uppercase',
-                    color: 'text.secondary',
-                    border: '1px solid',
-                    borderColor: 'divider',
-                    borderRadius: '20px',
-                    px: 2,
-                    py: 0.5,
-                    '&:hover': { borderColor: 'secondary.main', color: 'secondary.main' },
-                    transition: 'all 0.15s',
-                  }}
-                >
-                  {categoryLabels[cat]?.[lang] ?? cat}
-                </MuiLink>
-              ))}
-            </Stack>
-          )}
-
-          <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
-            {lang === 'fi' ? 'Opinnot' : 'Courses'}
-          </Typography>
-
-          {sortedCategories.map((cat) => (
-            <Box key={cat} id={cat} sx={{ mb: 4, scrollMarginTop: '80px' }}>
-              <Typography
-                variant="overline"
-                sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 1.5 }}
-              >
-                {categoryLabels[cat]?.[lang] ?? cat}
+            <Box sx={{
+              display: { xs: 'none', md: 'block' },
+              position: 'sticky',
+              top: '80px',
+              minWidth: 160,
+              borderRight: '2px solid rgba(233,69,96,0.3)',
+              pr: 3,
+              pt: 1,
+            }}>
+              <Typography variant="overline" sx={{ color: 'text.disabled', letterSpacing: 2, display: 'block', mb: 2 }}>
+                {lang === 'fi' ? 'Sisältö' : 'Contents'}
               </Typography>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                {grouped[cat].map((c) => (
+              <Stack sx={{ gap: 0.5 }}>
+                {sortedCategories.map((cat) => (
                   <Box
-                    key={c.id}
+                    key={cat}
+                    component="a"
+                    href={`#${cat}`}
                     sx={{
-                      p: 2,
-                      border: '1px solid',
-                      borderColor: 'divider',
-                      borderRadius: 2,
+                      color: 'text.secondary',
+                      textDecoration: 'none',
+                      fontSize: '0.9rem',
+                      py: 0.5,
+                      display: 'block',
+                      transition: 'color 0.15s',
+                      '&:hover': { color: 'secondary.main' },
                     }}
                   >
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2, flexWrap: 'wrap' }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                        {lang === 'fi' ? c.name_fi : c.name_en}
-                      </Typography>
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        {c.year && <Chip label={c.year} size="small" variant="outlined" />}
-                        {c.credits && <Chip label={`${c.credits} op`} size="small" sx={{ backgroundColor: 'rgba(26,26,46,0.07)' }} />}
-                        {c.grade && <Chip label={c.grade} size="small" sx={{ backgroundColor: 'rgba(233,69,96,0.12)', color: '#e94560', fontWeight: 700 }} />}
-                      </Box>
-                    </Box>
-                    {(c.description_fi || c.description_en) && (
-                      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, lineHeight: 1.6 }}>
-                        {lang === 'fi' ? c.description_fi : c.description_en}
-                      </Typography>
-                    )}
-                    {c.url && (
-                      <Link href={c.url} target="_blank" rel="noopener noreferrer" variant="body2"
-                        sx={{ mt: 0.5, display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
-                        {lang === 'fi' ? 'Kurssisivu' : 'Course page'}
-                        <OpenInNewIcon sx={{ fontSize: 13 }} />
-                      </Link>
-                    )}
+                    {categoryLabels[cat]?.[lang] ?? cat}
                   </Box>
                 ))}
-              </Box>
+              </Stack>
             </Box>
-          ))}
+          )}
+
+          {/* Main content */}
+          <Box sx={{ flex: 1 }}>
+            <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
+              {lang === 'fi' ? 'Opinnot' : 'Courses'}
+            </Typography>
+
+            {sortedCategories.map((cat) => (
+              <Box key={cat} id={cat} sx={{ mb: 4, scrollMarginTop: '80px' }}>
+                <Typography
+                  variant="overline"
+                  sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 1.5 }}
+                >
+                  {categoryLabels[cat]?.[lang] ?? cat}
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                  {grouped[cat].map((c) => (
+                    <Box
+                      key={c.id}
+                      sx={{
+                        p: 2,
+                        border: '1px solid',
+                        borderColor: 'divider',
+                        borderRadius: 2,
+                      }}
+                    >
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2, flexWrap: 'wrap' }}>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                          {lang === 'fi' ? c.name_fi : c.name_en}
+                        </Typography>
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                          {c.year && <Chip label={c.year} size="small" variant="outlined" />}
+                          {c.credits && <Chip label={`${c.credits} op`} size="small" sx={{ backgroundColor: 'rgba(26,26,46,0.07)' }} />}
+                          {c.grade && <Chip label={c.grade} size="small" sx={{ backgroundColor: 'rgba(233,69,96,0.12)', color: '#e94560', fontWeight: 700 }} />}
+                        </Box>
+                      </Box>
+                      {(c.description_fi || c.description_en) && (
+                        <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, lineHeight: 1.6 }}>
+                          {lang === 'fi' ? c.description_fi : c.description_en}
+                        </Typography>
+                      )}
+                      {c.url && (
+                        <Link href={c.url} target="_blank" rel="noopener noreferrer" variant="body2"
+                          sx={{ mt: 0.5, display: 'inline-flex', alignItems: 'center', gap: 0.5 }}>
+                          {lang === 'fi' ? 'Kurssisivu' : 'Course page'}
+                          <OpenInNewIcon sx={{ fontSize: 13 }} />
+                        </Link>
+                      )}
+                    </Box>
+                  ))}
+                </Box>
+              </Box>
+            ))}
+          </Box>
         </Box>
       )}
 
