@@ -59,11 +59,15 @@ export function ProtectedDownload({ filename, labelFi, labelEn, lang }: Props) {
 
   return (
     <>
+      <Typography variant="body2" color="text.secondary" sx={{ mt: 2, mb: 1 }}>
+        {lang === 'fi'
+          ? 'Salasanan saa erikseen pyytämällä.'
+          : 'The password is available on request.'}
+      </Typography>
       <Button
         variant="contained"
         startIcon={<LockIcon />}
         onClick={() => setOpen(true)}
-        sx={{ mt: 2 }}
       >
         {label}
       </Button>
