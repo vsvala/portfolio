@@ -33,7 +33,7 @@ export default async function ProjectsPage() {
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
       <Typography variant="h3" sx={{ fontWeight: 700, mb: 1 }}>
-        {lang === 'fi' ? 'Projektit' : 'Projects'}
+        {lang === 'fi' ? 'Valitut projektit' : 'Selected Projects'}
       </Typography>
       <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
         {lang === 'fi'
