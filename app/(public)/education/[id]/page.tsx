@@ -17,6 +17,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { FeedbackForm } from '@/components/public/FeedbackForm'
+import { ProtectedDownload } from '@/components/public/ProtectedDownload'
 
 const categoryLabels: Record<string, { fi: string; en: string }> = {
   web_dev:        { fi: 'Web-kehitys', en: 'Web Development' },
@@ -183,9 +184,18 @@ export default async function EducationDetailPage({
       )}
 
       {document && (
-        <Button component="a" href={`/documents/${document.filename}`} download variant="contained" startIcon={<DownloadIcon />} sx={{ mb: 4 }}>
-          {lang === 'fi' ? document.label_fi : document.label_en}
-        </Button>
+        document.is_protected ? (
+          <ProtectedDownload
+            filename={document.filename}
+            labelFi={document.label_fi}
+            labelEn={document.label_en}
+            lang={lang}
+          />
+        ) : (
+          <Button component="a" href={`/documents/${document.filename}`} download variant="contained" startIcon={<DownloadIcon />} sx={{ mb: 4 }}>
+            {lang === 'fi' ? document.label_fi : document.label_en}
+          </Button>
+        )
       )}
 
       <FeedbackForm
