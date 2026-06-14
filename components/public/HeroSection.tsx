@@ -136,6 +136,11 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
             </Stack>
 
             {/* CV-lataukset */}
+            <Typography variant="caption" sx={{ opacity: 0.6, display: 'block', mb: 1 }}>
+              {lang === 'fi'
+                ? 'Lyhyt CV PDF:nä — tai koko CV tulostettavana verkkoversiona.'
+                : 'One-page PDF for quick download — or view the full printable version online.'}
+            </Typography>
             <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 2 }}>
               <Button
                 component="a"
@@ -163,7 +168,7 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
                 variant="outlined"
                 sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
               >
-                {lang === 'fi' ? 'Katso CV verkossa' : 'View CV online'}
+                {lang === 'fi' ? 'Tulostettava CV' : 'Printable CV'}
               </Button>
             </Stack>
           </Grid>
