@@ -24,6 +24,24 @@ const skillLabels: Record<string, { fi: string; en: string }> = {
   methods: { fi: 'Työtavat', en: 'Methods' },
 }
 
+const certifications = [
+  { titleFi: 'Claude Code: A Highly Agentic Coding Assistant', titleEn: 'Claude Code: A Highly Agentic Coding Assistant', issuerFi: 'DeepLearning.AI', issuerEn: 'DeepLearning.AI', year: '2026' },
+  { titleFi: 'Full Stack Open', titleEn: 'Full Stack Open', issuerFi: 'Helsingin yliopisto', issuerEn: 'University of Helsinki', year: '2024' },
+  { titleFi: 'Honours Programme Diploma', titleEn: 'Honours Programme Diploma', issuerFi: 'Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta', issuerEn: 'University of Helsinki, Faculty of Science', year: '2019' },
+  { titleFi: 'Graffathon 2019 – 2. sija, Beginner Compo', titleEn: 'Graffathon 2019 – 2nd Place, Beginner Compo', issuerFi: 'Aalto-yliopiston Digital Media Club (DOT)', issuerEn: 'Aalto University Digital Media Club (DOT)', year: '2019' },
+]
+
+const civicActivities = [
+  { fi: 'Akateemisen viiniseuran tasa-arvo- ja ympäristövastaava', en: 'Academic Wine Society, equality and environmental officer', year: '2018' },
+  { fi: 'KOL:n hallituksen opiskelijajäsen', en: 'KOL Board, student member', year: '2004' },
+  { fi: 'AIESEC, työharjoittelijan kummi', en: 'AIESEC, trainee mentor', year: '1998–1999' },
+  { fi: 'Uusien opiskelijoiden tutorohjaaja', en: 'Tutor for new students', year: '1998' },
+  { fi: 'Lukion oppilaskunnan sihteeri ja rahastonhoitaja', en: 'Upper secondary school student council, secretary and treasurer', year: '1993–1995' },
+]
+
+const hobbyFi = 'Harrastan öljyvärimaalausta ja monipuolisesti liikuntaa kuten tanssia, joogaa ja jumppia. Vahvuuksiani ovat sosiaalisuus, positiivisuus, luovuus, ideointikyky, organisointitaidot ja ohjaustaidot. Lisäksi olen utelias ja innokas oppimaan ja kokeilemaan aina uutta.'
+const hobbyEn = 'I paint with oils and keep active through dancing, yoga, and aerobics. My strengths include creativity, positivity, strong organisational and coaching skills — paired with a natural curiosity and a drive to keep learning.'
+
 const languages = [
   { fi: 'Suomi', en: 'Finnish', levelFi: 'Äidinkieli', levelEn: 'Native' },
   { fi: 'Englanti', en: 'English', levelFi: 'Sujuva', levelEn: 'Fluent' },
@@ -175,6 +193,37 @@ export default async function CvPage() {
           </Box>
         ))}
       </Box>
+
+      {/* Certifications */}
+      <Section title={isFi ? 'Sertifikaatit & saavutukset' : 'Certifications & Achievements'} />
+      <Box sx={{ mt: 2 }}>
+        {certifications.map((c) => (
+          <Box key={c.titleEn} sx={{ mb: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 1 }}>
+            <Box>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>{isFi ? c.titleFi : c.titleEn}</Typography>
+              <Typography variant="body2" color="text.secondary">{isFi ? c.issuerFi : c.issuerEn}</Typography>
+            </Box>
+            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>{c.year}</Typography>
+          </Box>
+        ))}
+      </Box>
+
+      {/* Civic Activities */}
+      <Section title={isFi ? 'Järjestö- ja aktiivitoiminta' : 'Civic & Volunteer Activities'} />
+      <Box sx={{ mt: 2 }}>
+        {civicActivities.map((a) => (
+          <Box key={a.year + a.en} sx={{ mb: 1, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 2 }}>
+            <Typography variant="body2">{isFi ? a.fi : a.en}</Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>{a.year}</Typography>
+          </Box>
+        ))}
+      </Box>
+
+      {/* Hobbies & Strengths */}
+      <Section title={isFi ? 'Harrastukset & vahvuudet' : 'Hobbies & Strengths'} />
+      <Typography variant="body2" color="text.secondary" sx={{ mt: 2, lineHeight: 1.7 }}>
+        {isFi ? hobbyFi : hobbyEn}
+      </Typography>
     </Box>
   )
 }
