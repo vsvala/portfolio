@@ -32,6 +32,19 @@ interface Achievement {
 
 const certifications: Certification[] = [
   {
+    title_fi: 'Honours Programme Diploma',
+    title_en: 'Honours Programme Diploma',
+    issuer_fi: 'Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta',
+    issuer_en: 'University of Helsinki, Faculty of Science',
+    description_fi:
+      'Kandidaatintutkinto suoritettu kolmessa lukuvuodessa hyväksytyn Honours Programme -ohjelman kautta tietojenkäsittelytieteessä hyvin arvosanoin.',
+    description_en:
+      'Bachelor of Science degree completed in three academic years through an approved Honours Programme in Computer Science with good average grades.',
+    year: '2019',
+    technologies: [],
+    imageUrl: '/images/diploma-honours.jpeg',
+  },
+  {
     title_fi: 'Claude Code: A Highly Agentic Coding Assistant',
     title_en: 'Claude Code: A Highly Agentic Coding Assistant',
     issuer_fi: 'DeepLearning.AI',
@@ -61,11 +74,6 @@ const certifications: Certification[] = [
 ]
 
 const achievements: Achievement[] = [
-  {
-    text_fi: 'Honours Programme -stipendi, Helsingin yliopisto – myönnetty akateemisesta erinomaisuudesta tietojenkäsittelytieteessä.',
-    text_en: 'Honours Programme Scholarship, University of Helsinki – awarded for academic excellence in Computer Science.',
-    year: '2019',
-  },
   {
     text_fi: '2. sija, Beginner Compo, Graffathon – Aalto-yliopiston Digital Media Club.',
     text_en: '2nd Place, Beginner Compo, Graffathon – Aalto University Digital Media Club.',
