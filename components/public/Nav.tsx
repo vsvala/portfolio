@@ -13,6 +13,7 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText'
 import MenuIcon from '@mui/icons-material/Menu'
 import GitHubIcon from '@mui/icons-material/GitHub'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import Box from '@mui/material/Box'
 import { LanguageToggle } from './LanguageToggle'
 
@@ -69,6 +70,16 @@ export function Nav({ lang }: { lang: 'fi' | 'en' }) {
               sx={{ color: 'white', ml: 1 }}
             >
               <GitHubIcon />
+            </IconButton>
+            <IconButton
+              component="a"
+              href="https://www.linkedin.com/in/virvas"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              sx={{ color: 'white' }}
+            >
+              <LinkedInIcon />
             </IconButton>
             <Box sx={{ ml: 1 }}>
               <LanguageToggle currentLang={lang} />

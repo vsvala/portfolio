@@ -51,6 +51,10 @@ portfolio.db-wal
 # Playwright test artifacts
 .playwright-mcp/
 
+# Local notes — not for version control
+palaute.md
+kieli.md
+
 # Uploaded documents (added via admin panel, not source code)
 public/documents/*.pdf
 !public/documents/cv_*.pdf

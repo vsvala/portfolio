@@ -14,8 +14,8 @@ const civicActivities = [
   { fi: 'Lukion oppilaskunnan sihteeri ja rahastonhoitaja', en: 'Upper secondary school student council, secretary and treasurer', year: '1993–1995' },
 ]
 
-const hobbyFi = 'Harrastan öljyvärimaalausta ja monipuolisesti liikuntaa kuten tanssia, joogaa ja jumppia. Vahvuuksiani ovat sosiaalisuus, positiivisuus, luovuus, ideointikyky, organisointitaidot ja ohjaustaidot. Lisäksi olen uteliaan innokas oppimaan ja kokeilemaan aina uutta.'
-const hobbyEn = 'I paint with oils and keep active through dancing, yoga, and aerobics. My strengths include creativity, positivity, strong organisational skills, and coaching skills — paired with a natural curiosity and a drive to keep learning.'
+const hobbyFi = 'Harrastan öljyvärimaalausta ja monipuolisesti liikuntaa kuten tanssia, joogaa ja jumppia. Vahvuuksiani ovat sosiaalisuus, positiivisuus, luovuus, ideointikyky, organisointitaidot ja ohjaustaidot. Lisäksi olen utelias ja innokas oppimaan ja kokeilemaan aina uutta.'
+const hobbyEn = 'I paint with oils and keep active through dancing, yoga, and aerobics. My strengths include creativity, positivity, strong organisational and coaching skills — paired with a natural curiosity and a drive to keep learning.'
 
 export function AboutExtrasSection({ lang }: { lang: Lang }) {
   return (
