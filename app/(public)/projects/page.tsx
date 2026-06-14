@@ -14,9 +14,10 @@ export const metadata = {
 }
 
 const categories = [
-  { key: 'personal',   labelFi: 'Omat projektit',          labelEn: 'Personal Projects' },
-  { key: 'university', labelFi: 'Opiskeluprojektit',        labelEn: 'University Course Projects' },
-  { key: 'hackathon',  labelFi: 'Hackathon & Creative Coding', labelEn: 'Hackathon & Creative Coding' },
+  { key: 'personal',        labelFi: 'Omat projektit',              labelEn: 'Personal Projects' },
+  { key: 'university_solo', labelFi: 'Opiskeluprojektit — yksin',   labelEn: 'University Projects — Solo' },
+  { key: 'university_group',labelFi: 'Opiskeluprojektit — ryhmä',   labelEn: 'University Projects — Group Work' },
+  { key: 'hackathon',       labelFi: 'Hackathon & Creative Coding',  labelEn: 'Hackathon & Creative Coding' },
 ]
 
 export default async function ProjectsPage() {
