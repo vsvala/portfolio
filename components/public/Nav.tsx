@@ -73,7 +73,7 @@ export function Nav({ lang }: { lang: 'fi' | 'en' }) {
             </IconButton>
             <IconButton
               component="a"
-              href="https://www.linkedin.com/in/virvas"
+              href="https://www.linkedin.com/in/virvasvala/"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"

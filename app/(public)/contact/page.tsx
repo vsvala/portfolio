@@ -19,7 +19,7 @@ export const metadata = {
 
 const contactItems = [
   { icon: <EmailIcon />, label: 'virva.svala(at)gmail.com', href: 'mailto:virva.svala@gmail.com' },
-  { icon: <LinkedInIcon />, label: 'linkedin.com/in/virvas', href: 'https://www.linkedin.com/in/virvas' },
+  { icon: <LinkedInIcon />, label: 'linkedin.com/in/virvasvala', href: 'https://www.linkedin.com/in/virvasvala/' },
   { icon: <GitHubIcon />, label: 'github.com/vsvala', href: 'https://github.com/vsvala' },
   { icon: <PaletteIcon />, label: 'virvasvala.com', href: 'https://www.virvasvala.com' },
 ]
