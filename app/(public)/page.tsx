@@ -6,7 +6,7 @@ import { WorkCard } from '@/components/public/WorkCard'
 import { ProjectCard } from '@/components/public/ProjectCard'
 import { EducationCard } from '@/components/public/EducationCard'
 import { getAllWork } from '@/lib/db/queries/work'
-import { getAllProjects } from '@/lib/db/queries/projects'
+import { getProjectsByCategory } from '@/lib/db/queries/projects'
 import { getAllEducation } from '@/lib/db/queries/education'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
@@ -21,7 +21,7 @@ export default async function HomePage() {
   const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
 
   const work = (await getAllWork()).slice(0, 3)
-  const projects = (await getAllProjects()).slice(0, 3)
+  const hackathonProjects = (await getProjectsByCategory('hackathon')).slice(0, 3)
   const education = (await getAllEducation()).slice(0, 3)
 
   return (
@@ -97,7 +97,7 @@ export default async function HomePage() {
             </LinkButton>
           </Box>
           <Grid container spacing={2}>
-            {projects.map((p) => (
+            {hackathonProjects.map((p) => (
               <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4 }}>
                 <ProjectCard project={p} lang={lang} />
               </Grid>

@@ -9,6 +9,14 @@ export async function getAllProjects(_lang?: string): Promise<Project[]> {
   return result.rows as unknown as Project[]
 }
 
+export async function getProjectsByCategory(category: string): Promise<Project[]> {
+  const result = await db.execute({
+    sql: `SELECT * FROM projects WHERE category = ? ORDER BY sort_order ASC, created_at DESC`,
+    args: [category],
+  })
+  return result.rows as unknown as Project[]
+}
+
 export async function getProjectById(id: number): Promise<Project | undefined> {
   const result = await db.execute({
     sql: `SELECT * FROM projects WHERE id = ?`,
