@@ -26,7 +26,7 @@ const categoryLabels: Record<string, { fi: string; en: string }> = {
   design:         { fi: 'Suunnittelu & UX', en: 'Design & UX' },
   ai_data:        { fi: 'Tekoäly & data', en: 'AI & Data' },
   systems:        { fi: 'Järjestelmät & verkot', en: 'Systems & Networks' },
-  math:           { fi: 'Matematiikka & tilastot', en: 'Mathematics & Statistics' },
+  math:           { fi: 'Matematiikka', en: 'Mathematics' },
   other:          { fi: 'Muut', en: 'Other' },
 }
 
