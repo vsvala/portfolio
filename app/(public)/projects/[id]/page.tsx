@@ -35,7 +35,7 @@ export default async function ProjectDetailPage({
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>
       <LinkButton
-        href="/projects"
+        href={`/projects#${project.category}`}
         startIcon={<ArrowBackIcon />}
         sx={{ mb: 3 }}
         variant="text"

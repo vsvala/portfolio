@@ -11,13 +11,13 @@ import Box from '@mui/material/Box'
 import Chip from '@mui/material/Chip'
 import Button from '@mui/material/Button'
 import Link from '@mui/material/Link'
-import Stack from '@mui/material/Stack'
 import DownloadIcon from '@mui/icons-material/Download'
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { FeedbackForm } from '@/components/public/FeedbackForm'
 import { ProtectedDownload } from '@/components/public/ProtectedDownload'
+import { SidebarNav } from '@/components/public/SidebarNav'
 
 const categoryLabels: Record<string, { fi: string; en: string }> = {
   web_dev:        { fi: 'Web-kehitys', en: 'Web Development' },
@@ -90,51 +90,14 @@ export default async function EducationDetailPage({
 
       {/* Courses linked to this education */}
       {courses.length > 0 && (
-        <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start', mb: 4 }}>
-
-          {/* Left sidebar nav */}
-          {sortedCategories.length > 1 && (
-            <Box sx={{
-              display: { xs: 'none', md: 'block' },
-              position: 'sticky',
-              top: '80px',
-              minWidth: 160,
-              borderRight: '2px solid rgba(233,69,96,0.3)',
-              pr: 3,
-              pt: 1,
-            }}>
-              <Typography variant="overline" sx={{ color: 'text.disabled', letterSpacing: 2, display: 'block', mb: 2 }}>
-                {lang === 'fi' ? 'Sisältö' : 'Contents'}
-              </Typography>
-              <Stack sx={{ gap: 0.5 }}>
-                {sortedCategories.map((cat) => (
-                  <Box
-                    key={cat}
-                    component="a"
-                    href={`#${cat}`}
-                    sx={{
-                      color: 'secondary.main',
-                      textDecoration: 'none',
-                      fontSize: '0.9rem',
-                      py: 0.5,
-                      display: 'block',
-                      transition: 'color 0.15s',
-                      '&:hover': { opacity: 0.7 },
-                    }}
-                  >
-                    {categoryLabels[cat]?.[lang] ?? cat}
-                  </Box>
-                ))}
-              </Stack>
-            </Box>
-          )}
-
-          {/* Main content */}
-          <Box sx={{ flex: 1 }}>
-            <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
-              {lang === 'fi' ? 'Pääopinnot' : 'Main courses'}
-            </Typography>
-
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>
+            {lang === 'fi' ? 'Pääopinnot' : 'Main courses'}
+          </Typography>
+          <SidebarNav
+            items={sortedCategories.map((cat) => ({ key: cat, label: categoryLabels[cat]?.[lang] ?? cat }))}
+            lang={lang}
+          >
             {sortedCategories.map((cat) => (
               <Box key={cat} id={cat} sx={{ mb: 4, scrollMarginTop: '80px' }}>
                 <Typography
@@ -147,20 +110,13 @@ export default async function EducationDetailPage({
                   {grouped[cat].map((c) => (
                     <Box
                       key={c.id}
-                      sx={{
-                        p: 2,
-                        border: '1px solid',
-                        borderColor: 'divider',
-                        borderRadius: 2,
-                      }}
+                      sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 2 }}
                     >
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 2, flexWrap: 'wrap' }}>
                         <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                           {lang === 'fi' ? c.name_fi : c.name_en}
                         </Typography>
-                        <Box sx={{ display: 'flex', gap: 1 }}>
-                          {c.credits && <Chip label={`${c.credits} op`} size="small" sx={{ backgroundColor: 'rgba(26,26,46,0.07)' }} />}
-                        </Box>
+                        {c.credits && <Chip label={`${c.credits} op`} size="small" sx={{ backgroundColor: 'rgba(26,26,46,0.07)' }} />}
                       </Box>
                       {(c.description_fi || c.description_en) && (
                         <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5, lineHeight: 1.6 }}>
@@ -179,7 +135,7 @@ export default async function EducationDetailPage({
                 </Box>
               </Box>
             ))}
-          </Box>
+          </SidebarNav>
         </Box>
       )}
 

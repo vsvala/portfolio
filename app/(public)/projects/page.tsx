@@ -2,11 +2,11 @@ import { cookies } from 'next/headers'
 import type { Lang } from '@/lib/types'
 import { getAllProjects } from '@/lib/db/queries/projects'
 import { ProjectCard } from '@/components/public/ProjectCard'
+import { SidebarNav } from '@/components/public/SidebarNav'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
 import Grid from '@mui/material/Grid'
-import Stack from '@mui/material/Stack'
 
 export const metadata = {
   title: 'Projektit — Virva Svala',
@@ -48,67 +48,28 @@ export default async function ProjectsPage() {
         </Typography>
       )}
 
-      <Box sx={{ display: 'flex', gap: 4, alignItems: 'flex-start' }}>
-
-        {/* Left sidebar nav */}
-        {activeCategories.length > 1 && (
-          <Box sx={{
-            display: { xs: 'none', md: 'block' },
-            position: 'sticky',
-            top: '80px',
-            minWidth: 160,
-            borderRight: '2px solid rgba(233,69,96,0.3)',
-            pr: 3,
-            pt: 1,
-          }}>
-            <Typography variant="overline" sx={{ color: 'text.disabled', letterSpacing: 2, display: 'block', mb: 2 }}>
-              {lang === 'fi' ? 'Sisältö' : 'Contents'}
+      <SidebarNav
+        items={activeCategories.map((cat) => ({ key: cat.key, label: lang === 'fi' ? cat.labelFi : cat.labelEn }))}
+        lang={lang}
+      >
+        {activeCategories.map((cat) => (
+          <Box key={cat.key} id={cat.key} sx={{ mb: 7, scrollMarginTop: '80px' }}>
+            <Typography
+              variant="overline"
+              sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 3 }}
+            >
+              {lang === 'fi' ? cat.labelFi : cat.labelEn}
             </Typography>
-            <Stack sx={{ gap: 0.5 }}>
-              {activeCategories.map((cat) => (
-                <Box
-                  key={cat.key}
-                  component="a"
-                  href={`#${cat.key}`}
-                  sx={{
-                    color: 'secondary.main',
-                    textDecoration: 'none',
-                    fontSize: '0.9rem',
-                    py: 0.5,
-                    display: 'block',
-                    transition: 'color 0.15s',
-                    '&:hover': { opacity: 0.7 },
-                  }}
-                >
-                  {lang === 'fi' ? cat.labelFi : cat.labelEn}
-                </Box>
+            <Grid container spacing={3}>
+              {grouped[cat.key].map((p) => (
+                <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4 }}>
+                  <ProjectCard project={p} lang={lang} />
+                </Grid>
               ))}
-            </Stack>
+            </Grid>
           </Box>
-        )}
-
-        {/* Main content */}
-        <Box sx={{ flex: 1 }}>
-          {activeCategories.map((cat) => (
-            <Box key={cat.key} id={cat.key} sx={{ mb: 7, scrollMarginTop: '80px' }}>
-              <Typography
-                variant="overline"
-                sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 3 }}
-              >
-                {lang === 'fi' ? cat.labelFi : cat.labelEn}
-              </Typography>
-              <Grid container spacing={3}>
-                {grouped[cat.key].map((p) => (
-                  <Grid key={p.id} size={{ xs: 12, sm: 6, md: 4 }}>
-                    <ProjectCard project={p} lang={lang} />
-                  </Grid>
-                ))}
-              </Grid>
-            </Box>
-          ))}
-        </Box>
-
-      </Box>
+        ))}
+      </SidebarNav>
     </Container>
   )
 }

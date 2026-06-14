@@ -23,10 +23,21 @@ export function EducationCard({ education, lang }: { education: Education; lang:
           <Typography variant="subtitle1" color="text.secondary" gutterBottom>
             {lang === 'fi' ? education.institution_fi : education.institution_en}
           </Typography>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             {education.start_date.slice(0, 4)} – {endYear}
           </Typography>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 1.5 }}>
+          {(education.description_fi || education.description_en) && (
+            <Typography variant="body2" color="text.secondary" sx={{
+              mb: 1.5,
+              display: '-webkit-box',
+              WebkitLineClamp: 2,
+              WebkitBoxOrient: 'vertical',
+              overflow: 'hidden',
+            }}>
+              {lang === 'fi' ? education.description_fi : education.description_en}
+            </Typography>
+          )}
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 1 }}>
             <Box sx={{
               display: 'inline-flex', alignItems: 'center', gap: 0.5,
               border: '1px solid', borderColor: 'secondary.main', borderRadius: '20px',
