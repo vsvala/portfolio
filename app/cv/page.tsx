@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import { cookies } from 'next/headers'
 import type { Lang } from '@/lib/types'
 import { getAllWork } from '@/lib/db/queries/work'
@@ -7,6 +8,9 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Chip from '@mui/material/Chip'
 import { PrintButton } from '@/components/public/PrintButton'
+
+const introFi = 'Ohjelmistosuunnittelija ja tietojenkäsittelytieteen maisteri Helsingin yliopistosta (2025). Yli 6 vuotta käytännön kokemusta Full Stack -kehityksestä Forecalla — React, TypeScript, Node.js ja Next.js. Poikkeuksellisen vahva visuaalinen silmä taideopettajataustani ansiosta.'
+const introEn = 'Software developer and M.Sc. in Computer Science from the University of Helsinki (2025). Over 6 years of hands-on full stack experience at Foreca — React, TypeScript, Node.js and Next.js. Strong eye for visual design from a background as an art teacher.'
 
 const skills = {
   frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
@@ -90,16 +94,30 @@ export default async function CvPage() {
       </Box>
 
       {/* Header */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h3" sx={{ fontWeight: 700, color: '#1a1a2e', mb: 0.5 }}>
-          Virva Svala
-        </Typography>
-        <Typography variant="h6" sx={{ color: '#e94560', fontWeight: 400, mb: 1.5 }}>
-          {isFi ? 'Ohjelmistosuunnittelija' : 'Software Developer'}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          virva.svala(at)gmail.com · linkedin.com/in/virvasvala · github.com/vsvala · virvasvala.com
-        </Typography>
+      <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start', mb: 3 }}>
+        <Box sx={{ flexShrink: 0 }}>
+          <Image
+            src="/virva.png"
+            alt="Virva Svala"
+            width={90}
+            height={90}
+            style={{ borderRadius: '50%', objectFit: 'cover' }}
+          />
+        </Box>
+        <Box>
+          <Typography variant="h3" sx={{ fontWeight: 700, color: '#1a1a2e', mb: 0.5 }}>
+            Virva Svala
+          </Typography>
+          <Typography variant="h6" sx={{ color: '#e94560', fontWeight: 400, mb: 1 }}>
+            {isFi ? 'Ohjelmistosuunnittelija' : 'Software Developer'}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            virva.svala(at)gmail.com · linkedin.com/in/virvasvala · github.com/vsvala · virvasvala.com
+          </Typography>
+          <Typography variant="body2" sx={{ lineHeight: 1.7, maxWidth: 560 }}>
+            {isFi ? introFi : introEn}
+          </Typography>
+        </Box>
       </Box>
 
       <Divider sx={{ mb: 3 }} />
