@@ -15,7 +15,7 @@ export const metadata = {
 
 const categories = [
   { key: 'personal',   labelFi: 'Omat projektit',          labelEn: 'Personal Projects' },
-  { key: 'university', labelFi: 'Opiskeluprojektit',        labelEn: 'University Projects' },
+  { key: 'university', labelFi: 'Opiskeluprojektit',        labelEn: 'University Course Projects' },
   { key: 'hackathon',  labelFi: 'Hackathon & Creative Coding', labelEn: 'Hackathon & Creative Coding' },
 ]
 
