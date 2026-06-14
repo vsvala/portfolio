@@ -57,8 +57,8 @@ export function FeedbackForm({ lang, targetType, targetId, targetTitle }: Props)
 
           <Typography variant="body2" color="text.secondary">
             {lang === 'fi'
-              ? 'Oliko jotain muuta mitä olisit halunnut tietää tästä osiosta? Voit jättää viestin nimettömästi.'
-              : 'Was there something else you wanted to know about this section? You can leave a message anonymously.'}
+              ? 'Oliko jotain muuta mitä olisit halunnut tietää tästä osiosta? Voit jättää viestin.'
+              : 'Was there something else you wanted to know about this section? You can leave a message.'}
           </Typography>
 
           <TextField
