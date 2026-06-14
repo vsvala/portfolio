@@ -140,8 +140,8 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
             {/* CV-lataukset */}
             <Typography variant="caption" sx={{ opacity: 0.6, display: 'block', mb: 1 }}>
               {lang === 'fi'
-                ? 'Lyhyt CV PDF:nä — tai koko CV tulostettavana verkkoversiona.'
-                : 'One-page PDF for quick download — or view the full printable version online.'}
+                ? 'Lyhyt CV PDF:nä — tai katso portfolion tulostettava yhteenveto verkossa.'
+                : 'One-page PDF for quick download — or view the printable summary of this site online.'}
             </Typography>
             <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1.5, alignItems: 'center' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
