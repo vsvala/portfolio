@@ -32,19 +32,6 @@ interface Achievement {
 
 const certifications: Certification[] = [
   {
-    title_fi: 'Honours Programme Diploma',
-    title_en: 'Honours Programme Diploma',
-    issuer_fi: 'Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta',
-    issuer_en: 'University of Helsinki, Faculty of Science',
-    description_fi:
-      'Kandidaatintutkinto suoritettu kolmessa lukuvuodessa hyväksytyn Honours Programme -ohjelman kautta tietojenkäsittelytieteessä hyvin arvosanoin.',
-    description_en:
-      'Bachelor of Science degree completed in three academic years through an approved Honours Programme in Computer Science with good average grades.',
-    year: '2019',
-    technologies: [],
-    imageUrl: '/images/diploma-honours.jpeg',
-  },
-  {
     title_fi: 'Claude Code: A Highly Agentic Coding Assistant',
     title_en: 'Claude Code: A Highly Agentic Coding Assistant',
     issuer_fi: 'DeepLearning.AI',
@@ -71,15 +58,35 @@ const certifications: Certification[] = [
     technologies: ['React', 'Node.js', 'TypeScript', 'GraphQL', 'MongoDB'],
     imageUrl: '/images/certificate-fullstackopen.png',
   },
-]
-
-const achievements: Achievement[] = [
   {
-    text_fi: '2. sija, Beginner Compo, Graffathon – Aalto-yliopiston Digital Media Club.',
-    text_en: '2nd Place, Beginner Compo, Graffathon – Aalto University Digital Media Club.',
+    title_fi: 'Honours Programme Diploma',
+    title_en: 'Honours Programme Diploma',
+    issuer_fi: 'Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta',
+    issuer_en: 'University of Helsinki, Faculty of Science',
+    description_fi:
+      'Kandidaatintutkinto suoritettu kolmessa lukuvuodessa hyväksytyn Honours Programme -ohjelman kautta tietojenkäsittelytieteessä hyvin arvosanoin.',
+    description_en:
+      'Bachelor of Science degree completed in three academic years through an approved Honours Programme in Computer Science with good average grades.',
     year: '2019',
+    technologies: [],
+    imageUrl: '/images/diploma-honours.jpeg',
+  },
+  {
+    title_fi: 'Graffathon 2019 – 2. sija, Beginner Compo',
+    title_en: 'Graffathon 2019 – 2nd Place, Beginner Compo',
+    issuer_fi: 'Aalto-yliopiston Digital Media Club (DOT)',
+    issuer_en: 'Aalto University Digital Media Club (DOT)',
+    description_fi:
+      'Teos: Mandaloid / Vadod. Graffathon on Aalto-yliopiston Digital Media Clubin järjestämä demoskene-tapahtuma.',
+    description_en:
+      'Entry: Mandaloid / Vadod. Graffathon is a demoscene event organised by Aalto University\'s Digital Media Club.',
+    year: '2019',
+    technologies: [],
+    imageUrl: '/images/certificate-graffathon.jpeg',
   },
 ]
+
+const achievements: Achievement[] = []
 
 export function CertificationsSection({ lang }: { lang: Lang }) {
   return (
@@ -120,19 +127,22 @@ export function CertificationsSection({ lang }: { lang: Lang }) {
         ))}
       </Box>
 
-      <Divider sx={{ mb: 3 }} />
-
-      <Stack sx={{ gap: 2 }}>
-        {achievements.map((a) => (
-          <Box key={a.year + a.text_en} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
-            <EmojiEventsIcon sx={{ color: 'secondary.main', mt: 0.3, flexShrink: 0 }} />
-            <Box>
-              <Typography variant="body1">{lang === 'fi' ? a.text_fi : a.text_en}</Typography>
-              <Typography variant="caption" color="text.secondary">{a.year}</Typography>
-            </Box>
-          </Box>
-        ))}
-      </Stack>
+      {achievements.length > 0 && (
+        <>
+          <Divider sx={{ mb: 3 }} />
+          <Stack sx={{ gap: 2 }}>
+            {achievements.map((a) => (
+              <Box key={a.year + a.text_en} sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+                <EmojiEventsIcon sx={{ color: 'secondary.main', mt: 0.3, flexShrink: 0 }} />
+                <Box>
+                  <Typography variant="body1">{lang === 'fi' ? a.text_fi : a.text_en}</Typography>
+                  <Typography variant="caption" color="text.secondary">{a.year}</Typography>
+                </Box>
+              </Box>
+            ))}
+          </Stack>
+        </>
+      )}
     </Box>
   )
 }
