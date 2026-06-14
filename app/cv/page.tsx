@@ -14,7 +14,7 @@ const introEn = 'Software developer and M.Sc. in Computer Science from the Unive
 
 const skills = {
   frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
-  backend: ['Node.js', 'SQL', 'Python', 'Java'],
+  backend: ['Node.js', 'SQL', 'Python', 'Java', 'REST APIs', 'OpenAI API', 'Gemini API'],
   databases: ['PostgreSQL', 'MongoDB', 'SQLite'],
   tools: ['Git', 'Docker', 'GitHub Actions', 'GitHub Copilot', 'Claude Code', 'Agentic Coding', 'Adobe Creative Cloud'],
   methods: ['Scrum', 'Kanban'],

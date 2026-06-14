@@ -8,7 +8,7 @@ import type { Lang } from '@/lib/types'
 
 const skills = {
   frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
-  backend: ['Node.js', 'SQL', 'Python', 'Java'],
+  backend: ['Node.js', 'SQL', 'Python', 'Java', 'REST APIs', 'OpenAI API', 'Gemini API'],
   databases: ['PostgreSQL', 'MongoDB', 'SQLite'],
   tools: ['Git', 'Docker', 'GitHub Copilot', 'Claude Code', 'Agentic Coding', 'Adobe Creative Cloud'],
   methods: ['Scrum', 'Kanban'],
