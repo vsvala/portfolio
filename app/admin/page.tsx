@@ -3,6 +3,8 @@ import { getAllWork } from '@/lib/db/queries/work'
 import { getAllProjects } from '@/lib/db/queries/projects'
 import { getAllEducation } from '@/lib/db/queries/education'
 import { getAllDocuments } from '@/lib/db/queries/documents'
+import { getAllRecommendations } from '@/lib/db/queries/recommendations'
+import { getAllSkills } from '@/lib/db/queries/skills'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
@@ -16,11 +18,15 @@ export default async function AdminDashboard() {
   const projectCount = (await getAllProjects()).length
   const educationCount = (await getAllEducation()).length
   const documentCount = (await getAllDocuments()).length
+  const recCount = (await getAllRecommendations()).length
+  const skillCount = (await getAllSkills()).length
 
   const stats = [
     { label: 'Työkokemukset', count: workCount, href: '/admin/work', addHref: '/admin/work/new' },
     { label: 'Projektit', count: projectCount, href: '/admin/projects', addHref: '/admin/projects/new' },
     { label: 'Koulutukset', count: educationCount, href: '/admin/education', addHref: '/admin/education/new' },
+    { label: 'Suositukset', count: recCount, href: '/admin/recommendations', addHref: '/admin/recommendations/new' },
+    { label: 'Taidot', count: skillCount, href: '/admin/skills', addHref: '/admin/skills/new' },
     { label: 'Dokumentit', count: documentCount, href: '/admin/work', addHref: null },
   ]
 

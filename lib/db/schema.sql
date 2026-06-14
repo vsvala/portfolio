@@ -87,6 +87,13 @@ CREATE TABLE IF NOT EXISTS recommendations (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+CREATE TABLE IF NOT EXISTS skills (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  category TEXT NOT NULL,
+  name TEXT NOT NULL,
+  sort_order INTEGER NOT NULL DEFAULT 0
+);
+
 CREATE TABLE IF NOT EXISTS education (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   institution_fi TEXT NOT NULL,

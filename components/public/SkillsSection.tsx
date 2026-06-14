@@ -5,28 +5,23 @@ import Stack from '@mui/material/Stack'
 import Container from '@mui/material/Container'
 import LinearProgress from '@mui/material/LinearProgress'
 import type { Lang } from '@/lib/types'
+import { getAllSkills } from '@/lib/db/queries/skills'
 
-const skills = {
-  frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
-  backend: ['Node.js', 'SQL', 'Python', 'Java', 'REST APIs', 'Weather APIs', 'Geolocation API', 'OpenAI API', 'Gemini API'],
-  databases: ['PostgreSQL', 'MongoDB', 'SQLite'],
-  tools: ['Git', 'Docker', 'GitHub Copilot', 'Claude Code', 'Agentic Coding', 'Adobe Creative Cloud'],
-  methods: ['Scrum', 'Kanban'],
-}
-
-const categoryLabels = {
-  frontend: { fi: 'Frontend', en: 'Frontend' },
-  backend: { fi: 'Backend', en: 'Backend' },
+const categoryLabels: Record<string, { fi: string; en: string }> = {
+  frontend:  { fi: 'Frontend',    en: 'Frontend' },
+  backend:   { fi: 'Backend',     en: 'Backend' },
   databases: { fi: 'Tietokannat', en: 'Databases' },
-  tools: { fi: 'Työkalut', en: 'Tools' },
-  methods: { fi: 'Työtavat', en: 'Methods' },
+  tools:     { fi: 'Työkalut',    en: 'Tools' },
+  methods:   { fi: 'Työtavat',    en: 'Methods' },
 }
+
+const categoryOrder = ['frontend', 'backend', 'databases', 'tools', 'methods']
 
 const languages = [
-  { fi: 'Suomi', en: 'Finnish', levelFi: 'Äidinkieli', levelEn: 'Native', pct: 100 },
-  { fi: 'Englanti', en: 'English', levelFi: 'Sujuva', levelEn: 'Fluent', pct: 85 },
-  { fi: 'Ruotsi', en: 'Swedish', levelFi: 'Hyvä', levelEn: 'Good', pct: 60 },
-  { fi: 'Ranska', en: 'French', levelFi: 'Perusteet', levelEn: 'Basic', pct: 30 },
+  { fi: 'Suomi',    en: 'Finnish', levelFi: 'Äidinkieli', levelEn: 'Native',  pct: 100 },
+  { fi: 'Englanti', en: 'English', levelFi: 'Sujuva',     levelEn: 'Fluent',  pct: 85 },
+  { fi: 'Ruotsi',   en: 'Swedish', levelFi: 'Hyvä',       levelEn: 'Good',    pct: 60 },
+  { fi: 'Ranska',   en: 'French',  levelFi: 'Perusteet',  levelEn: 'Basic',   pct: 30 },
 ]
 
 const exchangeStudies = [
@@ -35,7 +30,16 @@ const exchangeStudies = [
   { place: 'Haagse Hogeschool, Haagi, Hollanti', placeEn: 'Haagse Hogeschool, The Hague, Netherlands', detail: '', detailEn: '', period: 'Syksy 1999' },
 ]
 
-export function SkillsSection({ lang }: { lang: Lang }) {
+export async function SkillsSection({ lang }: { lang: Lang }) {
+  const allSkills = await getAllSkills()
+
+  const grouped = categoryOrder.reduce<Record<string, string[]>>((acc, cat) => {
+    acc[cat] = allSkills.filter((s) => s.category === cat).map((s) => s.name)
+    return acc
+  }, {})
+
+  const activeCategories = categoryOrder.filter((cat) => grouped[cat].length > 0)
+
   return (
     <Box sx={{ py: 6, backgroundColor: 'background.default' }}>
       <Container maxWidth="md">
@@ -44,13 +48,13 @@ export function SkillsSection({ lang }: { lang: Lang }) {
         </Typography>
 
         <Stack sx={{ gap: 3, mb: 5 }}>
-          {(Object.keys(skills) as Array<keyof typeof skills>).map((cat) => (
+          {activeCategories.map((cat) => (
             <Box key={cat}>
               <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1, textTransform: 'uppercase', letterSpacing: 1 }}>
-                {categoryLabels[cat][lang]}
+                {categoryLabels[cat]?.[lang] ?? cat}
               </Typography>
-              <Stack direction="row" sx={{ flexWrap: "wrap", gap: 1 }}>
-                {skills[cat].map((skill) => (
+              <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1 }}>
+                {grouped[cat].map((skill) => (
                   <Chip key={skill} label={skill} sx={{ backgroundColor: 'primary.main', color: 'white', fontWeight: 500 }} />
                 ))}
               </Stack>
@@ -58,14 +62,7 @@ export function SkillsSection({ lang }: { lang: Lang }) {
           ))}
         </Stack>
 
-        <Box
-          sx={{
-            borderLeft: '3px solid rgba(233,69,96,0.4)',
-            pl: 2,
-            mb: 5,
-            color: 'text.secondary',
-          }}
-        >
+        <Box sx={{ borderLeft: '3px solid rgba(233,69,96,0.4)', pl: 2, mb: 5, color: 'text.secondary' }}>
           <Typography variant="body2">
             {lang === 'fi'
               ? 'Lisäksi yliopistokursseilta kokemusta: Ruby on Rails, R sekä Java Spring Boot.'
@@ -80,19 +77,14 @@ export function SkillsSection({ lang }: { lang: Lang }) {
           {languages.map((l) => (
             <Box key={l.fi}>
               <Stack direction="row" sx={{ justifyContent: 'space-between', mb: 0.5 }}>
-                <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                  {lang === 'fi' ? l.fi : l.en}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {lang === 'fi' ? l.levelFi : l.levelEn}
-                </Typography>
+                <Typography variant="body2" sx={{ fontWeight: 500 }}>{lang === 'fi' ? l.fi : l.en}</Typography>
+                <Typography variant="body2" color="text.secondary">{lang === 'fi' ? l.levelFi : l.levelEn}</Typography>
               </Stack>
               <LinearProgress
                 variant="determinate"
                 value={l.pct}
                 sx={{
-                  height: 8,
-                  borderRadius: 4,
+                  height: 8, borderRadius: 4,
                   backgroundColor: 'rgba(26,26,46,0.12)',
                   '& .MuiLinearProgress-bar': { backgroundColor: '#e94560', borderRadius: 4 },
                 }}
@@ -115,9 +107,7 @@ export function SkillsSection({ lang }: { lang: Lang }) {
                   </Typography>
                 )}
               </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>
-                {e.period}
-              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>{e.period}</Typography>
             </Stack>
           ))}
         </Stack>

@@ -3,6 +3,7 @@ import { cookies } from 'next/headers'
 import type { Lang } from '@/lib/types'
 import { getAllWork } from '@/lib/db/queries/work'
 import { getAllEducation } from '@/lib/db/queries/education'
+import { getAllSkills } from '@/lib/db/queries/skills'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
@@ -12,21 +13,14 @@ import { PrintButton } from '@/components/public/PrintButton'
 const introFi = 'Ohjelmistosuunnittelija ja tietojenkäsittelytieteen maisteri Helsingin yliopistosta (2025). Yli 6 vuotta käytännön kokemusta Full Stack -kehityksestä Forecalla — React, TypeScript, Node.js ja Next.js. Poikkeuksellisen vahva visuaalinen silmä taideopettajataustani ansiosta.'
 const introEn = 'Software developer and M.Sc. in Computer Science from the University of Helsinki (2025). Over 6 years of hands-on full stack experience at Foreca — React, TypeScript, Node.js and Next.js. Strong eye for visual design from a background as an art teacher.'
 
-const skills = {
-  frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
-  backend: ['Node.js', 'SQL', 'Python', 'Java', 'REST APIs', 'Weather APIs', 'Geolocation API', 'OpenAI API', 'Gemini API'],
-  databases: ['PostgreSQL', 'MongoDB', 'SQLite'],
-  tools: ['Git', 'Docker', 'GitHub Actions', 'GitHub Copilot', 'Claude Code', 'Agentic Coding', 'Adobe Creative Cloud'],
-  methods: ['Scrum', 'Kanban'],
-}
-
-const skillLabels: Record<string, { fi: string; en: string }> = {
-  frontend: { fi: 'Frontend', en: 'Frontend' },
-  backend: { fi: 'Backend', en: 'Backend' },
+const skillCategoryLabels: Record<string, { fi: string; en: string }> = {
+  frontend:  { fi: 'Frontend',    en: 'Frontend' },
+  backend:   { fi: 'Backend',     en: 'Backend' },
   databases: { fi: 'Tietokannat', en: 'Databases' },
-  tools: { fi: 'Työkalut', en: 'Tools' },
-  methods: { fi: 'Työtavat', en: 'Methods' },
+  tools:     { fi: 'Työkalut',    en: 'Tools' },
+  methods:   { fi: 'Työtavat',    en: 'Methods' },
 }
+const skillCategoryOrder = ['frontend', 'backend', 'databases', 'tools', 'methods']
 
 const certifications = [
   { titleFi: 'Claude Code: A Highly Agentic Coding Assistant', titleEn: 'Claude Code: A Highly Agentic Coding Assistant', issuerFi: 'DeepLearning.AI', issuerEn: 'DeepLearning.AI', year: '2026' },
@@ -70,6 +64,11 @@ export default async function CvPage() {
 
   const work = await getAllWork()
   const education = await getAllEducation()
+  const allSkills = await getAllSkills()
+  const skillsGrouped = skillCategoryOrder.reduce<Record<string, string[]>>((acc, cat) => {
+    acc[cat] = allSkills.filter((s) => s.category === cat).map((s) => s.name)
+    return acc
+  }, {})
 
   const isFi = lang === 'fi'
 
@@ -182,13 +181,13 @@ export default async function CvPage() {
       {/* Skills */}
       <Section title={isFi ? 'Osaaminen' : 'Skills'} />
       <Box sx={{ mt: 2 }}>
-        {(Object.keys(skills) as Array<keyof typeof skills>).map((cat) => (
+        {skillCategoryOrder.filter((cat) => skillsGrouped[cat]?.length > 0).map((cat) => (
           <Box key={cat} sx={{ mb: 1.5, display: 'flex', gap: 2, alignItems: 'flex-start' }}>
             <Typography variant="body2" sx={{ fontWeight: 600, minWidth: 100, color: 'text.secondary', textTransform: 'uppercase', fontSize: '0.7rem', letterSpacing: 0.5, pt: 0.3 }}>
-              {skillLabels[cat][lang]}
+              {skillCategoryLabels[cat]?.[lang] ?? cat}
             </Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {skills[cat].map((s) => (
+              {skillsGrouped[cat].map((s) => (
                 <Chip key={s} label={s} size="small" sx={{ fontSize: '0.75rem', height: 22, backgroundColor: 'rgba(26,26,46,0.08)' }} />
               ))}
             </Box>

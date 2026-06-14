@@ -105,6 +105,13 @@ export interface Recommendation {
   created_at: string
 }
 
+export interface Skill {
+  id: number
+  category: string
+  name: string
+  sort_order: number
+}
+
 export interface SessionPayload {
   role: 'admin'
   exp: number
