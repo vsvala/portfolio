@@ -12,7 +12,7 @@ const skills = {
   frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
   backend: ['Node.js', 'SQL', 'Python', 'Java'],
   databases: ['PostgreSQL', 'MongoDB', 'SQLite'],
-  tools: ['Git', 'Adobe Creative Cloud', 'GitHub Copilot', 'Claude Code'],
+  tools: ['Git', 'Docker', 'GitHub Actions', 'Adobe Creative Cloud', 'GitHub Copilot', 'Claude Code'],
   methods: ['Scrum', 'Kanban'],
 }
 
@@ -80,7 +80,7 @@ export default async function CvPage() {
           {isFi ? 'Ohjelmistosuunnittelija' : 'Software Developer'}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          virva.svala(at)gmail.com · github.com/vsvala · virvasvala.com
+          virva.svala(at)gmail.com · linkedin.com/in/virvasvala · github.com/vsvala · virvasvala.com
         </Typography>
       </Box>
 
