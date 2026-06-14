@@ -8,8 +8,10 @@ import Stack from '@mui/material/Stack'
 import DownloadIcon from '@mui/icons-material/Download'
 import EmailIcon from '@mui/icons-material/Email'
 import GitHubIcon from '@mui/icons-material/GitHub'
-
 import PaletteIcon from '@mui/icons-material/Palette'
+import VisibilityIcon from '@mui/icons-material/Visibility'
+import IconButton from '@mui/material/IconButton'
+import Tooltip from '@mui/material/Tooltip'
 
 const introFi = `Olen ohjelmistosuunnittelija ja tietojenkäsittelytieteen maisteri Helsingin yliopistosta (2025), ja aiemmalta koulutukseltani kuvataiteen opettaja. Minulla on yli 6 vuotta käytännön kokemusta ohjelmistosuunnittelijan työstä Forecalla, jossa vastasin kuluttajapuolen sääpalveluiden, B2B-kehittäjäportaalin sekä dynaamisten sääsovellusten Full Stack -kehityksestä ja ylläpidosta. Ydinosaamiseeni kuuluu moderni web-kehitys — erityisesti Node.js, React, TypeScript ja Next.js. Teknisen osaamiseni lisäksi minulla on poikkeuksellisen vahva visuaalinen silmä taideopettajataustani ansiosta.`
 
@@ -141,27 +143,53 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
                 ? 'Lyhyt CV PDF:nä — tai koko CV tulostettavana verkkoversiona.'
                 : 'One-page PDF for quick download — or view the full printable version online.'}
             </Typography>
-            <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 2 }}>
-              <Button
-                component="a"
-                href="/documents/cv_26_virva_svala_fi.pdf"
-                download
-                variant="contained"
-                startIcon={<DownloadIcon />}
-                sx={{ backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
-              >
-                {lang === 'fi' ? 'Lataa CV (FI)' : 'Download CV (FI)'}
-              </Button>
-              <Button
-                component="a"
-                href="/documents/cv_26_virva_svala_en.pdf"
-                download
-                variant="contained"
-                startIcon={<DownloadIcon />}
-                sx={{ backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
-              >
-                {lang === 'fi' ? 'Lataa CV (EN)' : 'Download CV (EN)'}
-              </Button>
+            <Stack direction="row" sx={{ flexWrap: 'wrap', gap: 1.5, alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Button
+                  component="a"
+                  href="/documents/cv_26_virva_svala_fi.pdf"
+                  download
+                  variant="contained"
+                  startIcon={<DownloadIcon />}
+                  sx={{ backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
+                >
+                  {lang === 'fi' ? 'Lataa CV (FI)' : 'Download CV (FI)'}
+                </Button>
+                <Tooltip title={lang === 'fi' ? 'Esikatsele' : 'Preview'}>
+                  <IconButton
+                    component="a"
+                    href="/documents/cv_26_virva_svala_fi.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{ color: 'rgba(255,255,255,0.7)', '&:hover': { color: 'white' } }}
+                  >
+                    <VisibilityIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                <Button
+                  component="a"
+                  href="/documents/cv_26_virva_svala_en.pdf"
+                  download
+                  variant="contained"
+                  startIcon={<DownloadIcon />}
+                  sx={{ backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
+                >
+                  {lang === 'fi' ? 'Lataa CV (EN)' : 'Download CV (EN)'}
+                </Button>
+                <Tooltip title={lang === 'fi' ? 'Esikatsele' : 'Preview'}>
+                  <IconButton
+                    component="a"
+                    href="/documents/cv_26_virva_svala_en.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    sx={{ color: 'rgba(255,255,255,0.7)', '&:hover': { color: 'white' } }}
+                  >
+                    <VisibilityIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
+              </Box>
               <Button
                 component="a"
                 href="/cv"
