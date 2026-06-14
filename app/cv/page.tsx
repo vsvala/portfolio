@@ -16,7 +16,7 @@ const skills = {
   frontend: ['HTML/CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vite', 'Leaflet', 'MapLibre'],
   backend: ['Node.js', 'SQL', 'Python', 'Java'],
   databases: ['PostgreSQL', 'MongoDB', 'SQLite'],
-  tools: ['Git', 'Docker', 'GitHub Actions', 'Adobe Creative Cloud', 'GitHub Copilot', 'Claude Code'],
+  tools: ['Git', 'Docker', 'GitHub Actions', 'Adobe Creative Cloud', 'GitHub Copilot', 'Claude Code', 'Agentic Coding'],
   methods: ['Scrum', 'Kanban'],
 }
 
