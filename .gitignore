@@ -61,3 +61,4 @@ public/documents/*.pdf
 public/documents/*.jpg
 public/documents/*.jpeg
 public/documents/*.png
+*.png
