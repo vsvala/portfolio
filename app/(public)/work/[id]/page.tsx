@@ -17,7 +17,8 @@ import { ProtectedDownload } from '@/components/public/ProtectedDownload'
 import { parseTechnologies } from '@/lib/utils'
 
 function FormattedDescription({ text }: { text: string }) {
-  const sections = text.split(/\n\n+/)
+  const normalized = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n')
+  const sections = normalized.split(/\n\n+/)
   return (
     <Box sx={{ mb: 4 }}>
       {sections.map((section, i) => {
