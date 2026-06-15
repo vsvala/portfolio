@@ -9,14 +9,14 @@ export function toArgs(
 }
 
 /**
- * Casts libsql Row results to a typed entity array.
- * The cast is intentional: libsql's Row type carries no column type information,
- * but we own the schema and the SQL selects the exact columns defined in T.
+ * Converts libsql Row results to plain objects typed as T.
+ * Object.assign strips libsql's non-plain Row wrapper so React 19's
+ * server→client serialization doesn't emit "Only plain objects" errors.
  */
 export function mapRows<T>(rows: unknown[]): T[] {
-  return rows as T[]
+  return (rows as Record<string, unknown>[]).map((row) => Object.assign({}, row)) as T[]
 }
 
 export function mapRow<T>(row: unknown): T {
-  return row as T
+  return Object.assign({}, row as Record<string, unknown>) as T
 }
