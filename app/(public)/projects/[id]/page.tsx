@@ -76,13 +76,13 @@ export default async function ProjectDetailPage({
 
       <Divider sx={{ my: 3 }} />
 
-      <Typography variant="body1" sx={{ lineHeight: 1.9, whiteSpace: 'pre-line', mb: project.category === 'hackathon' ? 2 : 4 }}>
+      <Typography variant="body1" sx={{ lineHeight: 1.9, whiteSpace: 'pre-line', mb: project.category === 'graffathon' ? 2 : 4 }}>
         {lang === 'fi'
           ? (project.long_description_fi || project.description_fi)
           : (project.long_description_en || project.description_en)}
       </Typography>
 
-      {project.category === 'hackathon' && (
+      {project.category === 'graffathon' && (
         <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.9, mb: 4 }}>
           Graffathon is a weekend-long demoscene / computer art hackathon. Newbies and seasoned sceners alike create real-time audiovisual art in small teams or individually. Every participant is encouraged to create a non-interactive audiovisual computer program during the weekend.{' '}
           <a

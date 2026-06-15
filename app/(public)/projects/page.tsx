@@ -19,6 +19,7 @@ const categories = [
   { key: 'university_group',labelFi: 'Opiskeluprojektit — ryhmä',   labelEn: 'University Projects — Group Work' },
   { key: 'university',      labelFi: 'Opiskeluprojektit',           labelEn: 'University Projects' },
   { key: 'hackathon',       labelFi: 'Hackathon & Creative Coding',  labelEn: 'Hackathon & Creative Coding' },
+  { key: 'graffathon',     labelFi: 'Graffathon',                   labelEn: 'Graffathon' },
 ]
 
 export default async function ProjectsPage() {
