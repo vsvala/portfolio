@@ -16,6 +16,41 @@ import { FeedbackForm } from '@/components/public/FeedbackForm'
 import { ProtectedDownload } from '@/components/public/ProtectedDownload'
 import { parseTechnologies } from '@/lib/utils'
 
+function FormattedDescription({ text }: { text: string }) {
+  const sections = text.split(/\n\n+/)
+  return (
+    <Box sx={{ mb: 4 }}>
+      {sections.map((section, i) => {
+        const lines = section.split('\n')
+        const first = lines[0].trim()
+        const isHeader =
+          first.length > 0 &&
+          first === first.toUpperCase() &&
+          !/^[•\-]/.test(first)
+        if (isHeader) {
+          return (
+            <Box key={i} sx={{ mb: 2 }}>
+              <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
+                {first}
+              </Typography>
+              {lines.slice(1).length > 0 && (
+                <Typography variant="body1" sx={{ lineHeight: 1.9, whiteSpace: 'pre-line' }}>
+                  {lines.slice(1).join('\n')}
+                </Typography>
+              )}
+            </Box>
+          )
+        }
+        return (
+          <Typography key={i} variant="body1" sx={{ lineHeight: 1.9, whiteSpace: 'pre-line', mb: 2 }}>
+            {section}
+          </Typography>
+        )
+      })}
+    </Box>
+  )
+}
+
 export default async function WorkDetailPage({
   params,
 }: {
@@ -58,9 +93,7 @@ export default async function WorkDetailPage({
 
       <Divider sx={{ mb: 3 }} />
 
-      <Typography variant="body1" sx={{ lineHeight: 1.9, whiteSpace: 'pre-line', mb: 4 }}>
-        {lang === 'fi' ? work.description_fi : work.description_en}
-      </Typography>
+      <FormattedDescription text={lang === 'fi' ? work.description_fi : work.description_en} />
 
       {technologies.length > 0 && (
         <Box sx={{ mb: 4 }}>
