@@ -16,7 +16,7 @@ npm run start    # serve the production build
 E2E tests (Playwright) live in `tests/e2e/` in the same repo:
 
 ```bash
-npm test                                    # run all tests (requires dev server on :3000)
+npm test                                    # run all tests (starts own server on :3001 with local test.db)
 npm test -- tests/e2e/homepage.spec.ts      # run a single spec file
 npm run test:ui                             # interactive UI mode
 ```
@@ -44,7 +44,7 @@ Workflow:
 code change → npm run build (TypeScript check) → npm run lint → npm run test:unit → npm test → git commit
 ```
 
-**Environment:** Tests use the same `.env.local` as the main project — no separate config needed.
+**Test database:** `npm test` starts its own Next.js server on port 3001 using a local SQLite file (`test.db` in the repo root). The test database is created and seeded fresh on every run by `tests/e2e/global-setup.ts` → `seed-test-db.ts`. This means tests never touch the production Turso database. Do not run a separate dev server on port 3001 when running tests.
 
 **Concurrency:** `playwright.config.ts` sets `workers: 2`. Do not raise this — 6 parallel workers overwhelm the dev server and cause spurious admin login failures.
 

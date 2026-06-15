@@ -252,12 +252,12 @@ Notable issues discovered during development and now documented for future agent
 Tests live in the main repo under `tests/`:
 
 ```bash
-npm test               # run all E2E tests (Playwright, requires dev server or starts one automatically)
+npm test               # run all E2E tests (Playwright — starts own server on :3001 with local test.db)
 npm run test:ui        # interactive Playwright UI mode
 npm run test:unit      # run unit tests (Vitest, no server needed)
 ```
 
-Playwright starts the dev server automatically via `webServer` in `playwright.config.ts` if it isn't already running.
+`npm test` spins up a dedicated Next.js server on port **3001** backed by a local SQLite `test.db` — production Turso data is never touched. The test DB is created fresh on every run (seeded in `tests/e2e/seed-test-db.ts`). Stop any existing server on port 3001 before running tests.
 
 **E2E coverage (80 tests across 12 spec files):**
 
