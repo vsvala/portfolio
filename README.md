@@ -1,5 +1,7 @@
 # Virva Svala — Portfolio
 
+**Live:** https://portfolio-three-blue-10.vercel.app/
+
 A personal portfolio website for software developer Virva Svala. Built with Next.js 16 App Router, Material UI, and SQLite — with a protected admin panel for managing all content without touching code.
 
 > **This project is an agentic coding exercise.**
