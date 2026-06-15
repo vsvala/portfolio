@@ -1,30 +1,19 @@
 'use client'
-import { useActionState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import type { ActionState, Education } from '@/lib/types'
+import type { Education } from '@/lib/types'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Alert from '@mui/material/Alert'
 import Typography from '@mui/material/Typography'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type FormAction = (prev: any, fd: FormData) => Promise<ActionState<any>>
+import { useAdminForm, type FormAction } from '@/lib/hooks/useAdminForm'
 
 interface Props {
   action: FormAction
   defaultValues?: Partial<Education>
 }
 
-const initial: ActionState = { success: false, errors: {} }
-
 export function EducationForm({ action, defaultValues }: Props) {
-  const router = useRouter()
-  const [state, formAction, pending] = useActionState(action as FormAction, initial)
-
-  useEffect(() => {
-    if (state?.success) router.push('/admin/education')
-  }, [state, router])
+  const { state, formAction, pending } = useAdminForm(action, '/admin/education')
 
   return (
     <form action={formAction}>

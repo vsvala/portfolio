@@ -14,6 +14,8 @@ const links = [
   { href: '/admin/projects', label: 'Projektit' },
   { href: '/admin/education', label: 'Koulutus' },
   { href: '/admin/courses', label: 'Kurssit' },
+  { href: '/admin/skills', label: 'Taidot' },
+  { href: '/admin/recommendations', label: 'Suositukset' },
   { href: '/admin/feedback', label: 'Palautteet' },
 ]
 
@@ -35,7 +37,8 @@ export function AdminNav() {
               sx={{
                 color: 'white',
                 fontWeight: pathname === link.href ? 700 : 400,
-                borderBottom: pathname === link.href ? '2px solid #e94560' : '2px solid transparent',
+                borderBottom: '2px solid',
+                borderBottomColor: pathname === link.href ? 'secondary.main' : 'transparent',
                 borderRadius: 0,
               }}
             >

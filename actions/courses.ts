@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth'
 import { createCourse, updateCourse, deleteCourse } from '@/lib/db/queries/courses'
+import { validationError } from '@/lib/action-utils'
 import type { ActionState } from '@/lib/types'
 
 const CourseSchema = z.object({
@@ -32,9 +33,7 @@ export async function createCourseAction(
 ): Promise<ActionState<{ id: number }>> {
   await requireAdmin()
   const parsed = CourseSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors }
-  }
+  if (!parsed.success) return validationError(parsed.error)
   const id = await createCourse(parsed.data as Parameters<typeof createCourse>[0])
   revalidate()
   return { success: true, data: { id } }
@@ -47,9 +46,7 @@ export async function updateCourseAction(
 ): Promise<ActionState> {
   await requireAdmin()
   const parsed = CourseSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors }
-  }
+  if (!parsed.success) return validationError(parsed.error)
   await updateCourse(id, parsed.data as Parameters<typeof updateCourse>[1])
   revalidate()
   return { success: true }

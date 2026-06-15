@@ -18,8 +18,12 @@ export function DeleteButton({ action, label = 'Poista' }: Props) {
 
   async function handleDelete() {
     setPending(true)
-    await action()
-    setOpen(false)
+    try {
+      await action()
+      setOpen(false)
+    } finally {
+      setPending(false)
+    }
   }
 
   return (

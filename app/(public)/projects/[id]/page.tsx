@@ -16,6 +16,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { FeedbackForm } from '@/components/public/FeedbackForm'
+import { parseTechnologies } from '@/lib/utils'
 
 export default async function ProjectDetailPage({
   params,
@@ -30,7 +31,7 @@ export default async function ProjectDetailPage({
   if (!project) notFound()
 
   const document = project.document_id ? await getDocumentById(project.document_id) : null
-  const technologies = JSON.parse(project.technologies) as string[]
+  const technologies = parseTechnologies(project.technologies)
 
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>

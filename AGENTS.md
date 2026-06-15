@@ -22,6 +22,7 @@ This file defines the agent roles and responsibilities for this portfolio projec
 | **Reviewer Agent** | Code quality, TypeScript errors, security, MUI v9 compatibility, build verification | Phase 5 — Polish |
 | **Security Agent** | Input validation, XSS/injection prevention, spam protection, auth hardening, public exposure audit | Any phase |
 | **Test Agent** | End-to-end tests (Playwright), smoke tests for all public routes, admin CRUD flows, language toggle, anchor navigation, form validation, mobile responsiveness | Phase 5+ — Ongoing |
+| **Code Quality Agent** | Clean Code compliance, DRY violations, dead code, complexity, readability, maintainability, refactoring proposals | Any phase — ongoing |
 
 ---
 
@@ -41,6 +42,26 @@ This file defines the agent roles and responsibilities for this portfolio projec
 - `component={Link}` cannot be passed from a Server Component — use `<LinkButton>` from `components/ui/LinkButton.tsx`
 - Card components (`WorkCard`, `ProjectCard`, `EducationCard`) must be `'use client'` because they use `component={Link}` on `CardActionArea`
 
+### Code Quality Agent checklist
+
+For each finding, report: **problem** · **severity** (low / medium / high) · **recommendation** · **example refactor**.
+
+- **DRY**: flag duplicated logic across Server Actions, queries, or components — extract shared helpers
+- **Dead code**: unused imports, unreachable branches, components never rendered
+- **Function size**: functions doing more than one thing — split at natural boundaries
+- **Component responsibility**: components mixing data-fetching and rendering concerns
+- **Complexity**: nested ternaries, deeply chained conditionals — simplify or extract
+- **Naming**: misleading or overly generic identifiers (`data`, `item`, `res`)
+- **Type safety**: `any`, non-null assertions (`!`), missing return types on exported functions
+- **Repetitive JSX**: identical `sx={{}}` blocks — extract to shared `sx` constants or wrapper components
+- **Action patterns**: Server Actions that share identical validation+revalidate+redirect shape — check if a factory or shared helper applies
+- **Query patterns**: `lib/db/queries/*.ts` files that repeat the same SQL shape — evaluate shared query builder
+
+Severity guide:
+- **High** — causes maintenance debt now or likely bugs (e.g., duplicate validation logic that can drift)
+- **Medium** — reduces readability or will grow harder to change (e.g., 5-level JSX nesting)
+- **Low** — cosmetic or stylistic (e.g., variable name clarity)
+
 ### Security Agent checklist
 - **Contact form**: Zod validates + caps all fields (name ≤100, email ≤200, message ≤2000). Honeypot field blocks bots. Email sent as plain text only — no HTML interpolation to avoid injection.
 - **mailto: links** — intentionally public on a portfolio. Acceptable trade-off: recruiters can click directly; spam-bot harvesting risk is accepted.
@@ -55,14 +76,14 @@ This file defines the agent roles and responsibilities for this portfolio projec
 
 Every agent must follow these rules without exception:
 
-1. **New feature → write Playwright tests** in `/Users/virva/portfolio-test/tests/e2e/` covering the new public page, form, or user interaction.
-2. **Run tests after every code change**: `cd /Users/virva/portfolio-test && npm test`
+1. **New feature → write Playwright tests** in `tests/e2e/` covering the new public page, form, or user interaction.
+2. **Run tests after every code change**: `npm test`
 3. **Run tests before every `git commit`** — never commit failing tests.
 4. **Fix failing tests before moving on** — do not proceed to the next task if tests are red.
 
 Required workflow for every change:
 ```
-implement → npm run build → npm test (in portfolio-test worktree) → git commit
+implement → npm run build → npm run lint → npm test → git commit
 ```
 
 ### proxy.ts Redirect Loop
@@ -81,7 +102,7 @@ implement → npm run build → npm test (in portfolio-test worktree) → git co
 - **Collaboration:** The Pages or Coder Agent may call others: `"Ask the Data Agent to review this query"` or `"Ask the UI Agent to fix the responsiveness"`
 - **Quality control:** The **Reviewer Agent** must verify code before committing or advancing to the next phase
 - **Build before advancing:** Always run `npm run build` before moving to the next phase — TypeScript errors are caught there
-- **Tests before commit:** Always run `npm test` in `/Users/virva/portfolio-test` before committing — see **Testing Rules** above
+- **Tests before commit:** Always run `npm test` from the project root before committing — see **Testing Rules** above
 
 ---
 

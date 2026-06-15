@@ -102,7 +102,7 @@ export default async function EducationDetailPage({
               <Box key={cat} id={cat} sx={{ mb: 4, scrollMarginTop: '80px' }}>
                 <Typography
                   variant="overline"
-                  sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 1.5 }}
+                  sx={{ color: 'secondary.main', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 1.5 }}
                 >
                   {categoryLabels[cat]?.[lang] ?? cat}
                 </Typography>

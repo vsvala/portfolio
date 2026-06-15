@@ -53,7 +53,8 @@ export function Nav({ lang }: { lang: 'fi' | 'en' }) {
                 sx={{
                   color: 'white',
                   fontWeight: pathname === link.href ? 700 : 400,
-                  borderBottom: pathname === link.href ? '2px solid #e94560' : '2px solid transparent',
+                  borderBottom: '2px solid',
+                  borderBottomColor: pathname === link.href ? 'secondary.main' : 'transparent',
                   borderRadius: 0,
                   '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' },
                 }}

@@ -6,12 +6,13 @@ import Typography from '@mui/material/Typography'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import Link from 'next/link'
 import type { WorkExperience, Lang } from '@/lib/types'
+import { ReadMoreChip } from '@/components/ui/ReadMoreChip'
+import { parseTechnologies } from '@/lib/utils'
 
 export function WorkCard({ work, lang }: { work: WorkExperience; lang: Lang }) {
-  const technologies = JSON.parse(work.technologies) as string[]
+  const technologies = parseTechnologies(work.technologies)
   const endLabel = work.end_date ?? (lang === 'fi' ? 'nykyinen' : 'present')
 
   return (
@@ -38,14 +39,7 @@ export function WorkCard({ work, lang }: { work: WorkExperience; lang: Lang }) {
             </Stack>
           )}
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 1.5 }}>
-            <Box sx={{
-              display: 'inline-flex', alignItems: 'center', gap: 0.5,
-              border: '1px solid', borderColor: 'secondary.main', borderRadius: '20px',
-              px: 1.5, py: 0.4, color: 'secondary.main', fontSize: '0.75rem', fontWeight: 600,
-            }}>
-              {lang === 'fi' ? 'Lue lisää' : 'Read more'}
-              <ArrowForwardIcon sx={{ fontSize: 13 }} />
-            </Box>
+            <ReadMoreChip lang={lang} />
           </Box>
         </CardContent>
       </CardActionArea>

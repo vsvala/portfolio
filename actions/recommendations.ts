@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth'
 import { createRecommendation, updateRecommendation, deleteRecommendation } from '@/lib/db/queries/recommendations'
+import { validationError } from '@/lib/action-utils'
 import type { ActionState } from '@/lib/types'
 
 const RecommendationSchema = z.object({
@@ -26,7 +27,7 @@ export async function createRecommendationAction(
 ): Promise<ActionState<{ id: number }>> {
   await requireAdmin()
   const parsed = RecommendationSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return { success: false, errors: parsed.error.flatten().fieldErrors }
+  if (!parsed.success) return validationError(parsed.error)
   const result = await createRecommendation(parsed.data)
   revalidate()
   return { success: true, data: { id: result.id } }
@@ -39,7 +40,7 @@ export async function updateRecommendationAction(
 ): Promise<ActionState> {
   await requireAdmin()
   const parsed = RecommendationSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return { success: false, errors: parsed.error.flatten().fieldErrors }
+  if (!parsed.success) return validationError(parsed.error)
   await updateRecommendation(id, parsed.data)
   revalidate()
   return { success: true }

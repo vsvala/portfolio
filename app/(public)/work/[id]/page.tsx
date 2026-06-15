@@ -14,6 +14,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack'
 import { LinkButton } from '@/components/ui/LinkButton'
 import { FeedbackForm } from '@/components/public/FeedbackForm'
 import { ProtectedDownload } from '@/components/public/ProtectedDownload'
+import { parseTechnologies } from '@/lib/utils'
 
 export default async function WorkDetailPage({
   params,
@@ -31,7 +32,7 @@ export default async function WorkDetailPage({
     ? await getDocumentById(work.certificate_document_id)
     : null
 
-  const technologies = JSON.parse(work.technologies) as string[]
+  const technologies = parseTechnologies(work.technologies)
   const endLabel = work.end_date ?? (lang === 'fi' ? 'nykyinen' : 'present')
 
   return (

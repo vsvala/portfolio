@@ -17,6 +17,7 @@ const categories = [
   { key: 'personal',        labelFi: 'Omat projektit',              labelEn: 'Personal Projects' },
   { key: 'university_solo', labelFi: 'Opiskeluprojektit — yksin',   labelEn: 'University Projects — Solo' },
   { key: 'university_group',labelFi: 'Opiskeluprojektit — ryhmä',   labelEn: 'University Projects — Group Work' },
+  { key: 'university',      labelFi: 'Opiskeluprojektit',           labelEn: 'University Projects' },
   { key: 'hackathon',       labelFi: 'Hackathon & Creative Coding',  labelEn: 'Hackathon & Creative Coding' },
 ]
 
@@ -56,7 +57,7 @@ export default async function ProjectsPage() {
           <Box key={cat.key} id={cat.key} sx={{ mb: 7, scrollMarginTop: '80px' }}>
             <Typography
               variant="overline"
-              sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 3 }}
+              sx={{ color: 'secondary.main', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 3 }}
             >
               {lang === 'fi' ? cat.labelFi : cat.labelEn}
             </Typography>

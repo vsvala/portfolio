@@ -1,16 +1,12 @@
 'use client'
-import { useActionState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import type { ActionState, Course, Education } from '@/lib/types'
+import type { Course, Education } from '@/lib/types'
 import TextField from '@mui/material/TextField'
 import MenuItem from '@mui/material/MenuItem'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Alert from '@mui/material/Alert'
 import Typography from '@mui/material/Typography'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type FormAction = (prev: any, fd: FormData) => Promise<ActionState<any>>
+import { useAdminForm, type FormAction } from '@/lib/hooks/useAdminForm'
 
 interface Props {
   action: FormAction
@@ -19,23 +15,19 @@ interface Props {
 }
 
 const categories = [
-  { value: 'programming', labelFi: 'Ohjelmointi' },
-  { value: 'math', labelFi: 'Matematiikka & tilastot' },
-  { value: 'ai_data', labelFi: 'Tekoäly & data' },
-  { value: 'systems', labelFi: 'Järjestelmät & verkot' },
-  { value: 'design', labelFi: 'Suunnittelu & UX' },
-  { value: 'other', labelFi: 'Muut' },
+  { value: 'web_dev',        labelFi: 'Web-kehitys' },
+  { value: 'programming',   labelFi: 'Ohjelmointi' },
+  { value: 'sw_engineering', labelFi: 'Ohjelmistotuotanto & arkkitehtuuri' },
+  { value: 'databases',     labelFi: 'Tietokannat' },
+  { value: 'design',        labelFi: 'Suunnittelu & UX' },
+  { value: 'ai_data',       labelFi: 'Tekoäly & data' },
+  { value: 'systems',       labelFi: 'Järjestelmät & verkot' },
+  { value: 'math',          labelFi: 'Matematiikka' },
+  { value: 'other',         labelFi: 'Muut' },
 ]
 
-const initial: ActionState = { success: false, errors: {} }
-
 export function CourseForm({ action, defaultValues, educationOptions }: Props) {
-  const router = useRouter()
-  const [state, formAction, pending] = useActionState(action as FormAction, initial)
-
-  useEffect(() => {
-    if (state?.success) router.push('/admin/courses')
-  }, [state, router])
+  const { state, formAction, pending } = useAdminForm(action, '/admin/courses')
 
   return (
     <form action={formAction}>

@@ -13,13 +13,21 @@ npm run lint     # ESLint
 npm run start    # serve the production build
 ```
 
-E2E tests (Playwright) live on branch `test/e2e-playwright` in worktree `/Users/virva/portfolio-test`:
+E2E tests (Playwright) live in `tests/e2e/` in the same repo:
 
 ```bash
-cd /Users/virva/portfolio-test
-npm test          # run all tests (requires dev server on :3000)
-npm run test:ui   # interactive UI mode
+npm test                                    # run all tests (requires dev server on :3000)
+npm test -- tests/e2e/homepage.spec.ts      # run a single spec file
+npm run test:ui                             # interactive UI mode
 ```
+
+Unit tests (Vitest) live in `tests/unit/` and cover pure helper functions:
+
+```bash
+npm run test:unit                           # run all unit tests (no dev server needed)
+```
+
+Unit tests cover: `parseTechnologies` (`lib/utils.ts`), `technologiesField` (`lib/zod-fields.ts`), `toArgs` (`lib/db/utils.ts`).
 
 TypeScript errors surface through `npm run build`.
 
@@ -27,14 +35,20 @@ TypeScript errors surface through `npm run build`.
 
 These rules apply to every code change, no exceptions:
 
-1. **New feature → write tests.** Every new public page, form, or user-facing feature must have corresponding Playwright tests added in `/Users/virva/portfolio-test/tests/e2e/`.
+1. **New feature → write tests.** Every new public page, form, or user-facing feature must have corresponding Playwright tests added in `tests/e2e/`. New pure helper functions must have Vitest unit tests in `tests/unit/`.
 2. **Run tests after every code change** — before considering any task done.
 3. **Run tests before every `git commit`** — do not commit if tests fail.
 
 Workflow:
 ```
-code change → npm run build (TypeScript check) → npm test (in portfolio-test) → git commit
+code change → npm run build (TypeScript check) → npm run lint → npm run test:unit → npm test → git commit
 ```
+
+**Environment:** Tests use the same `.env.local` as the main project — no separate config needed.
+
+**Concurrency:** `playwright.config.ts` sets `workers: 2`. Do not raise this — 6 parallel workers overwhelm the dev server and cause spurious admin login failures.
+
+**Bilingual assertions:** All pages default to English (`?? 'en'`). Write test assertions with both languages: `getByRole('link', { name: /Etusivu|Home/i })` rather than Finnish-only.
 
 ## Next.js 16 Breaking Changes
 
@@ -107,8 +121,9 @@ MUI SSR is wired via `AppRouterCacheProvider` from `@mui/material-nextjs/v16-app
 ### Data flow
 
 ```
-SQLite (portfolio.db)
-  └── lib/db/index.ts          singleton, WAL mode, auto-runs schema.sql on startup
+Turso (remote libSQL — TURSO_URL + TURSO_AUTH_TOKEN)
+  └── lib/db/index.ts          @libsql/client singleton
+  └── lib/db/schema.sql        run manually via: turso db shell portfolio < lib/db/schema.sql
   └── lib/db/queries/*.ts      typed query functions (server-only)
         └── actions/*.ts       Server Actions — Zod validation, call queries, revalidatePath
               └── app/**       Server Components fetch directly from queries
@@ -125,11 +140,11 @@ SQLite (portfolio.db)
 
 ### Bilingual content
 
-Every DB table has `*_fi` and `*_en` columns. Active language is in a `lang` cookie (`fi` | `en`, default `fi`). Server Components read it:
+Every DB table has `*_fi` and `*_en` columns. Active language is in a `lang` cookie (`fi` | `en`). **Default is `'en'`** when no cookie is present. Server Components read it:
 
 ```ts
 const cookieStore = await cookies();
-const lang = (cookieStore.get("lang")?.value ?? "fi") as Lang;
+const lang = (cookieStore.get("lang")?.value ?? "en") as Lang;
 ```
 
 `LanguageToggle` (Client Component) sets the cookie and calls `router.refresh()`.
@@ -144,7 +159,7 @@ Stored as a JSON array string in SQLite. Server Actions accept comma-separated i
 
 ### Admin CRUD pattern
 
-Each content type (work / projects / education) follows this structure:
+All content types follow this structure:
 
 - `app/admin/{type}/page.tsx` — list with Edit + Delete buttons
 - `app/admin/{type}/new/page.tsx` — `create*Action`
@@ -152,16 +167,34 @@ Each content type (work / projects / education) follows this structure:
 - `components/admin/*Form.tsx` — Client Component, `useActionState`, redirects on success
 - `components/admin/DeleteButton.tsx` — shared confirmation Dialog
 
+Current types: **work, projects, education, courses, skills, recommendations**. Feedback is read-only in admin (no create/edit).
+
 ## Environment Variables
 
-| Variable         | Purpose                                                 |
-| ---------------- | ------------------------------------------------------- |
-| `SESSION_SECRET` | JWT signing key (base64, 32+ bytes)                     |
-| `ADMIN_PASSWORD` | Plain-text admin password compared in `actions/auth.ts` |
+| Variable               | Purpose                                                            |
+| ---------------------- | ------------------------------------------------------------------ |
+| `TURSO_URL`            | Turso database URL (`libsql://portfolio-*.turso.io`)               |
+| `TURSO_AUTH_TOKEN`     | Turso auth token                                                   |
+| `SESSION_SECRET`       | JWT signing key (base64, 32+ bytes)                                |
+| `ADMIN_PASSWORD`       | Plain-text admin password compared in `actions/auth.ts`            |
+| `CERTIFICATE_PASSWORD` | Password for `/api/protected-doc` — protects private-documents/    |
+| `RESEND_API_KEY`       | Resend API key for contact form emails (optional — form is hidden without it) |
 
 ## Path Alias
 
 `@/` maps to the repo root (set in `tsconfig.json`).
+
+## Keeping the repo root clean
+
+The Playwright MCP tool saves screenshots to the **repo root** automatically during browser sessions. These are never needed after the session ends.
+
+**After every browser/Playwright session, delete leftover screenshots:**
+
+```bash
+rm -f /Users/virva/portfolio/*.png
+```
+
+Never commit PNG files from the root — `*.png` is in `.gitignore` to prevent accidents. If you see any `.png` files in the root at the start of a session, delete them before starting work.
 
 ## Maintaining README.md
 

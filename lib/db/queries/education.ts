@@ -1,8 +1,9 @@
 import 'server-only'
 import db from '@/lib/db'
+import { toArgs } from '@/lib/db/utils'
 import type { Education } from '@/lib/types'
 
-export async function getAllEducation(_lang?: string): Promise<Education[]> {
+export async function getAllEducation(): Promise<Education[]> {
   const result = await db.execute(
     `SELECT * FROM education ORDER BY sort_order ASC, created_at DESC`
   )
@@ -40,21 +41,19 @@ export async function updateEducation(
 ): Promise<Education | undefined> {
   await db.execute({
     sql: `UPDATE education SET
-           institution_fi = COALESCE(:institution_fi, institution_fi),
-           institution_en = COALESCE(:institution_en, institution_en),
-           degree_fi      = COALESCE(:degree_fi,      degree_fi),
-           degree_en      = COALESCE(:degree_en,      degree_en),
-           description_fi = COALESCE(:description_fi, description_fi),
-           description_en = COALESCE(:description_en, description_en),
-           start_date     = COALESCE(:start_date,     start_date),
-           end_date       = COALESCE(:end_date,       end_date),
-           document_id    = COALESCE(:document_id,    document_id),
-           sort_order     = COALESCE(:sort_order,     sort_order),
+           institution_fi = :institution_fi,
+           institution_en = :institution_en,
+           degree_fi      = :degree_fi,
+           degree_en      = :degree_en,
+           description_fi = :description_fi,
+           description_en = :description_en,
+           start_date     = :start_date,
+           end_date       = :end_date,
+           document_id    = :document_id,
+           sort_order     = :sort_order,
            updated_at     = datetime('now')
          WHERE id = :id`,
-    args: Object.fromEntries(
-      Object.entries({ ...data, id }).map(([k, v]) => [k, v === undefined ? null : v])
-    ) as Record<string, string | number | null>,
+    args: toArgs(data as Record<string, unknown>, id),
   })
   return getEducationById(id)
 }

@@ -86,7 +86,7 @@ export async function SkillsSection({ lang }: { lang: Lang }) {
                 sx={{
                   height: 8, borderRadius: 4,
                   backgroundColor: 'rgba(26,26,46,0.12)',
-                  '& .MuiLinearProgress-bar': { backgroundColor: '#e94560', borderRadius: 4 },
+                  '& .MuiLinearProgress-bar': { backgroundColor: 'secondary.main', borderRadius: 4 },
                 }}
               />
             </Box>

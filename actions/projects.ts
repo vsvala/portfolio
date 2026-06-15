@@ -3,6 +3,8 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth'
 import { createProject, updateProject, deleteProject } from '@/lib/db/queries/projects'
+import { technologiesField } from '@/lib/zod-fields'
+import { validationError } from '@/lib/action-utils'
 import type { ActionState } from '@/lib/types'
 
 const ProjectSchema = z.object({
@@ -12,12 +14,7 @@ const ProjectSchema = z.object({
   description_en: z.string().default(''),
   long_description_fi: z.string().default(''),
   long_description_en: z.string().default(''),
-  technologies: z.string().default('').transform((s) => {
-    s = s.trim()
-    if (!s) return '[]'
-    if (s.startsWith('[')) return s
-    return JSON.stringify(s.split(',').map((t) => t.trim()).filter(Boolean))
-  }),
+  technologies: technologiesField,
   url: z.string().url().optional().nullable().or(z.literal('')),
   repo_url: z.string().url().optional().nullable().or(z.literal('')),
   category: z.string().default('hackathon'),
@@ -37,7 +34,7 @@ export async function createProjectAction(
   await requireAdmin()
   const parsed = ProjectSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors }
+    return validationError(parsed.error)
   }
   const data = { ...parsed.data, url: parsed.data.url || null, repo_url: parsed.data.repo_url || null }
   const result = await createProject(data as Parameters<typeof createProject>[0])
@@ -53,9 +50,10 @@ export async function updateProjectAction(
   await requireAdmin()
   const parsed = ProjectSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors }
+    return validationError(parsed.error)
   }
-  await updateProject(id, parsed.data)
+  const data = { ...parsed.data, url: parsed.data.url || null, repo_url: parsed.data.repo_url || null }
+  await updateProject(id, data)
   revalidate()
   return { success: true }
 }

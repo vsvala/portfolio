@@ -14,15 +14,18 @@ export const metadata = {
 }
 
 const categoryLabels: Record<string, { fi: string; en: string }> = {
-  programming: { fi: 'Ohjelmointi', en: 'Programming' },
-  math: { fi: 'Matematiikka & tilastot', en: 'Mathematics & Statistics' },
-  ai_data: { fi: 'Tekoäly & data', en: 'AI & Data' },
-  systems: { fi: 'Järjestelmät & verkot', en: 'Systems & Networks' },
-  design: { fi: 'Suunnittelu & UX', en: 'Design & UX' },
-  other: { fi: 'Muut', en: 'Other' },
+  web_dev:        { fi: 'Web-kehitys',                          en: 'Web Development' },
+  programming:    { fi: 'Ohjelmointi',                          en: 'Programming' },
+  sw_engineering: { fi: 'Ohjelmistotuotanto & arkkitehtuuri',   en: 'Software Engineering & Architecture' },
+  databases:      { fi: 'Tietokannat',                          en: 'Databases' },
+  design:         { fi: 'Suunnittelu & UX',                     en: 'Design & UX' },
+  ai_data:        { fi: 'Tekoäly & data',                       en: 'AI & Data' },
+  systems:        { fi: 'Järjestelmät & verkot',                en: 'Systems & Networks' },
+  math:           { fi: 'Matematiikka',                         en: 'Mathematics' },
+  other:          { fi: 'Muut',                                 en: 'Other' },
 }
 
-const categoryOrder = ['programming', 'math', 'ai_data', 'systems', 'design', 'other']
+const categoryOrder = ['web_dev', 'programming', 'sw_engineering', 'databases', 'design', 'ai_data', 'systems', 'math', 'other']
 
 export default async function CoursesPage() {
   const cookieStore = await cookies()
@@ -63,7 +66,7 @@ export default async function CoursesPage() {
         <Box key={cat} sx={{ mb: 5 }}>
           <Typography
             variant="overline"
-            sx={{ color: '#e94560', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 2 }}
+            sx={{ color: 'secondary.main', letterSpacing: 2, fontWeight: 700, display: 'block', mb: 2 }}
           >
             {categoryLabels[cat]?.[lang] ?? cat}
           </Typography>
@@ -98,7 +101,7 @@ export default async function CoursesPage() {
                       <Chip label={`${c.credits} op`} size="small" sx={{ backgroundColor: 'rgba(26,26,46,0.07)' }} />
                     )}
                     {c.grade && (
-                      <Chip label={c.grade} size="small" sx={{ backgroundColor: 'rgba(233,69,96,0.12)', color: '#e94560', fontWeight: 700 }} />
+                      <Chip label={c.grade} size="small" sx={{ backgroundColor: 'rgba(233,69,96,0.12)', color: 'secondary.main', fontWeight: 700 }} />
                     )}
                   </Box>
                 </Box>

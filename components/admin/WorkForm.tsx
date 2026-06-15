@@ -1,33 +1,23 @@
 'use client'
-import { useActionState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import type { ActionState, WorkExperience } from '@/lib/types'
+import type { WorkExperience } from '@/lib/types'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
 import Grid from '@mui/material/Grid'
 import Alert from '@mui/material/Alert'
 import Typography from '@mui/material/Typography'
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type FormAction = (prev: any, fd: FormData) => Promise<ActionState<any>>
+import { useAdminForm, type FormAction } from '@/lib/hooks/useAdminForm'
+import { parseTechnologies } from '@/lib/utils'
 
 interface Props {
   action: FormAction
   defaultValues?: Partial<WorkExperience>
 }
 
-const initial: ActionState = { success: false, errors: {} }
-
 export function WorkForm({ action, defaultValues }: Props) {
-  const router = useRouter()
-  const [state, formAction, pending] = useActionState(action as FormAction, initial)
-
-  useEffect(() => {
-    if (state?.success) router.push('/admin/work')
-  }, [state, router])
+  const { state, formAction, pending } = useAdminForm(action, '/admin/work')
 
   const techs = defaultValues?.technologies
-    ? (JSON.parse(defaultValues.technologies) as string[]).join(', ')
+    ? parseTechnologies(defaultValues.technologies).join(', ')
     : ''
 
   return (

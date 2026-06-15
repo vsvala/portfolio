@@ -9,6 +9,8 @@ import Typography from '@mui/material/Typography'
 import Divider from '@mui/material/Divider'
 import Chip from '@mui/material/Chip'
 import { PrintButton } from '@/components/public/PrintButton'
+import { certifications } from '@/lib/static-content'
+import { parseTechnologies } from '@/lib/utils'
 
 const introFi = 'Ohjelmistosuunnittelija ja tietojenkäsittelytieteen maisteri Helsingin yliopistosta (2025). Yli 6 vuotta käytännön kokemusta Full Stack -kehityksestä Forecalla — React, TypeScript, Node.js ja Next.js. Poikkeuksellisen vahva visuaalinen silmä taideopettajataustani ansiosta.'
 const introEn = 'Software developer and M.Sc. in Computer Science from the University of Helsinki (2025). Over 6 years of hands-on full stack experience at Foreca — React, TypeScript, Node.js and Next.js. Strong eye for visual design from a background as an art teacher.'
@@ -21,13 +23,6 @@ const skillCategoryLabels: Record<string, { fi: string; en: string }> = {
   methods:   { fi: 'Työtavat',    en: 'Methods' },
 }
 const skillCategoryOrder = ['frontend', 'backend', 'databases', 'tools', 'methods']
-
-const certifications = [
-  { titleFi: 'Claude Code: A Highly Agentic Coding Assistant', titleEn: 'Claude Code: A Highly Agentic Coding Assistant', issuerFi: 'DeepLearning.AI', issuerEn: 'DeepLearning.AI', year: '2026' },
-  { titleFi: 'Full Stack Open', titleEn: 'Full Stack Open', issuerFi: 'Helsingin yliopisto', issuerEn: 'University of Helsinki', year: '2024' },
-  { titleFi: 'Honours Programme Diploma', titleEn: 'Honours Programme Diploma', issuerFi: 'Helsingin yliopisto, Matemaattis-luonnontieteellinen tiedekunta', issuerEn: 'University of Helsinki, Faculty of Science', year: '2019' },
-  { titleFi: 'Graffathon 2019 – 2. sija, Beginner Compo', titleEn: 'Graffathon 2019 – 2nd Place, Beginner Compo', issuerFi: 'Aalto-yliopiston Digital Media Club (DOT)', issuerEn: 'Aalto University Digital Media Club (DOT)', year: '2019' },
-]
 
 const civicActivities = [
   { fi: 'Akateemisen viiniseuran tasa-arvo- ja ympäristövastaava', en: 'Academic Wine Society, equality and environmental officer', year: '2018' },
@@ -53,7 +48,7 @@ function Section({ title }: { title: string }) {
       <Typography variant="h6" sx={{ fontWeight: 700, color: '#1a1a2e', textTransform: 'uppercase', letterSpacing: 1, fontSize: '0.85rem' }}>
         {title}
       </Typography>
-      <Divider sx={{ borderColor: '#e94560', borderBottomWidth: 2, mt: 0.5 }} />
+      <Divider sx={{ borderColor: 'secondary.main', borderBottomWidth: 2, mt: 0.5 }} />
     </Box>
   )
 }
@@ -107,7 +102,7 @@ export default async function CvPage() {
           <Typography variant="h3" sx={{ fontWeight: 700, color: '#1a1a2e', mb: 0.5 }}>
             Virva Svala
           </Typography>
-          <Typography variant="h6" sx={{ color: '#e94560', fontWeight: 400, mb: 1 }}>
+          <Typography variant="h6" sx={{ color: 'secondary.main', fontWeight: 400, mb: 1 }}>
             {isFi ? 'Ohjelmistosuunnittelija' : 'Software Developer'}
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
@@ -125,8 +120,7 @@ export default async function CvPage() {
       <Section title={isFi ? 'Työkokemus' : 'Work Experience'} />
       <Box sx={{ mt: 2 }}>
         {work.map((w) => {
-          let techs: string[] = []
-          try { techs = JSON.parse(w.technologies) } catch { /* empty */ }
+          const techs = parseTechnologies(w.technologies)
           return (
             <Box key={w.id} sx={{ mb: 2.5, '@media print': { mb: 1.5 } }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 1 }}>
@@ -137,7 +131,7 @@ export default async function CvPage() {
                   {w.start_date}{w.end_date ? `–${w.end_date}` : '–'}
                 </Typography>
               </Box>
-              <Typography variant="body2" sx={{ color: '#e94560', mb: 0.5 }}>
+              <Typography variant="body2" sx={{ color: 'secondary.main', mb: 0.5 }}>
                 {isFi ? w.company_name_fi : w.company_name_en}
               </Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 0.75, lineHeight: 1.6 }}>
@@ -215,10 +209,10 @@ export default async function CvPage() {
       <Section title={isFi ? 'Sertifikaatit & saavutukset' : 'Certifications & Achievements'} />
       <Box sx={{ mt: 2 }}>
         {certifications.map((c) => (
-          <Box key={c.titleEn} sx={{ mb: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 1 }}>
+          <Box key={c.title_en} sx={{ mb: 1.5, display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 1 }}>
             <Box>
-              <Typography variant="body2" sx={{ fontWeight: 600 }}>{isFi ? c.titleFi : c.titleEn}</Typography>
-              <Typography variant="body2" color="text.secondary">{isFi ? c.issuerFi : c.issuerEn}</Typography>
+              <Typography variant="body2" sx={{ fontWeight: 600 }}>{isFi ? c.title_fi : c.title_en}</Typography>
+              <Typography variant="body2" color="text.secondary">{isFi ? c.issuer_fi : c.issuer_en}</Typography>
             </Box>
             <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'nowrap' }}>{c.year}</Typography>
           </Box>

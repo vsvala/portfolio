@@ -3,6 +3,8 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth'
 import { createWork, updateWork, deleteWork } from '@/lib/db/queries/work'
+import { technologiesField } from '@/lib/zod-fields'
+import { validationError } from '@/lib/action-utils'
 import type { ActionState } from '@/lib/types'
 
 const WorkSchema = z.object({
@@ -14,12 +16,7 @@ const WorkSchema = z.object({
   description_en: z.string().default(''),
   start_date: z.string().min(1),
   end_date: z.string().optional().nullable().transform((v) => v || null),
-  technologies: z.string().default('').transform((s) => {
-    s = s.trim()
-    if (!s) return '[]'
-    if (s.startsWith('[')) return s
-    return JSON.stringify(s.split(',').map((t) => t.trim()).filter(Boolean))
-  }),
+  technologies: technologiesField,
   certificate_document_id: z.coerce.number().nullable().optional().default(null),
   sort_order: z.coerce.number().default(0),
 })
@@ -36,7 +33,7 @@ export async function createWorkAction(
   await requireAdmin()
   const parsed = WorkSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors }
+    return validationError(parsed.error)
   }
   const result = await createWork(parsed.data as Parameters<typeof createWork>[0])
   revalidate()
@@ -51,7 +48,7 @@ export async function updateWorkAction(
   await requireAdmin()
   const parsed = WorkSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors }
+    return validationError(parsed.error)
   }
   await updateWork(id, parsed.data)
   revalidate()

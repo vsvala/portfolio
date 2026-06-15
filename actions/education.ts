@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth'
 import { createEducation, updateEducation, deleteEducation } from '@/lib/db/queries/education'
+import { validationError } from '@/lib/action-utils'
 import type { ActionState } from '@/lib/types'
 
 const EducationSchema = z.object({
@@ -30,7 +31,7 @@ export async function createEducationAction(
   await requireAdmin()
   const parsed = EducationSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors }
+    return validationError(parsed.error)
   }
   const result = await createEducation(parsed.data as Parameters<typeof createEducation>[0])
   revalidate()
@@ -45,7 +46,7 @@ export async function updateEducationAction(
   await requireAdmin()
   const parsed = EducationSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors }
+    return validationError(parsed.error)
   }
   await updateEducation(id, parsed.data)
   revalidate()

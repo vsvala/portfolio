@@ -4,9 +4,9 @@ import CardActionArea from '@mui/material/CardActionArea'
 import CardContent from '@mui/material/CardContent'
 import Typography from '@mui/material/Typography'
 import Box from '@mui/material/Box'
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import Link from 'next/link'
 import type { Education, Lang } from '@/lib/types'
+import { ReadMoreChip } from '@/components/ui/ReadMoreChip'
 
 export function EducationCard({ education, lang }: { education: Education; lang: Lang }) {
   const endYear = education.end_date
@@ -38,14 +38,7 @@ export function EducationCard({ education, lang }: { education: Education; lang:
             </Typography>
           )}
           <Box sx={{ display: 'flex', justifyContent: 'flex-start', mt: 1 }}>
-            <Box sx={{
-              display: 'inline-flex', alignItems: 'center', gap: 0.5,
-              border: '1px solid', borderColor: 'secondary.main', borderRadius: '20px',
-              px: 1.5, py: 0.4, color: 'secondary.main', fontSize: '0.75rem', fontWeight: 600,
-            }}>
-              {lang === 'fi' ? 'Lue lisää' : 'Read more'}
-              <ArrowForwardIcon sx={{ fontSize: 13 }} />
-            </Box>
+            <ReadMoreChip lang={lang} />
           </Box>
         </CardContent>
       </CardActionArea>

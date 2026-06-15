@@ -10,14 +10,16 @@ A personal portfolio website for software developer Virva Svala. Built with Next
 ## Features
 
 - **Bilingual (Finnish / English)** — all content has `_fi` and `_en` variants; a language toggle cookie switches the active language across all server-rendered pages
-- **Portfolio sections** — Work experience, Projects, Education, Skills — each with clickable cards linking to full detail views
+- **Portfolio sections** — Work experience, Projects, Education, Skills, Courses, Certifications — each with clickable cards linking to full detail views
 - **CV downloads** — direct PDF download links for both Finnish and English CVs from the hero section
 - **Profile photo** — circular avatar in the hero section
 - **Anchor sidebar** — desktop-only left-column navigation with smooth-scroll links to all homepage sections
 - **Online CV** — print-optimised `/cv` page with all content from the database; print or save as PDF via browser
 - **PDF attachments** — work certificates and study certificates can be attached to individual entries and downloaded from their detail pages
+- **Certifications section** — static credential cards (images, issuer, year, technologies) on `/certifications`
 - **Feedback form** — collapsible "anything unclear?" form on every detail page; submissions visible in admin at `/admin/feedback`
-- **Protected admin panel** — add, edit, and delete all content at `/admin` without touching code or redeploying
+- **Recommendations** — admin-managed recommendations/testimonials shown publicly
+- **Protected admin panel** — add, edit, and delete all content at `/admin` without touching code or redeploying; covers Work, Projects, Education, Courses, Skills, and Recommendations
 - **File upload** — PDF documents uploaded through the admin panel are stored in `public/documents/` and linked to content entries
 - **Responsive** — mobile-first layout with a hamburger menu on small screens
 
@@ -50,30 +52,47 @@ portfolio/
 │   │   ├── page.tsx                # Homepage: Hero + Skills + section previews
 │   │   ├── work/[id]/page.tsx
 │   │   ├── projects/[id]/page.tsx
-│   │   └── education/[id]/page.tsx
+│   │   ├── education/[id]/page.tsx
+│   │   ├── courses/page.tsx
+│   │   ├── recommendations/page.tsx
+│   │   └── certifications/page.tsx
 │   ├── admin/                      # Protected admin panel
 │   │   ├── layout.tsx              # AdminNav only (no public Nav)
 │   │   ├── login/page.tsx
 │   │   ├── page.tsx                # Dashboard with content counts
 │   │   ├── work/                   # List · New · Edit
 │   │   ├── projects/
-│   │   └── education/
+│   │   ├── education/
+│   │   ├── courses/
+│   │   ├── skills/
+│   │   └── recommendations/
 │   └── api/upload/route.ts         # PDF upload endpoint
 ├── components/
 │   ├── providers/MuiProvider.tsx   # SSR emotion + ThemeProvider
-│   ├── public/                     # Nav, Footer, HeroSection, cards, SkillsSection
-│   ├── admin/                      # AdminNav, WorkForm, ProjectForm, EducationForm, DeleteButton
-│   └── ui/LinkButton.tsx           # 'use client' wrapper for MUI Button + Next.js Link
+│   ├── public/                     # Nav, Footer, HeroSection, cards, SkillsSection, CertificationsSection
+│   ├── admin/                      # AdminNav, *Form.tsx for all types, DeleteButton
+│   └── ui/
+│       ├── LinkButton.tsx          # 'use client' wrapper for MUI Button + Next.js Link
+│       └── ReadMoreChip.tsx        # Expandable "read more" chip component
 ├── lib/
 │   ├── db/
 │   │   ├── index.ts                # Turso/libSQL client (TURSO_URL + TURSO_AUTH_TOKEN)
 │   │   ├── schema.sql              # Table definitions
-│   │   └── queries/                # work.ts · projects.ts · education.ts · documents.ts · feedback.ts
+│   │   ├── utils.ts                # toArgs() helper — converts object to libSQL named params
+│   │   └── queries/                # work.ts · projects.ts · education.ts · courses.ts · skills.ts · recommendations.ts · documents.ts · feedback.ts
+│   ├── hooks/useAdminForm.ts       # Shared hook for admin form state + redirect on success
+│   ├── action-utils.ts             # validationError() — normalises Zod errors to ActionState
+│   ├── zod-fields.ts               # Shared Zod field definitions (technologiesField, etc.)
+│   ├── static-content.ts           # Static certifications data (images, credential URLs)
+│   ├── utils.ts                    # parseTechnologies() — JSON array string → string[]
 │   ├── session.ts                  # JWT encrypt / decrypt
 │   ├── auth.ts                     # getSession(), requireAdmin()
 │   ├── types.ts                    # Shared TypeScript interfaces
 │   └── mui-theme.ts                # MUI theme (primary #1a1a2e, accent #e94560)
-├── actions/                        # Server Actions: auth · work · projects · education
+├── actions/                        # Server Actions: auth · work · projects · education · courses · skills · recommendations
+├── tests/
+│   ├── e2e/                        # Playwright end-to-end tests (80 tests across 12 spec files)
+│   └── unit/                       # Vitest unit tests for pure helper functions
 └── public/documents/               # Uploaded PDFs served as static files
 ```
 
@@ -136,6 +155,9 @@ From the dashboard you can:
 - Add / edit / delete work experience entries
 - Add / edit / delete projects
 - Add / edit / delete education entries
+- Add / edit / delete courses
+- Add / edit / delete skills
+- Add / edit / delete recommendations
 - Upload PDF documents (CV, work certificates, study certificates) and attach them to content entries
 
 ---
@@ -182,6 +204,8 @@ In the Vercel dashboard → **Settings → Environment Variables**, add all four
 | `TURSO_AUTH_TOKEN` | token from `turso db tokens create` |
 | `SESSION_SECRET` | base64 32-byte key |
 | `ADMIN_PASSWORD` | your admin password |
+| `CERTIFICATE_PASSWORD` | password for `/api/protected-doc` (protects `private-documents/`) |
+| `RESEND_API_KEY` | Resend API key (optional — enables the contact form) |
 
 Redeploy after adding variables.
 
@@ -209,7 +233,8 @@ This project was built as a hands-on exercise in **agentic software development*
 | 3 — Public pages | Pages Agent | Homepage, list pages, detail pages |
 | 4 — Admin UI | Pages Agent | Login, dashboard, CRUD forms for all content types |
 | 5 — Polish | Reviewer Agent | Build fixes, TypeScript errors, runtime bug fixes, CLAUDE.md |
-| 6 — Testing | Test Agent | 32 Playwright E2E tests on branch `test/e2e-playwright` |
+| 6 — Testing | Test Agent | 80 Playwright E2E tests + 20 Vitest unit tests in `tests/` |
+| 7 — Refactor | Code Quality Agent | Shared action utils, Zod field helpers, DB utils, useAdminForm hook |
 
 Each agent received a scoped task with clear input/output contracts. Shared knowledge (breaking API changes, MUI constraints, security rules) was captured in [`CLAUDE.md`](./CLAUDE.md) and [`AGENTS.md`](./AGENTS.md) so that every agent — and every future Claude Code session — starts with the same context.
 
@@ -224,27 +249,40 @@ Notable issues discovered during development and now documented for future agent
 
 ## Testing
 
-End-to-end tests live in a separate git worktree on branch `test/e2e-playwright` at `/Users/virva/portfolio-test`.
+Tests live in the main repo under `tests/`:
 
 ```bash
-# In the test worktree
-cd /Users/virva/portfolio-test
-
-npm test          # run all tests (headless)
-npm run test:ui   # open Playwright UI mode
+npm test               # run all E2E tests (Playwright, requires dev server or starts one automatically)
+npm run test:ui        # interactive Playwright UI mode
+npm run test:unit      # run unit tests (Vitest, no server needed)
 ```
 
-The dev server must be running (`npm run dev` in the main repo) before running tests, or Playwright will start it automatically via `webServer` in `playwright.config.ts`.
+Playwright starts the dev server automatically via `webServer` in `playwright.config.ts` if it isn't already running.
 
-**Test coverage (32 tests):**
+**E2E coverage (80 tests across 12 spec files):**
 
 | File | What it covers |
 | :--- | :--- |
 | `smoke.spec.ts` | All public routes return HTTP 200; 404 for unknown routes |
 | `navigation.spec.ts` | Nav links, GitHub icon, language toggle FI↔EN, logo |
 | `homepage.spec.ts` | Hero, CV buttons, anchor sidebar, section IDs, card links |
-| `admin.spec.ts` | Auth redirect, login form, wrong password error, successful login |
+| `admin.spec.ts` | Auth redirect, login form, wrong password, successful login, dashboard |
 | `feedback.spec.ts` | Feedback button and form on work, projects, and education detail pages |
+| `work.spec.ts` | Work list and detail pages, admin CRUD |
+| `projects.spec.ts` | Projects list and detail pages, admin CRUD |
+| `education.spec.ts` | Education list and detail pages, admin CRUD |
+| `courses.spec.ts` | Courses public page, education detail with courses, admin CRUD |
+| `skills.spec.ts` | Skills section on homepage and CV, admin CRUD |
+| `recommendations.spec.ts` | Recommendations public page, admin CRUD |
+| `cv.spec.ts` | `/cv` page: all sections, print button, bilingual content |
+
+**Unit tests (20 tests across 3 files):**
+
+| File | What it covers |
+| :--- | :--- |
+| `utils.test.ts` | `parseTechnologies` — JSON parse and error cases |
+| `zod-fields.test.ts` | `technologiesField` — CSV and JSON array transforms |
+| `db-utils.test.ts` | `toArgs` — object-to-named-params conversion |
 
 ---
 
@@ -270,7 +308,9 @@ The contact form (`/contact`) is built and ready but disabled until a Resend API
 
 - [ ] Dark mode toggle
 - [x] Contact form (Resend API) — implemented, enable by adding `RESEND_API_KEY`
-- [ ] `/certifications` section — courses and certificates with progress tracking
+- [x] `/certifications` section — static credential cards with images, issuer, year, technologies
+- [x] Courses section — DB-driven list on `/courses` and linked from education detail pages
+- [x] Recommendations — admin-managed testimonials on `/recommendations`
 - [ ] GitHub integration — pinned repos pulled from the GitHub API
 - [x] Feedback / "Suggest edit" form on detail pages — collapsible form, admin inbox at `/admin/feedback`
 - [ ] RAG chat — portfolio bot powered by Claude API + sqlite-vec embeddings

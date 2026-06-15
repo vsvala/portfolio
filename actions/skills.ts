@@ -3,6 +3,7 @@ import { z } from 'zod'
 import { revalidatePath } from 'next/cache'
 import { requireAdmin } from '@/lib/auth'
 import { createSkill, updateSkill, deleteSkill } from '@/lib/db/queries/skills'
+import { validationError } from '@/lib/action-utils'
 import type { ActionState } from '@/lib/types'
 
 const CATEGORIES = ['frontend', 'backend', 'databases', 'tools', 'methods'] as const
@@ -25,7 +26,7 @@ export async function createSkillAction(
 ): Promise<ActionState<{ id: number }>> {
   await requireAdmin()
   const parsed = SkillSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return { success: false, errors: parsed.error.flatten().fieldErrors }
+  if (!parsed.success) return validationError(parsed.error)
   const result = await createSkill(parsed.data)
   revalidate()
   return { success: true, data: { id: result.id } }
@@ -38,7 +39,7 @@ export async function updateSkillAction(
 ): Promise<ActionState> {
   await requireAdmin()
   const parsed = SkillSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return { success: false, errors: parsed.error.flatten().fieldErrors }
+  if (!parsed.success) return validationError(parsed.error)
   await updateSkill(id, parsed.data)
   revalidate()
   return { success: true }
