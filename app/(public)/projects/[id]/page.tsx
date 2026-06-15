@@ -89,9 +89,8 @@ export default async function ProjectDetailPage({
             href="https://www.aalto.fi/en/events/graffathon"
             target="_blank"
             rel="noopener noreferrer"
-            style={{ color: 'inherit' }}
           >
-            aalto.fi/en/events/graffathon
+            www.aalto.fi/en/events/graffathon
           </a>
         </Typography>
       )}
