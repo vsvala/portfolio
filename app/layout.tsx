@@ -10,13 +10,14 @@ const geist = Geist({
 })
 
 export const metadata: Metadata = {
-  title: 'Virva Svala — Ohjelmistosuunnittelija',
+  title: 'Virva Svala — Software Developer',
   description:
-    'Virva Svalan portfolio — ohjelmistosuunnittelija, FM tietojenkäsittelytieteen, yli 6 vuotta kokemusta Full Stack -kehityksestä.',
+    'Portfolio of Virva Svala — Software Developer, MSc Computer Science, 6+ years of full stack experience with React, Next.js, TypeScript, and Node.js.',
   openGraph: {
-    title: 'Virva Svala — Ohjelmistosuunnittelija',
-    description: 'Portfolio: Next.js, React, TypeScript, Node.js, sääpalvelut, karttasovellukset.',
+    title: 'Virva Svala — Software Developer',
+    description: 'Portfolio: React, Next.js, TypeScript, Node.js, geospatial apps, weather services.',
     type: 'website',
+    url: 'https://virvasvala.vercel.app',
   },
 }
 
