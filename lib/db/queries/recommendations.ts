@@ -1,17 +1,18 @@
 import 'server-only'
 import db from '@/lib/db'
+import { mapRows, mapRow } from '@/lib/db/utils'
 import type { Recommendation } from '@/lib/types'
 
 export async function getAllRecommendations(): Promise<Recommendation[]> {
   const result = await db.execute(
     `SELECT * FROM recommendations ORDER BY sort_order ASC, created_at DESC`
   )
-  return result.rows as unknown as Recommendation[]
+  return mapRows<Recommendation>(result.rows)
 }
 
 export async function getRecommendationById(id: number): Promise<Recommendation | null> {
   const result = await db.execute({ sql: `SELECT * FROM recommendations WHERE id = ?`, args: [id] })
-  return (result.rows[0] as unknown as Recommendation) ?? null
+  return mapRow<Recommendation | null>(result.rows[0] ?? null)
 }
 
 export async function createRecommendation(data: {

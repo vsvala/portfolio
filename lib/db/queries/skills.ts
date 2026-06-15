@@ -1,15 +1,16 @@
 import 'server-only'
 import db from '@/lib/db'
+import { mapRows, mapRow } from '@/lib/db/utils'
 import type { Skill } from '@/lib/types'
 
 export async function getAllSkills(): Promise<Skill[]> {
   const result = await db.execute(`SELECT * FROM skills ORDER BY sort_order ASC`)
-  return result.rows as unknown as Skill[]
+  return mapRows<Skill>(result.rows)
 }
 
 export async function getSkillById(id: number): Promise<Skill | null> {
   const result = await db.execute({ sql: `SELECT * FROM skills WHERE id = ?`, args: [id] })
-  return (result.rows[0] as unknown as Skill) ?? null
+  return mapRow<Skill | null>(result.rows[0] ?? null)
 }
 
 export async function createSkill(data: { category: string; name: string; sort_order: number }): Promise<{ id: number }> {

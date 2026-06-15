@@ -11,8 +11,7 @@ import type { ActionState } from '@/lib/types'
 const initialState: ActionState = { success: false, errors: {} }
 
 export function ContactForm({ lang }: { lang: Lang }) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [state, action, pending] = useActionState(sendContactMessage as any, initialState)
+  const [state, action, pending] = useActionState(sendContactMessage, initialState)
 
   if (state.success) {
     return (

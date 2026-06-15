@@ -31,18 +31,30 @@ export async function submitFeedback(_prev: ActionState, formData: FormData): Pr
   }
 
   const { honeypot: _h, ...data } = parsed.data
-  await createFeedback(data)
-  return { success: true }
+  try {
+    await createFeedback(data)
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Lähetys epäonnistui / Send failed. Please try again.' }
+  }
 }
 
 export async function markReadAction(id: number): Promise<void> {
   await requireAdmin()
-  await markFeedbackRead(id)
-  revalidatePath('/admin/feedback')
+  try {
+    await markFeedbackRead(id)
+    revalidatePath('/admin/feedback')
+  } catch (err) {
+    console.error('markReadAction failed:', err)
+  }
 }
 
 export async function deleteFeedbackAction(id: number): Promise<void> {
   await requireAdmin()
-  await deleteFeedback(id)
-  revalidatePath('/admin/feedback')
+  try {
+    await deleteFeedback(id)
+    revalidatePath('/admin/feedback')
+  } catch (err) {
+    console.error('deleteFeedbackAction failed:', err)
+  }
 }

@@ -30,16 +30,20 @@ function revalidate() {
 export async function createProjectAction(
   prevState: ActionState,
   formData: FormData
-): Promise<ActionState<{ id: number }>> {
+): Promise<ActionState> {
   await requireAdmin()
   const parsed = ProjectSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
     return validationError(parsed.error)
   }
   const data = { ...parsed.data, url: parsed.data.url || null, repo_url: parsed.data.repo_url || null }
-  const result = await createProject(data as Parameters<typeof createProject>[0])
-  revalidate()
-  return { success: true, data: { id: result.id } }
+  try {
+    await createProject(data as Parameters<typeof createProject>[0])
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function updateProjectAction(
@@ -53,13 +57,21 @@ export async function updateProjectAction(
     return validationError(parsed.error)
   }
   const data = { ...parsed.data, url: parsed.data.url || null, repo_url: parsed.data.repo_url || null }
-  await updateProject(id, data)
-  revalidate()
-  return { success: true }
+  try {
+    await updateProject(id, data)
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function deleteProjectAction(id: number): Promise<void> {
   await requireAdmin()
-  await deleteProject(id)
-  revalidate()
+  try {
+    await deleteProject(id)
+    revalidate()
+  } catch (err) {
+    console.error('deleteProjectAction failed:', err)
+  }
 }

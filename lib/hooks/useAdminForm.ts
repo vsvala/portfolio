@@ -3,8 +3,7 @@ import { useActionState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import type { ActionState } from '@/lib/types'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type FormAction = (prev: any, fd: FormData) => Promise<ActionState<any>>
+export type FormAction = (prev: ActionState, fd: FormData) => Promise<ActionState>
 
 export function useAdminForm(action: FormAction, redirectPath: string) {
   const router = useRouter()

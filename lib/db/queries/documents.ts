@@ -1,12 +1,13 @@
 import 'server-only'
 import db from '@/lib/db'
+import { mapRows, mapRow } from '@/lib/db/utils'
 import type { PdfDocument } from '@/lib/types'
 
 export async function getAllDocuments(): Promise<PdfDocument[]> {
   const result = await db.execute(
     `SELECT * FROM pdf_documents ORDER BY created_at DESC`
   )
-  return result.rows as unknown as PdfDocument[]
+  return mapRows<PdfDocument>(result.rows)
 }
 
 export async function getDocumentById(id: number): Promise<PdfDocument | undefined> {
@@ -14,7 +15,7 @@ export async function getDocumentById(id: number): Promise<PdfDocument | undefin
     sql: `SELECT * FROM pdf_documents WHERE id = ?`,
     args: [id],
   })
-  return result.rows[0] as unknown as PdfDocument | undefined
+  return mapRow<PdfDocument | undefined>(result.rows[0])
 }
 
 export async function createDocument(

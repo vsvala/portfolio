@@ -1,13 +1,13 @@
 import 'server-only'
 import db from '@/lib/db'
-import { toArgs } from '@/lib/db/utils'
+import { toArgs, mapRows, mapRow } from '@/lib/db/utils'
 import type { Project } from '@/lib/types'
 
 export async function getAllProjects(): Promise<Project[]> {
   const result = await db.execute(
     `SELECT * FROM projects ORDER BY sort_order ASC, created_at DESC`
   )
-  return result.rows as unknown as Project[]
+  return mapRows<Project>(result.rows)
 }
 
 export async function getProjectsByCategory(category: string): Promise<Project[]> {
@@ -15,7 +15,7 @@ export async function getProjectsByCategory(category: string): Promise<Project[]
     sql: `SELECT * FROM projects WHERE category = ? ORDER BY sort_order ASC, created_at DESC`,
     args: [category],
   })
-  return result.rows as unknown as Project[]
+  return mapRows<Project>(result.rows)
 }
 
 export async function getProjectById(id: number): Promise<Project | undefined> {
@@ -23,7 +23,7 @@ export async function getProjectById(id: number): Promise<Project | undefined> {
     sql: `SELECT * FROM projects WHERE id = ?`,
     args: [id],
   })
-  return result.rows[0] as unknown as Project | undefined
+  return mapRow<Project | undefined>(result.rows[0])
 }
 
 export async function createProject(

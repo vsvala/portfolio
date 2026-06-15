@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile } from 'fs/promises'
+import { writeFile, unlink } from 'fs/promises'
 import path from 'path'
 import { randomUUID } from 'crypto'
 import { decrypt } from '@/lib/session'
@@ -33,13 +33,18 @@ export async function POST(request: NextRequest) {
   const filename = `${randomUUID()}-${safeName}`
   const filepath = path.join(process.cwd(), 'public', 'documents', filename)
   const bytes = await file.arrayBuffer()
-  await writeFile(filepath, Buffer.from(bytes))
 
-  const result = await db.execute({
-    sql: `INSERT INTO pdf_documents (filename, label_fi, label_en, document_type, file_size)
-          VALUES (:filename, :label_fi, :label_en, :document_type, :file_size)`,
-    args: { filename, label_fi, label_en, document_type, file_size: file.size },
-  })
-
-  return NextResponse.json({ id: Number(result.lastInsertRowid), filename })
+  try {
+    await writeFile(filepath, Buffer.from(bytes))
+    const result = await db.execute({
+      sql: `INSERT INTO pdf_documents (filename, label_fi, label_en, document_type, file_size)
+            VALUES (:filename, :label_fi, :label_en, :document_type, :file_size)`,
+      args: { filename, label_fi, label_en, document_type, file_size: file.size },
+    })
+    return NextResponse.json({ id: Number(result.lastInsertRowid), filename })
+  } catch (err) {
+    await unlink(filepath).catch(() => {})
+    console.error('Upload failed:', err)
+    return NextResponse.json({ error: 'Upload failed' }, { status: 500 })
+  }
 }

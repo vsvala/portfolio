@@ -5,6 +5,8 @@ import { getAllEducation } from '@/lib/db/queries/education'
 import { getAllDocuments } from '@/lib/db/queries/documents'
 import { getAllRecommendations } from '@/lib/db/queries/recommendations'
 import { getAllSkills } from '@/lib/db/queries/skills'
+import { getAllCourses } from '@/lib/db/queries/courses'
+import Alert from '@mui/material/Alert'
 import Container from '@mui/material/Container'
 import Typography from '@mui/material/Typography'
 import Grid from '@mui/material/Grid'
@@ -20,14 +22,16 @@ export default async function AdminDashboard() {
   const documentCount = (await getAllDocuments()).length
   const recCount = (await getAllRecommendations()).length
   const skillCount = (await getAllSkills()).length
+  const courseCount = (await getAllCourses()).length
 
   const stats = [
     { label: 'Työkokemukset', count: workCount, href: '/admin/work', addHref: '/admin/work/new' },
     { label: 'Projektit', count: projectCount, href: '/admin/projects', addHref: '/admin/projects/new' },
     { label: 'Koulutukset', count: educationCount, href: '/admin/education', addHref: '/admin/education/new' },
+    { label: 'Kurssit', count: courseCount, href: '/admin/courses', addHref: '/admin/courses/new' },
     { label: 'Suositukset', count: recCount, href: '/admin/recommendations', addHref: '/admin/recommendations/new' },
     { label: 'Taidot', count: skillCount, href: '/admin/skills', addHref: '/admin/skills/new' },
-    { label: 'Dokumentit', count: documentCount, href: '/admin/work', addHref: null },
+    { label: 'Dokumentit', count: documentCount, href: '/admin/documents', addHref: null },
   ]
 
   return (
@@ -35,6 +39,11 @@ export default async function AdminDashboard() {
       <Typography variant="h4" sx={{ fontWeight: 700, mb: 4 }}>
         Dashboard
       </Typography>
+      {!process.env.RESEND_API_KEY && (
+        <Alert severity="warning" sx={{ mb: 3 }}>
+          Yhteydenottolomake ei ole käytössä — aseta <strong>RESEND_API_KEY</strong> ja <strong>CONTACT_EMAIL</strong> ympäristömuuttujiin.
+        </Alert>
+      )}
       <Grid container spacing={2}>
         {stats.map((s) => (
           <Grid key={s.label} size={{ xs: 12, sm: 6 }}>

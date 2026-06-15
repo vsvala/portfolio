@@ -1,13 +1,13 @@
 import 'server-only'
 import db from '@/lib/db'
-import { toArgs } from '@/lib/db/utils'
+import { toArgs, mapRows, mapRow } from '@/lib/db/utils'
 import type { WorkExperience } from '@/lib/types'
 
 export async function getAllWork(): Promise<WorkExperience[]> {
   const result = await db.execute(
     `SELECT * FROM work_experience ORDER BY sort_order ASC, created_at DESC`
   )
-  return result.rows as unknown as WorkExperience[]
+  return mapRows<WorkExperience>(result.rows)
 }
 
 export async function getWorkById(id: number): Promise<WorkExperience | undefined> {
@@ -15,7 +15,7 @@ export async function getWorkById(id: number): Promise<WorkExperience | undefine
     sql: `SELECT * FROM work_experience WHERE id = ?`,
     args: [id],
   })
-  return result.rows[0] as unknown as WorkExperience | undefined
+  return mapRow<WorkExperience | undefined>(result.rows[0])
 }
 
 export async function createWork(

@@ -23,13 +23,17 @@ function revalidate() {
 export async function createSkillAction(
   prevState: ActionState,
   formData: FormData
-): Promise<ActionState<{ id: number }>> {
+): Promise<ActionState> {
   await requireAdmin()
   const parsed = SkillSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) return validationError(parsed.error)
-  const result = await createSkill(parsed.data)
-  revalidate()
-  return { success: true, data: { id: result.id } }
+  try {
+    await createSkill(parsed.data)
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function updateSkillAction(
@@ -40,13 +44,21 @@ export async function updateSkillAction(
   await requireAdmin()
   const parsed = SkillSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) return validationError(parsed.error)
-  await updateSkill(id, parsed.data)
-  revalidate()
-  return { success: true }
+  try {
+    await updateSkill(id, parsed.data)
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function deleteSkillAction(id: number): Promise<void> {
   await requireAdmin()
-  await deleteSkill(id)
-  revalidate()
+  try {
+    await deleteSkill(id)
+    revalidate()
+  } catch (err) {
+    console.error('deleteSkillAction failed:', err)
+  }
 }

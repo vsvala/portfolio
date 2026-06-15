@@ -3,8 +3,19 @@ import path from 'path'
 import fs from 'fs'
 import { seedTestDb } from './seed-test-db'
 
+try {
+  for (const line of fs.readFileSync('.env.local', 'utf-8').split('\n')) {
+    const eq = line.indexOf('=')
+    if (eq > 0 && !line.startsWith('#')) {
+      const key = line.slice(0, eq).trim()
+      const val = line.slice(eq + 1).trim().replace(/^["']|["']$/g, '')
+      process.env[key] ??= val
+    }
+  }
+} catch { /* .env.local not found */ }
+
 const AUTH_FILE = path.join(__dirname, '.auth', 'admin.json')
-const ADMIN_PASSWORD = 'vaihda_tama_salasana'
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? ''
 
 export default async function globalSetup() {
   await seedTestDb()

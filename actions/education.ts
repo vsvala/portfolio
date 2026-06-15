@@ -27,15 +27,19 @@ function revalidate() {
 export async function createEducationAction(
   prevState: ActionState,
   formData: FormData
-): Promise<ActionState<{ id: number }>> {
+): Promise<ActionState> {
   await requireAdmin()
   const parsed = EducationSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
     return validationError(parsed.error)
   }
-  const result = await createEducation(parsed.data as Parameters<typeof createEducation>[0])
-  revalidate()
-  return { success: true, data: { id: result.id } }
+  try {
+    await createEducation(parsed.data as Parameters<typeof createEducation>[0])
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function updateEducationAction(
@@ -48,13 +52,21 @@ export async function updateEducationAction(
   if (!parsed.success) {
     return validationError(parsed.error)
   }
-  await updateEducation(id, parsed.data)
-  revalidate()
-  return { success: true }
+  try {
+    await updateEducation(id, parsed.data)
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function deleteEducationAction(id: number): Promise<void> {
   await requireAdmin()
-  await deleteEducation(id)
-  revalidate()
+  try {
+    await deleteEducation(id)
+    revalidate()
+  } catch (err) {
+    console.error('deleteEducationAction failed:', err)
+  }
 }

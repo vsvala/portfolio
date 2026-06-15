@@ -22,8 +22,7 @@ const initial: ActionState = { success: false, errors: {} }
 
 export function FeedbackForm({ lang, targetType, targetId, targetTitle }: Props) {
   const [open, setOpen] = useState(false)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [state, action, pending] = useActionState(submitFeedback as any, initial)
+  const [state, action, pending] = useActionState(submitFeedback, initial)
 
   if (state.success) {
     return (

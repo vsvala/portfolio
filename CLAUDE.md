@@ -27,7 +27,7 @@ Unit tests (Vitest) live in `tests/unit/` and cover pure helper functions:
 npm run test:unit                           # run all unit tests (no dev server needed)
 ```
 
-Unit tests cover: `parseTechnologies` (`lib/utils.ts`), `technologiesField` (`lib/zod-fields.ts`), `toArgs` (`lib/db/utils.ts`).
+Unit tests cover: `parseTechnologies` (`lib/utils.ts`), `technologiesField` (`lib/zod-fields.ts`), `toArgs` (`lib/db/utils.ts`), `validationError` (`lib/action-utils.ts`), session `encrypt`/`decrypt` (`lib/session.ts`).
 
 TypeScript errors surface through `npm run build`.
 
@@ -191,6 +191,7 @@ Current types: **work, projects, education, courses, skills, recommendations**. 
 | `ADMIN_PASSWORD`       | Plain-text admin password compared in `actions/auth.ts`            |
 | `CERTIFICATE_PASSWORD` | Password for `/api/protected-doc` — protects private-documents/    |
 | `RESEND_API_KEY`       | Resend API key for contact form emails (optional — form is hidden without it) |
+| `CONTACT_EMAIL`        | Recipient email address for contact form messages                  |
 
 ## Path Alias
 

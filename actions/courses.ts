@@ -30,13 +30,17 @@ function revalidate() {
 export async function createCourseAction(
   prevState: ActionState,
   formData: FormData
-): Promise<ActionState<{ id: number }>> {
+): Promise<ActionState> {
   await requireAdmin()
   const parsed = CourseSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) return validationError(parsed.error)
-  const id = await createCourse(parsed.data as Parameters<typeof createCourse>[0])
-  revalidate()
-  return { success: true, data: { id } }
+  try {
+    await createCourse(parsed.data as Parameters<typeof createCourse>[0])
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function updateCourseAction(
@@ -47,13 +51,21 @@ export async function updateCourseAction(
   await requireAdmin()
   const parsed = CourseSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) return validationError(parsed.error)
-  await updateCourse(id, parsed.data as Parameters<typeof updateCourse>[1])
-  revalidate()
-  return { success: true }
+  try {
+    await updateCourse(id, parsed.data as Parameters<typeof updateCourse>[1])
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function deleteCourseAction(id: number): Promise<void> {
   await requireAdmin()
-  await deleteCourse(id)
-  revalidate()
+  try {
+    await deleteCourse(id)
+    revalidate()
+  } catch (err) {
+    console.error('deleteCourseAction failed:', err)
+  }
 }

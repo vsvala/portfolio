@@ -24,13 +24,17 @@ function revalidate() {
 export async function createRecommendationAction(
   prevState: ActionState,
   formData: FormData
-): Promise<ActionState<{ id: number }>> {
+): Promise<ActionState> {
   await requireAdmin()
   const parsed = RecommendationSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) return validationError(parsed.error)
-  const result = await createRecommendation(parsed.data)
-  revalidate()
-  return { success: true, data: { id: result.id } }
+  try {
+    await createRecommendation(parsed.data)
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function updateRecommendationAction(
@@ -41,13 +45,21 @@ export async function updateRecommendationAction(
   await requireAdmin()
   const parsed = RecommendationSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) return validationError(parsed.error)
-  await updateRecommendation(id, parsed.data)
-  revalidate()
-  return { success: true }
+  try {
+    await updateRecommendation(id, parsed.data)
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function deleteRecommendationAction(id: number): Promise<void> {
   await requireAdmin()
-  await deleteRecommendation(id)
-  revalidate()
+  try {
+    await deleteRecommendation(id)
+    revalidate()
+  } catch (err) {
+    console.error('deleteRecommendationAction failed:', err)
+  }
 }

@@ -30,7 +30,7 @@ export function ProjectCard({ project, lang }: { project: Project; lang: Lang })
                 <IconButton
                   size="small"
                   aria-label="Open project"
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(project.url!, '_blank', 'noopener,noreferrer') }}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(project.url ?? undefined, '_blank', 'noopener,noreferrer') }}
                 >
                   <OpenInNewIcon fontSize="small" />
                 </IconButton>
@@ -39,7 +39,7 @@ export function ProjectCard({ project, lang }: { project: Project; lang: Lang })
                 <IconButton
                   size="small"
                   aria-label="Open repository"
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(project.repo_url!, '_blank', 'noopener,noreferrer') }}
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); window.open(project.repo_url ?? undefined, '_blank', 'noopener,noreferrer') }}
                 >
                   <GitHubIcon fontSize="small" />
                 </IconButton>

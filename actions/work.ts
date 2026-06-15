@@ -29,15 +29,19 @@ function revalidate() {
 export async function createWorkAction(
   prevState: ActionState,
   formData: FormData
-): Promise<ActionState<{ id: number }>> {
+): Promise<ActionState> {
   await requireAdmin()
   const parsed = WorkSchema.safeParse(Object.fromEntries(formData))
   if (!parsed.success) {
     return validationError(parsed.error)
   }
-  const result = await createWork(parsed.data as Parameters<typeof createWork>[0])
-  revalidate()
-  return { success: true, data: { id: result.id } }
+  try {
+    await createWork(parsed.data as Parameters<typeof createWork>[0])
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function updateWorkAction(
@@ -50,13 +54,21 @@ export async function updateWorkAction(
   if (!parsed.success) {
     return validationError(parsed.error)
   }
-  await updateWork(id, parsed.data)
-  revalidate()
-  return { success: true }
+  try {
+    await updateWork(id, parsed.data)
+    revalidate()
+    return { success: true }
+  } catch {
+    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
+  }
 }
 
 export async function deleteWorkAction(id: number): Promise<void> {
   await requireAdmin()
-  await deleteWork(id)
-  revalidate()
+  try {
+    await deleteWork(id)
+    revalidate()
+  } catch (err) {
+    console.error('deleteWorkAction failed:', err)
+  }
 }

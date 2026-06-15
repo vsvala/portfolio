@@ -1,13 +1,13 @@
 import 'server-only'
 import db from '@/lib/db'
-import { toArgs } from '@/lib/db/utils'
+import { toArgs, mapRows, mapRow } from '@/lib/db/utils'
 import type { Education } from '@/lib/types'
 
 export async function getAllEducation(): Promise<Education[]> {
   const result = await db.execute(
     `SELECT * FROM education ORDER BY sort_order ASC, created_at DESC`
   )
-  return result.rows as unknown as Education[]
+  return mapRows<Education>(result.rows)
 }
 
 export async function getEducationById(id: number): Promise<Education | undefined> {
@@ -15,7 +15,7 @@ export async function getEducationById(id: number): Promise<Education | undefine
     sql: `SELECT * FROM education WHERE id = ?`,
     args: [id],
   })
-  return result.rows[0] as unknown as Education | undefined
+  return mapRow<Education | undefined>(result.rows[0])
 }
 
 export async function createEducation(

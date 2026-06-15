@@ -1,10 +1,11 @@
 import 'server-only'
 import db from '@/lib/db'
+import { mapRows, mapRow } from '@/lib/db/utils'
 import type { Course } from '@/lib/types'
 
 export async function getAllCourses(): Promise<Course[]> {
   const result = await db.execute('SELECT * FROM courses ORDER BY sort_order ASC, year DESC, created_at DESC')
-  return result.rows as unknown as Course[]
+  return mapRows<Course>(result.rows)
 }
 
 export async function getCoursesByEducationId(educationId: number): Promise<Course[]> {
@@ -12,12 +13,12 @@ export async function getCoursesByEducationId(educationId: number): Promise<Cour
     sql: 'SELECT * FROM courses WHERE education_id = ? ORDER BY sort_order ASC, year DESC',
     args: [educationId],
   })
-  return result.rows as unknown as Course[]
+  return mapRows<Course>(result.rows)
 }
 
 export async function getCourseById(id: number): Promise<Course | undefined> {
   const result = await db.execute({ sql: 'SELECT * FROM courses WHERE id = ?', args: [id] })
-  return result.rows[0] as unknown as Course | undefined
+  return mapRow<Course | undefined>(result.rows[0])
 }
 
 export async function createCourse(data: Omit<Course, 'id' | 'created_at' | 'updated_at'>): Promise<number> {

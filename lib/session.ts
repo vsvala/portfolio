@@ -4,6 +4,9 @@ import { cookies } from 'next/headers'
 import type { SessionPayload } from './types'
 
 const secretKey = process.env.SESSION_SECRET
+if (!secretKey || secretKey.length < 32) {
+  throw new Error('SESSION_SECRET must be set to a string of 32+ characters')
+}
 const encodedKey = new TextEncoder().encode(secretKey)
 
 export async function encrypt(payload: Omit<SessionPayload, 'iat' | 'exp'>) {

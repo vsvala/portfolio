@@ -43,7 +43,7 @@ export async function sendContactMessage(
       },
       body: JSON.stringify({
         from: 'Portfolio <onboarding@resend.dev>',
-        to: 'virva.svala@gmail.com',
+        to: process.env.CONTACT_EMAIL ?? '',
         reply_to: email,
         subject: `Portfolio contact: ${name}`,
         text: `Name: ${name}\nEmail: ${email}\n\n${message}`,
