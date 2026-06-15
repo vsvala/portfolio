@@ -21,7 +21,7 @@ This file defines the agent roles and responsibilities for this portfolio projec
 | **Pages Agent** | Public pages (`app/(public)/**`), admin pages (`app/admin/**`), `loading.tsx`, `error.tsx` | Phases 3–4 |
 | **Reviewer Agent** | Code quality, TypeScript errors, security, MUI v9 compatibility, build verification | Phase 5 — Polish |
 | **Security Agent** | Input validation, XSS/injection prevention, spam protection, auth hardening, public exposure audit | Any phase |
-| **Test Agent** | End-to-end tests (Playwright), smoke tests for all public routes, admin CRUD flows, language toggle, anchor navigation, form validation, mobile responsiveness | Phase 5+ — Ongoing |
+| **Test Agent** | End-to-end tests (Playwright), smoke tests for all public routes, admin CRUD flows (list → create → edit/update → delete), language toggle, anchor navigation, form validation, mobile responsiveness | Phase 5+ — Ongoing |
 | **Code Quality Agent** | Clean Code compliance, DRY violations, dead code, complexity, readability, maintainability, refactoring proposals | Any phase — ongoing |
 
 ---
@@ -29,10 +29,18 @@ This file defines the agent roles and responsibilities for this portfolio projec
 ## Key Constraints Every Agent Must Know
 
 ### Next.js 16 API Changes
-- **`proxy.ts`** (not `middleware.ts`) — exports `async function proxy(request: NextRequest)`
+- **`proxy.ts`** (not `middleware.ts`) — exports `async function proxy(request: NextRequest)`. There is no `middleware.ts` in this repo.
 - **Dynamic params are Promises**: `const { id } = await params`
 - **`useActionState`** (React 19) for forms, not `useFormState`
 - Full API reference: `node_modules/next/dist/docs/`
+
+### Skills content
+- Skills are admin-managed (CRUD at `/admin/skills/`). There is **no public `/skills/` listing page**.
+- Skills are displayed in `SkillsSection` on the homepage and on the `/cv` page only.
+
+### Sort order
+- Every content table has a `sort_order` integer column. Lower values appear first.
+- Managed via a numeric field in each admin form — no drag-and-drop reordering.
 
 ### MUI v9 Props
 - Layout props (`gap`, `justifyContent`, `flexWrap`) are **not** valid direct props on `Stack` — use `sx={{}}`
@@ -77,14 +85,17 @@ Severity guide:
 Every agent must follow these rules without exception:
 
 1. **New feature → write Playwright tests** in `tests/e2e/` covering the new public page, form, or user interaction.
-2. **Run tests after every code change**: `npm test`
-3. **Run tests before every `git commit`** — never commit failing tests.
-4. **Fix failing tests before moving on** — do not proceed to the next task if tests are red.
+2. **For every admin CRUD type, cover: list → create → verify in list → edit/update → delete.** The edit/update flow (`/admin/{type}/[id]`) must be tested, not just create and delete.
+3. **Run tests after every code change**: `npm test`
+4. **Run tests before every `git commit`** — never commit failing tests.
+5. **Fix failing tests before moving on** — do not proceed to the next task if tests are red.
 
 Required workflow for every change:
 ```
 implement → npm run build → npm run lint → npm test → git commit
 ```
+
+**Known test gaps (pre-existing):** Admin edit/update flows for work, projects, education, courses, skills, and recommendations are not yet tested. API routes (`/api/health`, `/api/upload`, `/api/protected-doc`) have no tests. Feedback form submission is not tested.
 
 ### proxy.ts Redirect Loop
 - The proxy must skip auth for `/admin/login`, otherwise an infinite redirect loop occurs
@@ -118,8 +129,9 @@ Phase 4  [Admin UI]       app/admin/** — CRUD forms, dashboard
               │
 Phase 5  [Polish]       loading.tsx · error.tsx · SEO · end-to-end testing
               │
-V2+      [Future]       Dark mode · contact form · /certifications
-                        GitHub integration · feedback form · RAG chat
+V2+      [Future]       Dark mode · /certifications standalone page (NOT YET BUILT — only
+                        a homepage section exists via CertificationsSection + lib/static-content.ts)
+                        GitHub integration · RAG chat · Privacy analytics
 ```
 
 ---
@@ -134,7 +146,10 @@ V2+      [Future]       Dark mode · contact form · /certifications
 | `actions/*.ts` | Data Agent |
 | `lib/session.ts`, `lib/auth.ts`, `proxy.ts` | Auth Agent |
 | `app/api/upload/route.ts` | Upload Agent |
+| `app/api/health/route.ts` | Upload Agent |
+| `app/api/protected-doc/route.ts` | Auth Agent |
 | `components/public/*`, `components/admin/*`, `lib/mui-theme.ts` | UI Agent |
 | `app/(public)/**`, `app/admin/**` | Pages Agent |
+| `app/cv/page.tsx`, `components/public/PrintButton.tsx` | Pages Agent |
 | `app/layout.tsx`, `app/(public)/layout.tsx`, `app/admin/layout.tsx` | Pages Agent |
 | `lib/types.ts`, `CLAUDE.md`, `AGENTS.md` | Architect Agent |

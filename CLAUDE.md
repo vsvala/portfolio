@@ -149,6 +149,14 @@ const lang = (cookieStore.get("lang")?.value ?? "en") as Lang;
 
 `LanguageToggle` (Client Component) sets the cookie and calls `router.refresh()`.
 
+### API routes
+
+| Route | Method | Purpose |
+| :--- | :--- | :--- |
+| `/api/health` | GET | Returns `{ ok: true }`. Used by Playwright `webServer` startup check. |
+| `/api/upload` | POST | PDF upload (max 10 MB, PDF-only). Saves to `public/documents/{uuid}-{filename}`. Returns `{ url }`. |
+| `/api/protected-doc` | GET | Password-protected document serving from `private-documents/`. Requires `CERTIFICATE_PASSWORD` header. |
+
 ### PDF documents
 
 Admin uploads via `POST /api/upload` → saved to `public/documents/{uuid}-{filename}` → row in `pdf_documents` → FK stored on content rows. Public URLs are `/documents/{filename}`. CV PDFs belong in `public/documents/`.
@@ -168,6 +176,10 @@ All content types follow this structure:
 - `components/admin/DeleteButton.tsx` — shared confirmation Dialog
 
 Current types: **work, projects, education, courses, skills, recommendations**. Feedback is read-only in admin (no create/edit).
+
+**Skills:** There is no public `/skills/` listing page. Skills appear only in `SkillsSection` on the homepage and on the `/cv` page.
+
+**Sort order:** All content tables have a `sort_order` integer column. Lower values appear first. Managed via a numeric field in each admin form.
 
 ## Environment Variables
 

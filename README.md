@@ -10,13 +10,13 @@ A personal portfolio website for software developer Virva Svala. Built with Next
 ## Features
 
 - **Bilingual (Finnish / English)** — all content has `_fi` and `_en` variants; a language toggle cookie switches the active language across all server-rendered pages
-- **Portfolio sections** — Work experience, Projects, Education, Skills, Courses, Certifications — each with clickable cards linking to full detail views
+- **Portfolio sections** — Work experience, Projects, Education, Courses, Certifications — clickable cards with full detail views for work, projects, and education; Skills shown as a grid (no individual detail pages)
 - **CV downloads** — direct PDF download links for both Finnish and English CVs from the hero section
 - **Profile photo** — circular avatar in the hero section
 - **Anchor sidebar** — desktop-only left-column navigation with smooth-scroll links to all homepage sections
 - **Online CV** — print-optimised `/cv` page with all content from the database; print or save as PDF via browser
 - **PDF attachments** — work certificates and study certificates can be attached to individual entries and downloaded from their detail pages
-- **Certifications section** — static credential cards (images, issuer, year, technologies) on `/certifications`
+- **Certifications section** — static credential cards (images, issuer, year, technologies) shown as a homepage section (data in `lib/static-content.ts`; no separate `/certifications` page)
 - **Feedback form** — collapsible "anything unclear?" form on every detail page; submissions visible in admin at `/admin/feedback`
 - **Recommendations** — admin-managed recommendations/testimonials shown publicly
 - **Protected admin panel** — add, edit, and delete all content at `/admin` without touching code or redeploying; covers Work, Projects, Education, Courses, Skills, and Recommendations
@@ -54,8 +54,7 @@ portfolio/
 │   │   ├── projects/[id]/page.tsx
 │   │   ├── education/[id]/page.tsx
 │   │   ├── courses/page.tsx
-│   │   ├── recommendations/page.tsx
-│   │   └── certifications/page.tsx
+│   │   └── recommendations/page.tsx
 │   ├── admin/                      # Protected admin panel
 │   │   ├── layout.tsx              # AdminNav only (no public Nav)
 │   │   ├── login/page.tsx
@@ -308,7 +307,7 @@ The contact form (`/contact`) is built and ready but disabled until a Resend API
 
 - [ ] Dark mode toggle
 - [x] Contact form (Resend API) — implemented, enable by adding `RESEND_API_KEY`
-- [x] `/certifications` section — static credential cards with images, issuer, year, technologies
+- [x] Certifications homepage section — static credential cards (`lib/static-content.ts`); standalone `/certifications` page is **not yet built**
 - [x] Courses section — DB-driven list on `/courses` and linked from education detail pages
 - [x] Recommendations — admin-managed testimonials on `/recommendations`
 - [ ] GitHub integration — pinned repos pulled from the GitHub API

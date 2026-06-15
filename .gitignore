@@ -61,6 +61,8 @@ test.db-wal
 # Local notes — not for version control
 palaute.md
 kieli.md
+agentti-coding-instr.md
+building-project.md
 
 # Uploaded documents (added via admin panel, not source code)
 public/documents/*.pdf
