@@ -25,11 +25,11 @@ export async function createEducation(
     sql: `INSERT INTO education
            (institution_fi, institution_en, degree_fi, degree_en,
             description_fi, description_en, start_date, end_date,
-            document_id, sort_order)
+            thesis_url, document_id, sort_order)
          VALUES
            (:institution_fi, :institution_en, :degree_fi, :degree_en,
             :description_fi, :description_en, :start_date, :end_date,
-            :document_id, :sort_order)`,
+            :thesis_url, :document_id, :sort_order)`,
     args: data as Record<string, string | number | null>,
   })
   return (await getEducationById(Number(result.lastInsertRowid)))!
@@ -49,6 +49,7 @@ export async function updateEducation(
            description_en = :description_en,
            start_date     = :start_date,
            end_date       = :end_date,
+           thesis_url     = :thesis_url,
            document_id    = :document_id,
            sort_order     = :sort_order,
            updated_at     = datetime('now')

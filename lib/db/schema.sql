@@ -100,6 +100,7 @@ CREATE TABLE IF NOT EXISTS education (
   institution_en TEXT NOT NULL,
   degree_fi TEXT NOT NULL,
   degree_en TEXT NOT NULL,
+  thesis_url TEXT,
   description_fi TEXT NOT NULL DEFAULT '',
   description_en TEXT NOT NULL DEFAULT '',
   start_date TEXT NOT NULL,

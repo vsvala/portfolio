@@ -15,6 +15,7 @@ const EducationSchema = z.object({
   description_en: z.string().default(''),
   start_date: z.string().min(1),
   end_date: z.string().optional().nullable().transform((v) => v || null),
+  thesis_url: z.string().url().optional().nullable().transform((v) => v || null),
   document_id: z.coerce.number().nullable().optional().default(null),
   sort_order: z.coerce.number().default(0),
 })

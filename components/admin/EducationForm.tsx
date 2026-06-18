@@ -49,6 +49,10 @@ export function EducationForm({ action, defaultValues }: Props) {
         </Grid>
 
         <Grid size={{ xs: 12 }}>
+          <TextField fullWidth label="Thesis URL" name="thesis_url" placeholder="https://..." defaultValue={defaultValues?.thesis_url ?? ''} />
+        </Grid>
+
+        <Grid size={{ xs: 12 }}>
           <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 1, mb: 1 }}>Päivämäärät</Typography>
         </Grid>
         <Grid size={{ xs: 12, sm: 4 }}>
