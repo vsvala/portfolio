@@ -4,6 +4,47 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 @AGENTS.md
 
+## Commit Message Format
+
+Use the format `type(scope): short description` with imperative mood.
+
+```
+feat(ui): add mobile gallery layout
+fix(events): preserve endDate when startDate changes
+docs(readme): add gpush helper instructions
+chore(deps): upgrade Next.js to 16.3
+```
+
+| Type | When to use |
+| --- | --- |
+| `feat` | new feature |
+| `fix` | bug fix |
+| `docs` | documentation only |
+| `refactor` | structural improvement, no new behaviour |
+| `test` | adding or fixing tests |
+| `chore` | maintenance — deps, config, scripts |
+
+Rules: first line short, imperative verb ("add", "fix", "update"), no period at end.
+
+## CI Pipeline
+
+GitHub Actions workflow at `.github/workflows/ci.yml` runs on every push and PR to `main`:
+
+```
+Build (tsc) → Lint → Unit tests → E2E tests
+```
+
+The pipeline uses two GitHub repository secrets (Settings → Secrets and variables → Actions):
+
+| Secret | Purpose |
+| --- | --- |
+| `SESSION_SECRET` | JWT signing key — same value as `.env.local` (32+ chars) |
+| `ADMIN_PASSWORD` | Admin password — same value as `.env.local` |
+
+`TURSO_URL` and `TURSO_AUTH_TOKEN` are **not** needed as secrets — E2E tests override them with `file:./test.db` automatically (see `playwright.config.ts` `webServer.env`).
+
+On failure, Playwright test results are uploaded as an artifact (`playwright-report`, 7-day retention).
+
 ## Commands
 
 ```bash
@@ -49,6 +90,14 @@ code change → npm run build (TypeScript check) → npm run lint → npm run te
 **Concurrency:** `playwright.config.ts` sets `workers: 2`. Do not raise this — 6 parallel workers overwhelm the dev server and cause spurious admin login failures.
 
 **Bilingual assertions:** All pages default to English (`?? 'en'`). Write test assertions with both languages: `getByRole('link', { name: /Etusivu|Home/i })` rather than Finnish-only.
+
+**Schema change → update `tests/e2e/seed-test-db.ts` in sync.** The seeder contains a copy of `lib/db/schema.sql` and deletes `test.db` on every run. If you add or alter a table, update both files or all E2E tests will fail.
+
+**New admin section → update `global-setup.ts` warmup list.** After login, global setup visits every admin route to pre-compile it. If you add a new `/admin/{type}` route and omit it from the warmup loop, the first test that hits it will likely time out.
+
+**`admin.spec.ts` has a hardcoded password** (`const ADMIN_PASSWORD = 'vaihda_tama_salasana'`). If you change the password in `.env.local`, update this constant too. Other admin tests use saved `storageState` so they won't break, making the mismatch easy to miss.
+
+**Known E2E gaps (pre-existing):** Admin edit/update flows for all content types are untested. `/courses` and `/cv` are not in `smoke.spec.ts`. API routes (`/api/upload`, `/api/protected-doc`) and feedback form submission have no tests.
 
 ## Next.js 16 Breaking Changes
 
@@ -116,6 +165,8 @@ Same applies to `fontWeight` on `Typography` — use `sx={{ fontWeight: 700 }}`.
 
 MUI SSR is wired via `AppRouterCacheProvider` from `@mui/material-nextjs/v16-appRouter` in `components/providers/MuiProvider.tsx`. Theme is in `lib/mui-theme.ts` (primary `#1a1a2e`, secondary `#e94560`).
 
+**Tailwind is a CSS reset only.** `globals.css` uses `@import "tailwindcss"` and `<body>` has a few utility classes. Do **not** add Tailwind layout classes (`flex`, `gap-4`) to MUI components — use `sx={{}}` instead. Mixing them breaks the MUI layout system.
+
 ## Architecture
 
 ### Data flow
@@ -133,10 +184,12 @@ Turso (remote libSQL — TURSO_URL + TURSO_AUTH_TOKEN)
 ### Auth flow
 
 - `SESSION_SECRET` + `ADMIN_PASSWORD` in `.env.local`
-- `lib/session.ts` — `jose` SignJWT/jwtVerify, 7-day `session` cookie
+- `lib/session.ts` — `jose` SignJWT/jwtVerify, 7-day `session` cookie. **Throws at import time if `SESSION_SECRET` is shorter than 32 characters** — the app will not start, it does not degrade gracefully.
 - `proxy.ts` — guards every `/admin/*` request (except `/admin/login`)
 - `lib/auth.ts` — `requireAdmin()` for Server Components and Server Actions
-- `actions/auth.ts` — `login()` / `logout()` Server Actions
+- `actions/auth.ts` — `login()` / `logout()` Server Actions. Login uses `crypto.timingSafeEqual` on SHA-256 hashes — do not simplify to a string compare.
+
+`submitFeedback` in `actions/feedback.ts` is the **only Server Action callable without authentication**. All other actions call `requireAdmin()` first.
 
 ### Bilingual content
 
@@ -175,11 +228,35 @@ All content types follow this structure:
 - `components/admin/*Form.tsx` — Client Component, `useActionState`, redirects on success
 - `components/admin/DeleteButton.tsx` — shared confirmation Dialog
 
+All admin forms use `useAdminForm(action, redirectPath)` from `lib/hooks/useAdminForm.ts`. On success it calls `router.push(redirectPath)` (client-side nav — **not** `redirect()`, which throws in a `'use client'` context). Forms accept `{ action: FormAction, defaultValues? }` props; `FormAction` is exported from the hook.
+
+**Delete actions return `Promise<void>`, not `ActionState`.** Errors are caught and logged to console only — there is no user-facing error on delete failure. `DeleteButton` invokes them directly, not via `useActionState`.
+
 Current types: **work, projects, education, courses, skills, recommendations**. Feedback is read-only in admin (no create/edit).
 
 **Skills:** There is no public `/skills/` listing page. Skills appear only in `SkillsSection` on the homepage and on the `/cv` page.
 
 **Sort order:** All content tables have a `sort_order` integer column. Lower values appear first. Managed via a numeric field in each admin form.
+
+### Static content
+
+**Certifications** are hardcoded in `lib/static-content.ts` as a `certifications` array (bilingual, with `imageUrl` pointing to `public/images/`). Both the `/cv` page and `CertificationsSection` on the homepage read this array directly. To add a new certification, edit this file and place the image in `public/images/`. There is no admin UI for certifications.
+
+**Recommendations** have a single `text` field (no `_fi`/`_en`). They are not bilingual — the page renders `rec.text` as-is regardless of the active language.
+
+### Public routes
+
+**`/cv`** lives at `app/cv/page.tsx` (outside the `(public)/` route group), so it has **no Nav or Footer**. It reads the `lang` cookie independently and fetches data directly from DB queries.
+
+**`/contact`** — the `ContactForm` is currently commented out. The page only shows contact links. To re-enable: uncomment the two imports and the Grid block in `app/(public)/contact/page.tsx`.
+
+**`/courses`** has no detail page. Courses appear on the list page and nested inside `/education/[id]` (filtered by `education_id`).
+
+**Homepage anchors:** `#tyokokemus`, `#osaaminen`, `#koulutus`, `#sertifikaatit`, `#hackathon`, `#jarjesto`, `#harrastukset`. Any new homepage section must add its `id` here and to the `anchorLinks` array in `HeroSection.tsx`.
+
+### SidebarNav
+
+`SidebarNav` (used on `/projects` and `/education/[id]`) requires each content section to have a matching `id` attribute and `sx={{ scrollMarginTop: '80px' }}` to compensate for the sticky AppBar. Omitting `scrollMarginTop` causes headings to scroll under the nav bar.
 
 ## Environment Variables
 
