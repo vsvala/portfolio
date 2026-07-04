@@ -8,7 +8,6 @@ import Stack from '@mui/material/Stack'
 import DownloadIcon from '@mui/icons-material/Download'
 import EmailIcon from '@mui/icons-material/Email'
 import GitHubIcon from '@mui/icons-material/GitHub'
-import PaletteIcon from '@mui/icons-material/Palette'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import IconButton from '@mui/material/IconButton'
 import Tooltip from '@mui/material/Tooltip'
@@ -23,6 +22,7 @@ const anchorLinks = [
   { href: '/#koulutus', fi: 'Koulutus', en: 'Education' },
   { href: '/#sertifikaatit', fi: 'Saavutukset & sertifikaatit', en: 'Achievements & Certifications' },
   { href: '/#hackathon', fi: 'Hackathon', en: 'Hackathon' },
+  { href: '/#suosittelut', fi: 'Suosittelut', en: 'Recommendations' },
   { href: '/#jarjesto', fi: 'Järjestö- ja aktiivitoiminta', en: 'Civic Activities' },
   { href: '/#harrastukset', fi: 'Harrastukset & vahvuudet', en: 'Hobbies & Strengths' },
 ]
@@ -122,18 +122,6 @@ export function HeroSection({ lang }: { lang: 'fi' | 'en' }) {
                 size="small"
               >
                 github.com/vsvala
-              </Button>
-              <Button
-                component="a"
-                href="https://virvasvala.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                startIcon={<PaletteIcon />}
-                sx={{ color: 'white', borderColor: 'rgba(255,255,255,0.4)', '&:hover': { borderColor: 'white' } }}
-                variant="outlined"
-                size="small"
-              >
-                {lang === 'fi' ? 'Tutustu taiteeseeni' : 'Explore my art'}
               </Button>
             </Stack>
 
