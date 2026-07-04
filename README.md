@@ -1,6 +1,6 @@
 # Virva Svala — Portfolio
 
-**Live:** https://virvasvala.vercel.app/
+**Live:** https://virvasvala.vercel.app/ &nbsp; [![CI](https://github.com/vsvala/portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/vsvala/portfolio/actions/workflows/ci.yml)
 
 A personal portfolio website for software developer Virva Svala. Built with Next.js 16 App Router, Material UI, and SQLite — with a protected admin panel for managing all content without touching code.
 
