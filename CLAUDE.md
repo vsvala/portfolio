@@ -31,8 +31,10 @@ Rules: first line short, imperative verb ("add", "fix", "update"), no period at 
 GitHub Actions workflow at `.github/workflows/ci.yml` runs on every push and PR to `main`:
 
 ```
-Build (tsc) → Lint → Unit tests → E2E tests
+Build (tsc) → Lint → Unit tests → E2E tests → Deploy Gate
 ```
+
+The **Deploy Gate** job runs only on pushes to `main` and requires CI to pass — explicit confirmation that deployment is allowed.
 
 The pipeline uses two GitHub repository secrets (Settings → Secrets and variables → Actions):
 

@@ -248,6 +248,27 @@ Notable issues discovered during development and now documented for future agent
 
 ---
 
+## CI Pipeline
+
+GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and PR to `main`:
+
+```
+Build (tsc) → Lint → Unit tests → E2E tests → Deploy Gate
+```
+
+The **Deploy Gate** job runs only on pushes to `main` and requires the full CI job to pass — production deployment is blocked if any step fails.
+
+Two repository secrets are required (GitHub → Settings → Secrets and variables → Actions):
+
+| Secret | Value |
+| :--- | :--- |
+| `SESSION_SECRET` | Same as `.env.local` (32+ chars) |
+| `ADMIN_PASSWORD` | Same as `.env.local` |
+
+`TURSO_URL` and `TURSO_AUTH_TOKEN` are not needed — E2E tests use a local `test.db` automatically.
+
+---
+
 ## Testing
 
 Tests live in the main repo under `tests/`:
@@ -289,19 +310,13 @@ npm run test:unit      # run unit tests (Vitest, no server needed)
 
 ## Enabling the Contact Form
 
-The contact form (`/contact`) is built and ready but disabled until a Resend API key is configured.
+The contact form is not currently implemented — the `/contact` page shows contact links only. To add a message form:
 
-**Steps to enable:**
+1. Create a free account at [resend.com](https://resend.com) and copy your API key
+2. Add to `.env.local`: `RESEND_API_KEY=re_xxxxxxxxxxxx` and `CONTACT_EMAIL=your@email.com`
+3. Re-add `ContactForm` to `app/(public)/contact/page.tsx` — the component exists at `components/public/ContactForm.tsx`
 
-1. Create a free account at [resend.com](https://resend.com)
-2. Copy your API key and add it to `.env.local`:
-   ```env
-   RESEND_API_KEY=re_xxxxxxxxxxxx
-   ```
-3. Open `app/(public)/contact/page.tsx` and uncomment the form block (the `{/* Contact form — disabled ... */}` section)
-4. Restart the dev server — the form will appear on the right side of the Contact page
-
-> **Production note:** The `from` address in `actions/contact.ts` uses `onboarding@resend.dev` (Resend's sandbox sender). For production, verify your own domain in the Resend dashboard and update the `from` field to e.g. `Portfolio <noreply@yourdomain.com>`.
+> **Production note:** The `from` address in `actions/contact.ts` uses `onboarding@resend.dev` (Resend's sandbox sender). For production, verify your own domain in the Resend dashboard and update the `from` field.
 
 ---
 
