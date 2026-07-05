@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-const ADMIN_PASSWORD = "vaihda_tama_salasana";
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD ?? "vaihda_tama_salasana";
 
 test("/admin redirects to /admin/login when not logged in", async ({ page }) => {
   await page.goto("/admin");
