@@ -12,13 +12,15 @@ function safeCompare(a: string, b: string): boolean {
 }
 
 export async function login(prevState: ActionState, formData: FormData): Promise<ActionState> {
-  const { allowed } = checkRateLimit("login");
-  if (!allowed) {
-    return {
-      success: false,
-      errors: {},
-      message: "Liian monta yritystä. Odota 15 min / Too many attempts. Wait 15 min.",
-    };
+  if (process.env.NODE_ENV === "production") {
+    const { allowed } = checkRateLimit("login");
+    if (!allowed) {
+      return {
+        success: false,
+        errors: {},
+        message: "Liian monta yritystä. Odota 15 min / Too many attempts. Wait 15 min.",
+      };
+    }
   }
 
   const password = formData.get("password") as string;
@@ -26,7 +28,9 @@ export async function login(prevState: ActionState, formData: FormData): Promise
     return { success: false, errors: {}, message: "Väärä salasana / Wrong password" };
   }
 
-  resetRateLimit("login");
+  if (process.env.NODE_ENV === "production") {
+    resetRateLimit("login");
+  }
   await createSession();
   redirect("/admin");
 }
