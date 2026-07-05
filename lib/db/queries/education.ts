@@ -1,26 +1,26 @@
-import 'server-only'
-import db from '@/lib/db'
-import { toArgs, mapRows, mapRow } from '@/lib/db/utils'
-import type { Education } from '@/lib/types'
+import "server-only";
+import db from "@/lib/db";
+import { toArgs, mapRows, mapRow } from "@/lib/db/utils";
+import type { Education } from "@/lib/types";
 
 export async function getAllEducation(): Promise<Education[]> {
   const result = await db.execute(
     `SELECT * FROM education ORDER BY sort_order ASC, created_at DESC`
-  )
-  return mapRows<Education>(result.rows)
+  );
+  return mapRows<Education>(result.rows);
 }
 
 export async function getEducationById(id: number): Promise<Education | undefined> {
   const result = await db.execute({
     sql: `SELECT * FROM education WHERE id = ?`,
     args: [id],
-  })
-  return mapRow<Education | undefined>(result.rows[0])
+  });
+  return mapRow<Education | undefined>(result.rows[0]);
 }
 
 export async function createEducation(
-  data: Omit<Education, 'id' | 'created_at' | 'updated_at'>
-): Promise<Education> {
+  data: Omit<Education, "id" | "created_at" | "updated_at">
+): Promise<{ id: number }> {
   const result = await db.execute({
     sql: `INSERT INTO education
            (institution_fi, institution_en, degree_fi, degree_en,
@@ -31,13 +31,13 @@ export async function createEducation(
             :description_fi, :description_en, :start_date, :end_date,
             :thesis_url, :document_id, :sort_order)`,
     args: data as Record<string, string | number | null>,
-  })
-  return (await getEducationById(Number(result.lastInsertRowid)))!
+  });
+  return { id: Number(result.lastInsertRowid) };
 }
 
 export async function updateEducation(
   id: number,
-  data: Partial<Omit<Education, 'id' | 'created_at' | 'updated_at'>>
+  data: Partial<Omit<Education, "id" | "created_at" | "updated_at">>
 ): Promise<Education | undefined> {
   await db.execute({
     sql: `UPDATE education SET
@@ -55,10 +55,10 @@ export async function updateEducation(
            updated_at     = datetime('now')
          WHERE id = :id`,
     args: toArgs(data as Record<string, unknown>, id),
-  })
-  return getEducationById(id)
+  });
+  return getEducationById(id);
 }
 
 export async function deleteEducation(id: number): Promise<void> {
-  await db.execute({ sql: `DELETE FROM education WHERE id = ?`, args: [id] })
+  await db.execute({ sql: `DELETE FROM education WHERE id = ?`, args: [id] });
 }

@@ -1,38 +1,53 @@
-import { requireAdmin } from '@/lib/auth'
-import { getAllWork } from '@/lib/db/queries/work'
-import { getAllProjects } from '@/lib/db/queries/projects'
-import { getAllEducation } from '@/lib/db/queries/education'
-import { getAllDocuments } from '@/lib/db/queries/documents'
-import { getAllRecommendations } from '@/lib/db/queries/recommendations'
-import { getAllSkills } from '@/lib/db/queries/skills'
-import { getAllCourses } from '@/lib/db/queries/courses'
-import Alert from '@mui/material/Alert'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import Grid from '@mui/material/Grid'
-import Paper from '@mui/material/Paper'
-import { LinkButton } from '@/components/ui/LinkButton'
+import { requireAdmin } from "@/lib/auth";
+import { getAllWork } from "@/lib/db/queries/work";
+import { getAllProjects } from "@/lib/db/queries/projects";
+import { getAllEducation } from "@/lib/db/queries/education";
+import { getAllDocuments } from "@/lib/db/queries/documents";
+import { getAllRecommendations } from "@/lib/db/queries/recommendations";
+import { getAllSkills } from "@/lib/db/queries/skills";
+import { getAllCourses } from "@/lib/db/queries/courses";
+import Alert from "@mui/material/Alert";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { LinkButton } from "@/components/ui/LinkButton";
 
 export default async function AdminDashboard() {
-  await requireAdmin()
+  await requireAdmin();
 
-  const workCount = (await getAllWork()).length
-  const projectCount = (await getAllProjects()).length
-  const educationCount = (await getAllEducation()).length
-  const documentCount = (await getAllDocuments()).length
-  const recCount = (await getAllRecommendations()).length
-  const skillCount = (await getAllSkills()).length
-  const courseCount = (await getAllCourses()).length
+  const workCount = (await getAllWork()).length;
+  const projectCount = (await getAllProjects()).length;
+  const educationCount = (await getAllEducation()).length;
+  const documentCount = (await getAllDocuments()).length;
+  const recCount = (await getAllRecommendations()).length;
+  const skillCount = (await getAllSkills()).length;
+  const courseCount = (await getAllCourses()).length;
 
   const stats = [
-    { label: 'Työkokemukset', count: workCount, href: '/admin/work', addHref: '/admin/work/new' },
-    { label: 'Projektit', count: projectCount, href: '/admin/projects', addHref: '/admin/projects/new' },
-    { label: 'Koulutukset', count: educationCount, href: '/admin/education', addHref: '/admin/education/new' },
-    { label: 'Kurssit', count: courseCount, href: '/admin/courses', addHref: '/admin/courses/new' },
-    { label: 'Suositukset', count: recCount, href: '/admin/recommendations', addHref: '/admin/recommendations/new' },
-    { label: 'Taidot', count: skillCount, href: '/admin/skills', addHref: '/admin/skills/new' },
-    { label: 'Dokumentit', count: documentCount, href: '/admin/documents', addHref: null },
-  ]
+    { label: "Työkokemukset", count: workCount, href: "/admin/work", addHref: "/admin/work/new" },
+    {
+      label: "Projektit",
+      count: projectCount,
+      href: "/admin/projects",
+      addHref: "/admin/projects/new",
+    },
+    {
+      label: "Koulutukset",
+      count: educationCount,
+      href: "/admin/education",
+      addHref: "/admin/education/new",
+    },
+    { label: "Kurssit", count: courseCount, href: "/admin/courses", addHref: "/admin/courses/new" },
+    {
+      label: "Suositukset",
+      count: recCount,
+      href: "/admin/recommendations",
+      addHref: "/admin/recommendations/new",
+    },
+    { label: "Taidot", count: skillCount, href: "/admin/skills", addHref: "/admin/skills/new" },
+    { label: "Dokumentit", count: documentCount, href: "/admin/documents", addHref: null },
+  ];
 
   return (
     <Container maxWidth="md" sx={{ py: 4 }}>
@@ -41,17 +56,20 @@ export default async function AdminDashboard() {
       </Typography>
       {!process.env.RESEND_API_KEY && (
         <Alert severity="warning" sx={{ mb: 3 }}>
-          Yhteydenottolomake ei ole käytössä — aseta <strong>RESEND_API_KEY</strong> ja <strong>CONTACT_EMAIL</strong> ympäristömuuttujiin.
+          Yhteydenottolomake ei ole käytössä — aseta <strong>RESEND_API_KEY</strong> ja{" "}
+          <strong>CONTACT_EMAIL</strong> ympäristömuuttujiin.
         </Alert>
       )}
       <Grid container spacing={2}>
         {stats.map((s) => (
           <Grid key={s.label} size={{ xs: 12, sm: 6 }}>
             <Paper sx={{ p: 3 }}>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main' }}>
+              <Typography variant="h3" sx={{ fontWeight: 700, color: "primary.main" }}>
                 {s.count}
               </Typography>
-              <Typography variant="subtitle1" sx={{ mb: 2 }}>{s.label}</Typography>
+              <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                {s.label}
+              </Typography>
               <LinkButton href={s.href} size="small" variant="outlined" sx={{ mr: 1 }}>
                 Hallitse
               </LinkButton>
@@ -65,5 +83,5 @@ export default async function AdminDashboard() {
         ))}
       </Grid>
     </Container>
-  )
+  );
 }

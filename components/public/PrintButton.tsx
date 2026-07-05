@@ -1,7 +1,7 @@
-'use client'
-import Button from '@mui/material/Button'
-import PrintIcon from '@mui/icons-material/Print'
-import type { Lang } from '@/lib/types'
+"use client";
+import Button from "@mui/material/Button";
+import PrintIcon from "@mui/icons-material/Print";
+import type { Lang } from "@/lib/types";
 
 export function PrintButton({ lang }: { lang: Lang }) {
   return (
@@ -11,7 +11,7 @@ export function PrintButton({ lang }: { lang: Lang }) {
       onClick={() => window.print()}
       size="small"
     >
-      {lang === 'fi' ? 'Tulosta / Tallenna PDF' : 'Print / Save PDF'}
+      {lang === "fi" ? "Tulosta / Tallenna PDF" : "Print / Save PDF"}
     </Button>
-  )
+  );
 }

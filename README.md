@@ -24,21 +24,22 @@ A personal portfolio website for software developer Virva Svala. Built with Next
 - **Protected admin panel** — add, edit, and delete all content at `/admin` without touching code or redeploying; covers Work, Projects, Education, Courses, Skills, and Recommendations
 - **File upload** — PDF documents uploaded through the admin panel are stored in `public/documents/` and linked to content entries
 - **Responsive** — mobile-first layout with a hamburger menu on small screens
+- **HTTP security headers** — `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security`, and `Content-Security-Policy` set in `next.config.ts`
 
 ---
 
 ## Tech Stack
 
-| Layer | Technology | Notes |
-| :--- | :--- | :--- |
-| Framework | Next.js 16.2.9 (App Router) | Uses `proxy.ts` instead of `middleware.ts`; dynamic params are Promises |
-| UI | Material UI v9 | `AppRouterCacheProvider` for SSR emotion fix; all layout props via `sx={{}}` |
-| Database | Turso (libSQL / SQLite) | `@libsql/client`; local dev also works with SQLite via same client |
-| Auth | jose (JWT) | HS256, 7-day session cookie; single admin password |
-| Validation | Zod | All Server Action inputs validated before hitting the DB |
-| Forms | React 19 `useActionState` | Progressive enhancement; no separate form library |
-| Language | TypeScript (strict) | |
-| Deploy target | Vercel + Turso | Serverless functions on Vercel, database on Turso (EU West) |
+| Layer         | Technology                  | Notes                                                                        |
+| :------------ | :-------------------------- | :--------------------------------------------------------------------------- |
+| Framework     | Next.js 16.2.9 (App Router) | Uses `proxy.ts` instead of `middleware.ts`; dynamic params are Promises      |
+| UI            | Material UI v9              | `AppRouterCacheProvider` for SSR emotion fix; all layout props via `sx={{}}` |
+| Database      | Turso (libSQL / SQLite)     | `@libsql/client`; local dev also works with SQLite via same client           |
+| Auth          | jose (JWT)                  | HS256, 7-day session cookie; single admin password                           |
+| Validation    | Zod                         | All Server Action inputs validated before hitting the DB                     |
+| Forms         | React 19 `useActionState`   | Progressive enhancement; no separate form library                            |
+| Language      | TypeScript (strict)         |                                                                              |
+| Deploy target | Vercel + Turso              | Serverless functions on Vercel, database on Turso (EU West)                  |
 
 ---
 
@@ -153,6 +154,7 @@ npm run start   # Serve the production build
 Navigate to [http://localhost:3000/admin/login](http://localhost:3000/admin/login) and enter the password from `.env.local`.
 
 From the dashboard you can:
+
 - Add / edit / delete work experience entries
 - Add / edit / delete projects
 - Add / edit / delete education entries
@@ -199,14 +201,14 @@ npx vercel --prod
 
 In the Vercel dashboard → **Settings → Environment Variables**, add all four variables for the **Production** environment:
 
-| Variable | Value |
-| :--- | :--- |
-| `TURSO_URL` | `libsql://portfolio-<name>.turso.io` |
-| `TURSO_AUTH_TOKEN` | token from `turso db tokens create` |
-| `SESSION_SECRET` | base64 32-byte key |
-| `ADMIN_PASSWORD` | your admin password |
+| Variable               | Value                                                             |
+| :--------------------- | :---------------------------------------------------------------- |
+| `TURSO_URL`            | `libsql://portfolio-<name>.turso.io`                              |
+| `TURSO_AUTH_TOKEN`     | token from `turso db tokens create`                               |
+| `SESSION_SECRET`       | base64 32-byte key                                                |
+| `ADMIN_PASSWORD`       | your admin password                                               |
 | `CERTIFICATE_PASSWORD` | password for `/api/protected-doc` (protects `private-documents/`) |
-| `RESEND_API_KEY` | Resend API key (optional — enables the contact form) |
+| `RESEND_API_KEY`       | Resend API key (optional — enables the contact form)              |
 
 Redeploy after adding variables.
 
@@ -227,24 +229,26 @@ public/documents/cv_26_virva_svala_en.pdf
 
 This project was built as a hands-on exercise in **agentic software development** using Claude Code. The implementation followed a structured multi-agent plan:
 
-| Phase | Agents | What was built |
-| :--- | :--- | :--- |
-| 1 — Foundation | Single agent (sequential) | Dependencies, `.env.local`, types, DB schema, session, auth, proxy |
-| 2 — Core layers | 4 agents in parallel | Data queries, Server Actions, UI components, file upload |
-| 3 — Public pages | Pages Agent | Homepage, list pages, detail pages |
-| 4 — Admin UI | Pages Agent | Login, dashboard, CRUD forms for all content types |
-| 5 — Polish | Reviewer Agent | Build fixes, TypeScript errors, runtime bug fixes, CLAUDE.md |
-| 6 — Testing | Test Agent | 80 Playwright E2E tests + 20 Vitest unit tests in `tests/` |
-| 7 — Refactor | Code Quality Agent | Shared action utils, Zod field helpers, DB utils, useAdminForm hook |
+| Phase            | Agents                    | What was built                                                      |
+| :--------------- | :------------------------ | :------------------------------------------------------------------ |
+| 1 — Foundation   | Single agent (sequential) | Dependencies, `.env.local`, types, DB schema, session, auth, proxy  |
+| 2 — Core layers  | 4 agents in parallel      | Data queries, Server Actions, UI components, file upload            |
+| 3 — Public pages | Pages Agent               | Homepage, list pages, detail pages                                  |
+| 4 — Admin UI     | Pages Agent               | Login, dashboard, CRUD forms for all content types                  |
+| 5 — Polish       | Reviewer Agent            | Build fixes, TypeScript errors, runtime bug fixes, CLAUDE.md        |
+| 6 — Testing      | Test Agent                | 80 Playwright E2E tests + 20 Vitest unit tests in `tests/`          |
+| 7 — Refactor     | Code Quality Agent        | Shared action utils, Zod field helpers, DB utils, useAdminForm hook |
 
 Each agent received a scoped task with clear input/output contracts. Shared knowledge (breaking API changes, MUI constraints, security rules) was captured in [`CLAUDE.md`](./CLAUDE.md) and [`AGENTS.md`](./AGENTS.md) so that every agent — and every future Claude Code session — starts with the same context.
 
 Notable issues discovered during development and now documented for future agents:
+
 - Next.js 16 uses `proxy.ts` instead of `middleware.ts`; dynamic `params` and `searchParams` are Promises
 - MUI v9 does not accept layout props (`gap`, `justifyContent`, `flexWrap`) directly on `Stack` — they must go in `sx={{}}`
 - React 19 / Next.js 16 forbids passing functions (like `Link`) as props across the Server/Client boundary — solved with a `LinkButton` client wrapper and `'use client'` card components
 - `proxy.ts` matcher must explicitly skip `/admin/login` to avoid an infinite redirect loop
 - Zod optional FK fields need `.default(null)` to avoid better-sqlite3 "Missing named parameter" errors
+- `/api/protected-doc` uses `POST` (password in JSON body) — a GET endpoint with a password query param would expose the secret in server logs and browser history
 
 ---
 
@@ -260,10 +264,10 @@ The **Deploy Gate** job runs only on pushes to `main` and requires the full CI j
 
 Two repository secrets are required (GitHub → Settings → Secrets and variables → Actions):
 
-| Secret | Value |
-| :--- | :--- |
+| Secret           | Value                            |
+| :--------------- | :------------------------------- |
 | `SESSION_SECRET` | Same as `.env.local` (32+ chars) |
-| `ADMIN_PASSWORD` | Same as `.env.local` |
+| `ADMIN_PASSWORD` | Same as `.env.local`             |
 
 `TURSO_URL` and `TURSO_AUTH_TOKEN` are not needed — E2E tests use a local `test.db` automatically.
 
@@ -283,28 +287,28 @@ npm run test:unit      # run unit tests (Vitest, no server needed)
 
 **E2E coverage (80 tests across 12 spec files):**
 
-| File | What it covers |
-| :--- | :--- |
-| `smoke.spec.ts` | All public routes return HTTP 200; 404 for unknown routes |
-| `navigation.spec.ts` | Nav links, GitHub icon, language toggle FI↔EN, logo |
-| `homepage.spec.ts` | Hero, CV buttons, anchor sidebar, section IDs, card links |
-| `admin.spec.ts` | Auth redirect, login form, wrong password, successful login, dashboard |
-| `feedback.spec.ts` | Feedback button and form on work, projects, and education detail pages |
-| `work.spec.ts` | Work list and detail pages, admin CRUD |
-| `projects.spec.ts` | Projects list and detail pages, admin CRUD |
-| `education.spec.ts` | Education list and detail pages, admin CRUD |
-| `courses.spec.ts` | Courses public page, education detail with courses, admin CRUD |
-| `skills.spec.ts` | Skills section on homepage and CV, admin CRUD |
-| `recommendations.spec.ts` | Recommendations public page, admin CRUD |
-| `cv.spec.ts` | `/cv` page: all sections, print button, bilingual content |
+| File                      | What it covers                                                         |
+| :------------------------ | :--------------------------------------------------------------------- |
+| `smoke.spec.ts`           | All public routes return HTTP 200; 404 for unknown routes              |
+| `navigation.spec.ts`      | Nav links, GitHub icon, language toggle FI↔EN, logo                    |
+| `homepage.spec.ts`        | Hero, CV buttons, anchor sidebar, section IDs, card links              |
+| `admin.spec.ts`           | Auth redirect, login form, wrong password, successful login, dashboard |
+| `feedback.spec.ts`        | Feedback button and form on work, projects, and education detail pages |
+| `work.spec.ts`            | Work list and detail pages, admin CRUD                                 |
+| `projects.spec.ts`        | Projects list and detail pages, admin CRUD                             |
+| `education.spec.ts`       | Education list and detail pages, admin CRUD                            |
+| `courses.spec.ts`         | Courses public page, education detail with courses, admin CRUD         |
+| `skills.spec.ts`          | Skills section on homepage and CV, admin CRUD                          |
+| `recommendations.spec.ts` | Recommendations public page, admin CRUD                                |
+| `cv.spec.ts`              | `/cv` page: all sections, print button, bilingual content              |
 
 **Unit tests (20 tests across 3 files):**
 
-| File | What it covers |
-| :--- | :--- |
-| `utils.test.ts` | `parseTechnologies` — JSON parse and error cases |
+| File                 | What it covers                                      |
+| :------------------- | :-------------------------------------------------- |
+| `utils.test.ts`      | `parseTechnologies` — JSON parse and error cases    |
 | `zod-fields.test.ts` | `technologiesField` — CSV and JSON array transforms |
-| `db-utils.test.ts` | `toArgs` — object-to-named-params conversion |
+| `db-utils.test.ts`   | `toArgs` — object-to-named-params conversion        |
 
 ---
 

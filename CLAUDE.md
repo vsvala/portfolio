@@ -15,14 +15,14 @@ docs(readme): add gpush helper instructions
 chore(deps): upgrade Next.js to 16.3
 ```
 
-| Type | When to use |
-| --- | --- |
-| `feat` | new feature |
-| `fix` | bug fix |
-| `docs` | documentation only |
+| Type       | When to use                              |
+| ---------- | ---------------------------------------- |
+| `feat`     | new feature                              |
+| `fix`      | bug fix                                  |
+| `docs`     | documentation only                       |
 | `refactor` | structural improvement, no new behaviour |
-| `test` | adding or fixing tests |
-| `chore` | maintenance — deps, config, scripts |
+| `test`     | adding or fixing tests                   |
+| `chore`    | maintenance — deps, config, scripts      |
 
 Rules: first line short, imperative verb ("add", "fix", "update"), no period at end.
 
@@ -38,10 +38,10 @@ The **Deploy Gate** job runs only on pushes to `main` and requires CI to pass �
 
 The pipeline uses two GitHub repository secrets (Settings → Secrets and variables → Actions):
 
-| Secret | Purpose |
-| --- | --- |
+| Secret           | Purpose                                                  |
+| ---------------- | -------------------------------------------------------- |
 | `SESSION_SECRET` | JWT signing key — same value as `.env.local` (32+ chars) |
-| `ADMIN_PASSWORD` | Admin password — same value as `.env.local` |
+| `ADMIN_PASSWORD` | Admin password — same value as `.env.local`              |
 
 `TURSO_URL` and `TURSO_AUTH_TOKEN` are **not** needed as secrets — E2E tests override them with `file:./test.db` automatically (see `playwright.config.ts` `webServer.env`).
 
@@ -83,6 +83,7 @@ These rules apply to every code change, no exceptions:
 3. **Run tests before every `git commit`** — do not commit if tests fail.
 
 Workflow:
+
 ```
 code change → npm run build (TypeScript check) → npm run lint → npm run test:unit → npm test → git commit
 ```
@@ -108,11 +109,7 @@ This project uses **Next.js 16.2.9**, which differs from earlier versions:
 - **`proxy.ts` replaces `middleware.ts`** — repo root exports `async function proxy(request: NextRequest)`, not `middleware`.
 - **Dynamic route params are Promises** — always `await params` before destructuring:
   ```ts
-  export default async function Page({
-    params,
-  }: {
-    params: Promise<{ id: string }>;
-  }) {
+  export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
   }
   ```
@@ -206,11 +203,11 @@ const lang = (cookieStore.get("lang")?.value ?? "en") as Lang;
 
 ### API routes
 
-| Route | Method | Purpose |
-| :--- | :--- | :--- |
-| `/api/health` | GET | Returns `{ ok: true }`. Used by Playwright `webServer` startup check. |
-| `/api/upload` | POST | PDF upload (max 10 MB, PDF-only). Saves to `public/documents/{uuid}-{filename}`. Returns `{ url }`. |
-| `/api/protected-doc` | GET | Password-protected document serving from `private-documents/`. Requires `CERTIFICATE_PASSWORD` header. |
+| Route                | Method | Purpose                                                                                                |
+| :------------------- | :----- | :----------------------------------------------------------------------------------------------------- |
+| `/api/health`        | GET    | Returns `{ ok: true }`. Used by Playwright `webServer` startup check.                                  |
+| `/api/upload`        | POST   | PDF upload (max 10 MB, PDF-only). Saves to `public/documents/{uuid}-{filename}`. Returns `{ url }`.    |
+| `/api/protected-doc` | GET    | Password-protected document serving from `private-documents/`. Requires `CERTIFICATE_PASSWORD` header. |
 
 ### PDF documents
 
@@ -262,15 +259,15 @@ Current types: **work, projects, education, courses, skills, recommendations**. 
 
 ## Environment Variables
 
-| Variable               | Purpose                                                            |
-| ---------------------- | ------------------------------------------------------------------ |
-| `TURSO_URL`            | Turso database URL (`libsql://portfolio-*.turso.io`)               |
-| `TURSO_AUTH_TOKEN`     | Turso auth token                                                   |
-| `SESSION_SECRET`       | JWT signing key (base64, 32+ bytes)                                |
-| `ADMIN_PASSWORD`       | Plain-text admin password compared in `actions/auth.ts`            |
-| `CERTIFICATE_PASSWORD` | Password for `/api/protected-doc` — protects private-documents/    |
+| Variable               | Purpose                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------- |
+| `TURSO_URL`            | Turso database URL (`libsql://portfolio-*.turso.io`)                          |
+| `TURSO_AUTH_TOKEN`     | Turso auth token                                                              |
+| `SESSION_SECRET`       | JWT signing key (base64, 32+ bytes)                                           |
+| `ADMIN_PASSWORD`       | Plain-text admin password compared in `actions/auth.ts`                       |
+| `CERTIFICATE_PASSWORD` | Password for `/api/protected-doc` — protects private-documents/               |
 | `RESEND_API_KEY`       | Resend API key for contact form emails (optional — form is hidden without it) |
-| `CONTACT_EMAIL`        | Recipient email address for contact form messages                  |
+| `CONTACT_EMAIL`        | Recipient email address for contact form messages                             |
 
 ## Path Alias
 

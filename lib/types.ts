@@ -29,6 +29,7 @@ export interface Project {
   url: string | null;
   repo_url: string | null;
   category: string;
+  status: string | null;
   document_id: number | null;
   sort_order: number;
   created_at: string;

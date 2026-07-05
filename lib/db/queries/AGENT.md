@@ -3,15 +3,18 @@
 **Tila**: VALMIS ✅
 
 ## Vastuu
+
 Tietokantakyselyjen kerros SQLite:lle (better-sqlite3).
 
 ## Luodut tiedostot
+
 - `work.ts` — getAllWork, getWorkById, createWork, updateWork, deleteWork
 - `projects.ts` — getAllProjects, getProjectById, createProject, updateProject, deleteProject
 - `education.ts` — getAllEducation, getEducationById, createEducation, updateEducation, deleteEducation
 - `documents.ts` — getAllDocuments, getDocumentById, createDocument, deleteDocument
 
 ## Käytännöt
+
 - Jokainen tiedosto: `import 'server-only'` alussa
 - DB-singleton: `import db from '@/lib/db'`
 - Synkroninen API: `.all()`, `.get()`, `.run()`

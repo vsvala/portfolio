@@ -1,52 +1,59 @@
-import 'server-only'
-import { SignJWT, jwtVerify } from 'jose'
-import { cookies } from 'next/headers'
-import type { SessionPayload } from './types'
+import "server-only";
+import { SignJWT, jwtVerify } from "jose";
+import { z } from "zod";
+import { cookies } from "next/headers";
+import type { SessionPayload } from "./types";
 
-const secretKey = process.env.SESSION_SECRET
+const SessionPayloadSchema = z.object({
+  role: z.literal("admin"),
+  exp: z.number(),
+  iat: z.number(),
+});
+
+const secretKey = process.env.SESSION_SECRET;
 if (!secretKey || secretKey.length < 32) {
-  throw new Error('SESSION_SECRET must be set to a string of 32+ characters')
+  throw new Error("SESSION_SECRET must be set to a string of 32+ characters");
 }
-const encodedKey = new TextEncoder().encode(secretKey)
+const encodedKey = new TextEncoder().encode(secretKey);
 
-export async function encrypt(payload: Omit<SessionPayload, 'iat' | 'exp'>) {
+export async function encrypt(payload: Omit<SessionPayload, "iat" | "exp">) {
   return new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
+    .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
-    .setExpirationTime('7d')
-    .sign(encodedKey)
+    .setExpirationTime("7d")
+    .sign(encodedKey);
 }
 
-export async function decrypt(token: string | undefined = '') {
+export async function decrypt(token: string | undefined = "") {
   try {
     const { payload } = await jwtVerify(token, encodedKey, {
-      algorithms: ['HS256'],
-    })
-    return payload as unknown as SessionPayload
+      algorithms: ["HS256"],
+    });
+    return SessionPayloadSchema.parse(payload) as SessionPayload;
   } catch {
-    return null
+    return null;
   }
 }
 
 export async function createSession() {
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
-  const token = await encrypt({ role: 'admin' })
-  const cookieStore = await cookies()
-  cookieStore.set('session', token, {
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  const token = await encrypt({ role: "admin" });
+  const cookieStore = await cookies();
+  cookieStore.set("session", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === "production",
     expires: expiresAt,
-    sameSite: 'lax',
-    path: '/',
-  })
+    sameSite: "lax",
+    path: "/",
+  });
 }
 
 export async function deleteSession() {
-  const cookieStore = await cookies()
-  cookieStore.delete('session')
+  const cookieStore = await cookies();
+  cookieStore.delete("session");
 }
 
 export async function getSessionToken() {
-  const cookieStore = await cookies()
-  return cookieStore.get('session')?.value
+  const cookieStore = await cookies();
+  return cookieStore.get("session")?.value;
 }

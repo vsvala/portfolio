@@ -1,40 +1,38 @@
-'use server'
-import { z } from 'zod'
-import { revalidatePath } from 'next/cache'
-import { requireAdmin } from '@/lib/auth'
-import { createRecommendation, updateRecommendation, deleteRecommendation } from '@/lib/db/queries/recommendations'
-import { validationError } from '@/lib/action-utils'
-import type { ActionState } from '@/lib/types'
+"use server";
+import { z } from "zod";
+import {
+  createRecommendation,
+  updateRecommendation,
+  deleteRecommendation,
+} from "@/lib/db/queries/recommendations";
+import { runValidatedAdminAction, runAdminTaskAction } from "@/lib/server-action-utils";
+import type { ActionState } from "@/lib/types";
 
 const RecommendationSchema = z.object({
   name: z.string().min(1),
   role: z.string().min(1),
-  company: z.string().default(''),
-  relationship: z.string().default(''),
+  company: z.string().default(""),
+  relationship: z.string().default(""),
   rec_date: z.string().min(1),
   text: z.string().min(1),
   sort_order: z.coerce.number().default(0),
-})
+});
 
-function revalidate() {
-  revalidatePath('/recommendations')
-  revalidatePath('/admin/recommendations')
-}
+const REVALIDATE_PATHS = ["/recommendations", "/admin/recommendations"] as const;
 
 export async function createRecommendationAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  await requireAdmin()
-  const parsed = RecommendationSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return validationError(parsed.error)
-  try {
-    await createRecommendation(parsed.data)
-    revalidate()
-    return { success: true }
-  } catch {
-    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
-  }
+  void prevState;
+  return runValidatedAdminAction(
+    RecommendationSchema,
+    formData,
+    async (data) => {
+      await createRecommendation(data);
+    },
+    REVALIDATE_PATHS
+  );
 }
 
 export async function updateRecommendationAction(
@@ -42,24 +40,23 @@ export async function updateRecommendationAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  await requireAdmin()
-  const parsed = RecommendationSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return validationError(parsed.error)
-  try {
-    await updateRecommendation(id, parsed.data)
-    revalidate()
-    return { success: true }
-  } catch {
-    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
-  }
+  void prevState;
+  return runValidatedAdminAction(
+    RecommendationSchema,
+    formData,
+    async (data) => {
+      await updateRecommendation(id, data);
+    },
+    REVALIDATE_PATHS
+  );
 }
 
-export async function deleteRecommendationAction(id: number): Promise<void> {
-  await requireAdmin()
-  try {
-    await deleteRecommendation(id)
-    revalidate()
-  } catch (err) {
-    console.error('deleteRecommendationAction failed:', err)
-  }
+export async function deleteRecommendationAction(id: number): Promise<ActionState> {
+  return runAdminTaskAction(
+    async () => {
+      await deleteRecommendation(id);
+    },
+    REVALIDATE_PATHS,
+    "Poisto epaonnistui / Delete failed. Please try again."
+  );
 }

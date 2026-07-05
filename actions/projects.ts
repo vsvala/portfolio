@@ -1,49 +1,42 @@
-'use server'
-import { z } from 'zod'
-import { revalidatePath } from 'next/cache'
-import { requireAdmin } from '@/lib/auth'
-import { createProject, updateProject, deleteProject } from '@/lib/db/queries/projects'
-import { technologiesField } from '@/lib/zod-fields'
-import { validationError } from '@/lib/action-utils'
-import type { ActionState } from '@/lib/types'
+"use server";
+import { z } from "zod";
+import { createProject, updateProject, deleteProject } from "@/lib/db/queries/projects";
+import { technologiesField, nullableStringField, nullableUrlField } from "@/lib/zod-fields";
+import { PROJECT_CATEGORY_KEYS } from "@/lib/constants/categories";
+import { runValidatedAdminAction, runAdminTaskAction } from "@/lib/server-action-utils";
+import type { ActionState } from "@/lib/types";
 
 const ProjectSchema = z.object({
   title_fi: z.string().min(1),
   title_en: z.string().min(1),
-  description_fi: z.string().default(''),
-  description_en: z.string().default(''),
-  long_description_fi: z.string().default(''),
-  long_description_en: z.string().default(''),
+  description_fi: z.string().default(""),
+  description_en: z.string().default(""),
+  long_description_fi: z.string().default(""),
+  long_description_en: z.string().default(""),
   technologies: technologiesField,
-  url: z.string().url().optional().nullable().or(z.literal('')),
-  repo_url: z.string().url().optional().nullable().or(z.literal('')),
-  category: z.string().default('hackathon'),
+  url: nullableUrlField,
+  repo_url: nullableUrlField,
+  category: z.enum(PROJECT_CATEGORY_KEYS).default("hackathon"),
+  status: nullableStringField,
   document_id: z.coerce.number().nullable().optional().default(null),
   sort_order: z.coerce.number().default(0),
-})
+});
 
-function revalidate() {
-  revalidatePath('/projects')
-  revalidatePath('/admin/projects')
-}
+const REVALIDATE_PATHS = ["/projects", "/admin/projects"] as const;
 
 export async function createProjectAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  await requireAdmin()
-  const parsed = ProjectSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) {
-    return validationError(parsed.error)
-  }
-  const data = { ...parsed.data, url: parsed.data.url || null, repo_url: parsed.data.repo_url || null }
-  try {
-    await createProject(data as Parameters<typeof createProject>[0])
-    revalidate()
-    return { success: true }
-  } catch {
-    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
-  }
+  void prevState;
+  return runValidatedAdminAction(
+    ProjectSchema,
+    formData,
+    async (data) => {
+      await createProject(data as Parameters<typeof createProject>[0]);
+    },
+    REVALIDATE_PATHS
+  );
 }
 
 export async function updateProjectAction(
@@ -51,27 +44,23 @@ export async function updateProjectAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  await requireAdmin()
-  const parsed = ProjectSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) {
-    return validationError(parsed.error)
-  }
-  const data = { ...parsed.data, url: parsed.data.url || null, repo_url: parsed.data.repo_url || null }
-  try {
-    await updateProject(id, data)
-    revalidate()
-    return { success: true }
-  } catch {
-    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
-  }
+  void prevState;
+  return runValidatedAdminAction(
+    ProjectSchema,
+    formData,
+    async (data) => {
+      await updateProject(id, data);
+    },
+    REVALIDATE_PATHS
+  );
 }
 
-export async function deleteProjectAction(id: number): Promise<void> {
-  await requireAdmin()
-  try {
-    await deleteProject(id)
-    revalidate()
-  } catch (err) {
-    console.error('deleteProjectAction failed:', err)
-  }
+export async function deleteProjectAction(id: number): Promise<ActionState> {
+  return runAdminTaskAction(
+    async () => {
+      await deleteProject(id);
+    },
+    REVALIDATE_PATHS,
+    "Poisto epaonnistui / Delete failed. Please try again."
+  );
 }

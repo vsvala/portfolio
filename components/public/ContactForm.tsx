@@ -1,38 +1,42 @@
-'use client'
-import { useActionState } from 'react'
-import { sendContactMessage } from '@/actions/contact'
-import Box from '@mui/material/Box'
-import Button from '@mui/material/Button'
-import TextField from '@mui/material/TextField'
-import Alert from '@mui/material/Alert'
-import type { Lang } from '@/lib/types'
-import type { ActionState } from '@/lib/types'
+"use client";
+import { useActionState } from "react";
+import { sendContactMessage } from "@/actions/contact";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Alert from "@mui/material/Alert";
+import type { Lang } from "@/lib/types";
+import type { ActionState } from "@/lib/types";
 
-const initialState: ActionState = { success: false, errors: {} }
+const initialState: ActionState = { success: false, errors: {} };
 
 export function ContactForm({ lang }: { lang: Lang }) {
-  const [state, action, pending] = useActionState(sendContactMessage, initialState)
+  const [state, action, pending] = useActionState(sendContactMessage, initialState);
 
   if (state.success) {
     return (
       <Alert severity="success" sx={{ mt: 2 }}>
-        {lang === 'fi'
-          ? 'Viesti lähetetty! Palaan sinulle pian.'
-          : 'Message sent! I will get back to you soon.'}
+        {lang === "fi"
+          ? "Viesti lähetetty! Palaan sinulle pian."
+          : "Message sent! I will get back to you soon."}
       </Alert>
-    )
+    );
   }
 
   return (
-    <Box component="form" action={action} sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: 560 }}>
+    <Box
+      component="form"
+      action={action}
+      sx={{ display: "flex", flexDirection: "column", gap: 2, maxWidth: 560 }}
+    >
       {state.message && <Alert severity="error">{state.message}</Alert>}
 
       {/* Honeypot — hidden from real users, bots fill it in */}
-      <input name="honeypot" tabIndex={-1} aria-hidden="true" style={{ display: 'none' }} />
+      <input name="honeypot" tabIndex={-1} aria-hidden="true" style={{ display: "none" }} />
 
       <TextField
         name="name"
-        label={lang === 'fi' ? 'Nimi' : 'Name'}
+        label={lang === "fi" ? "Nimi" : "Name"}
         required
         fullWidth
         error={!!state.errors?.name}
@@ -40,7 +44,7 @@ export function ContactForm({ lang }: { lang: Lang }) {
       />
       <TextField
         name="email"
-        label={lang === 'fi' ? 'Sähköposti' : 'Email'}
+        label={lang === "fi" ? "Sähköposti" : "Email"}
         type="email"
         required
         fullWidth
@@ -49,7 +53,7 @@ export function ContactForm({ lang }: { lang: Lang }) {
       />
       <TextField
         name="message"
-        label={lang === 'fi' ? 'Viesti' : 'Message'}
+        label={lang === "fi" ? "Viesti" : "Message"}
         multiline
         rows={5}
         required
@@ -61,12 +65,20 @@ export function ContactForm({ lang }: { lang: Lang }) {
         type="submit"
         variant="contained"
         disabled={pending}
-        sx={{ alignSelf: 'flex-start', backgroundColor: '#e94560', '&:hover': { backgroundColor: '#c73652' } }}
+        sx={{
+          alignSelf: "flex-start",
+          backgroundColor: "#e94560",
+          "&:hover": { backgroundColor: "#c73652" },
+        }}
       >
         {pending
-          ? (lang === 'fi' ? 'Lähetetään...' : 'Sending...')
-          : (lang === 'fi' ? 'Lähetä viesti' : 'Send message')}
+          ? lang === "fi"
+            ? "Lähetetään..."
+            : "Sending..."
+          : lang === "fi"
+            ? "Lähetä viesti"
+            : "Send message"}
       </Button>
     </Box>
-  )
+  );
 }

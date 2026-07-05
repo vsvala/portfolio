@@ -7,9 +7,20 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
     "test:unit": "vitest run"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css}": [
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@emotion/cache": "^11.14.0",
@@ -35,6 +46,8 @@
     "@vitest/coverage-v8": "^4.1.8",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
+    "lint-staged": "^16.4.0",
+    "prettier": "^3.9.4",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.8"

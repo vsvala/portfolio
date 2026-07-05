@@ -1,46 +1,47 @@
-'use server'
-import { z } from 'zod'
-import { revalidatePath } from 'next/cache'
-import { requireAdmin } from '@/lib/auth'
-import { createCourse, updateCourse, deleteCourse } from '@/lib/db/queries/courses'
-import { validationError } from '@/lib/action-utils'
-import type { ActionState } from '@/lib/types'
+"use server";
+import { z } from "zod";
+import { createCourse, updateCourse, deleteCourse } from "@/lib/db/queries/courses";
+import { COURSE_CATEGORIES } from "@/lib/constants/categories";
+import { nullableNumberField, nullableStringField, nullableUrlField } from "@/lib/zod-fields";
+import { runValidatedAdminAction, runAdminTaskAction } from "@/lib/server-action-utils";
+import type { ActionState } from "@/lib/types";
 
 const CourseSchema = z.object({
   name_fi: z.string().min(1),
   name_en: z.string().min(1),
   institution_fi: z.string().min(1),
   institution_en: z.string().min(1),
-  category: z.string().min(1),
-  credits: z.preprocess((v) => (!v || v === '' ? null : v), z.coerce.number().nullable().optional().default(null)),
-  year: z.preprocess((v) => (!v || v === '' ? null : v), z.coerce.number().nullable().optional().default(null)),
-  description_fi: z.string().default(''),
-  description_en: z.string().default(''),
-  url: z.preprocess((v) => (!v || v === '' ? null : v), z.string().url().nullable().optional().default(null)),
-  grade: z.preprocess((v) => (!v || v === '' ? null : v), z.string().nullable().optional().default(null)),
-  education_id: z.preprocess((v) => (!v || v === '' ? null : v), z.coerce.number().nullable().optional().default(null)),
+  category: z.enum(
+    COURSE_CATEGORIES.map((category) => category.value) as [
+      (typeof COURSE_CATEGORIES)[number]["value"],
+      ...(typeof COURSE_CATEGORIES)[number]["value"][],
+    ]
+  ),
+  credits: nullableNumberField,
+  year: nullableNumberField,
+  description_fi: z.string().default(""),
+  description_en: z.string().default(""),
+  url: nullableUrlField,
+  grade: nullableStringField,
+  education_id: nullableNumberField,
   sort_order: z.coerce.number().default(0),
-})
+});
 
-function revalidate() {
-  revalidatePath('/courses')
-  revalidatePath('/admin/courses')
-}
+const REVALIDATE_PATHS = ["/courses", "/admin/courses"] as const;
 
 export async function createCourseAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  await requireAdmin()
-  const parsed = CourseSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return validationError(parsed.error)
-  try {
-    await createCourse(parsed.data as Parameters<typeof createCourse>[0])
-    revalidate()
-    return { success: true }
-  } catch {
-    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
-  }
+  void prevState;
+  return runValidatedAdminAction(
+    CourseSchema,
+    formData,
+    async (data) => {
+      await createCourse(data as Parameters<typeof createCourse>[0]);
+    },
+    REVALIDATE_PATHS
+  );
 }
 
 export async function updateCourseAction(
@@ -48,24 +49,23 @@ export async function updateCourseAction(
   prevState: ActionState,
   formData: FormData
 ): Promise<ActionState> {
-  await requireAdmin()
-  const parsed = CourseSchema.safeParse(Object.fromEntries(formData))
-  if (!parsed.success) return validationError(parsed.error)
-  try {
-    await updateCourse(id, parsed.data as Parameters<typeof updateCourse>[1])
-    revalidate()
-    return { success: true }
-  } catch {
-    return { success: false, errors: {}, message: 'Tallennus epäonnistui / Save failed. Please try again.' }
-  }
+  void prevState;
+  return runValidatedAdminAction(
+    CourseSchema,
+    formData,
+    async (data) => {
+      await updateCourse(id, data as Parameters<typeof updateCourse>[1]);
+    },
+    REVALIDATE_PATHS
+  );
 }
 
-export async function deleteCourseAction(id: number): Promise<void> {
-  await requireAdmin()
-  try {
-    await deleteCourse(id)
-    revalidate()
-  } catch (err) {
-    console.error('deleteCourseAction failed:', err)
-  }
+export async function deleteCourseAction(id: number): Promise<ActionState> {
+  return runAdminTaskAction(
+    async () => {
+      await deleteCourse(id);
+    },
+    REVALIDATE_PATHS,
+    "Poisto epaonnistui / Delete failed. Please try again."
+  );
 }

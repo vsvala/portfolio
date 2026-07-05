@@ -1,34 +1,34 @@
-import { cookies } from 'next/headers'
-import type { Lang } from '@/lib/types'
-import { HeroSection } from '@/components/public/HeroSection'
-import { SkillsSection } from '@/components/public/SkillsSection'
-import { WorkCard } from '@/components/public/WorkCard'
-import { ProjectCard } from '@/components/public/ProjectCard'
-import { EducationCard } from '@/components/public/EducationCard'
-import { getAllWork } from '@/lib/db/queries/work'
-import { getProjectsByCategory } from '@/lib/db/queries/projects'
-import { getAllEducation } from '@/lib/db/queries/education'
-import { getAllRecommendations } from '@/lib/db/queries/recommendations'
-import Container from '@mui/material/Container'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
-import Grid from '@mui/material/Grid'
-import Stack from '@mui/material/Stack'
-import Link from '@mui/material/Link'
-import Divider from '@mui/material/Divider'
-import FormatQuoteIcon from '@mui/icons-material/FormatQuote'
-import { LinkButton } from '@/components/ui/LinkButton'
-import { CertificationsSection } from '@/components/public/CertificationsSection'
-import { AboutExtrasSection } from '@/components/public/AboutExtrasSection'
+import { cookies } from "next/headers";
+import type { Lang } from "@/lib/types";
+import { HeroSection } from "@/components/public/HeroSection";
+import { SkillsSection } from "@/components/public/SkillsSection";
+import { WorkCard } from "@/components/public/WorkCard";
+import { ProjectCard } from "@/components/public/ProjectCard";
+import { EducationCard } from "@/components/public/EducationCard";
+import { getAllWork } from "@/lib/db/queries/work";
+import { getProjectsByCategory } from "@/lib/db/queries/projects";
+import { getAllEducation } from "@/lib/db/queries/education";
+import { getAllRecommendations } from "@/lib/db/queries/recommendations";
+import Container from "@mui/material/Container";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Stack from "@mui/material/Stack";
+import Link from "@mui/material/Link";
+import Divider from "@mui/material/Divider";
+import FormatQuoteIcon from "@mui/icons-material/FormatQuote";
+import { LinkButton } from "@/components/ui/LinkButton";
+import { CertificationsSection } from "@/components/public/CertificationsSection";
+import { AboutExtrasSection } from "@/components/public/AboutExtrasSection";
 
 export default async function HomePage() {
-  const cookieStore = await cookies()
-  const lang = (cookieStore.get('lang')?.value ?? 'en') as Lang
+  const cookieStore = await cookies();
+  const lang = (cookieStore.get("lang")?.value ?? "en") as Lang;
 
-  const work = (await getAllWork()).slice(0, 3)
-  const hackathonProjects = (await getProjectsByCategory('hackathon')).slice(0, 3)
-  const education = (await getAllEducation()).slice(0, 3)
-  const recommendations = (await getAllRecommendations()).slice(0, 3)
+  const work = (await getAllWork()).slice(0, 3);
+  const hackathonProjects = (await getProjectsByCategory("hackathon")).slice(0, 3);
+  const education = (await getAllEducation()).slice(0, 3);
+  const recommendations = (await getAllRecommendations()).slice(0, 3);
 
   return (
     <>
@@ -37,12 +37,14 @@ export default async function HomePage() {
       {/* Work preview */}
       <Box id="tyokokemus" sx={{ py: 6 }}>
         <Container maxWidth="md">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}
+          >
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              {lang === 'fi' ? 'Työkokemus' : 'Experience'}
+              {lang === "fi" ? "Työkokemus" : "Experience"}
             </Typography>
             <LinkButton href="/work" variant="outlined" size="small">
-              {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
+              {lang === "fi" ? "Näytä kaikki" : "See all"}
             </LinkButton>
           </Box>
           <Grid container spacing={2}>
@@ -56,19 +58,21 @@ export default async function HomePage() {
       </Box>
 
       {/* Skills */}
-      <Box id="osaaminen" sx={{ backgroundColor: 'grey.50' }}>
+      <Box id="osaaminen" sx={{ backgroundColor: "grey.50" }}>
         <SkillsSection lang={lang} />
       </Box>
 
       {/* Education preview */}
       <Box id="koulutus" sx={{ py: 6 }}>
         <Container maxWidth="md">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}
+          >
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
-              {lang === 'fi' ? 'Koulutus' : 'Education'}
+              {lang === "fi" ? "Koulutus" : "Education"}
             </Typography>
             <LinkButton href="/education" variant="outlined" size="small">
-              {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
+              {lang === "fi" ? "Näytä kaikki" : "See all"}
             </LinkButton>
           </Box>
           <Grid container spacing={2}>
@@ -82,10 +86,10 @@ export default async function HomePage() {
       </Box>
 
       {/* Certifications */}
-      <Box id="sertifikaatit" sx={{ py: 6, backgroundColor: 'grey.50' }}>
+      <Box id="sertifikaatit" sx={{ py: 6, backgroundColor: "grey.50" }}>
         <Container maxWidth="md">
           <Typography variant="h4" sx={{ fontWeight: 700, mb: 3 }}>
-            {lang === 'fi' ? 'Saavutukset & sertifikaatit' : 'Achievements & Certifications'}
+            {lang === "fi" ? "Saavutukset & sertifikaatit" : "Achievements & Certifications"}
           </Typography>
           <CertificationsSection lang={lang} />
         </Container>
@@ -94,12 +98,14 @@ export default async function HomePage() {
       {/* Hackathon preview */}
       <Box id="hackathon" sx={{ py: 6 }}>
         <Container maxWidth="md">
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Box
+            sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}
+          >
             <Typography variant="h4" sx={{ fontWeight: 700 }}>
               Hackathon
             </Typography>
             <LinkButton href="/projects#hackathon" variant="outlined" size="small">
-              {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
+              {lang === "fi" ? "Näytä kaikki" : "See all"}
             </LinkButton>
           </Box>
           <Grid container spacing={2}>
@@ -114,27 +120,34 @@ export default async function HomePage() {
 
       {/* Recommendations */}
       {recommendations.length > 0 && (
-        <Box id="suosittelut" sx={{ py: 6, backgroundColor: 'grey.50' }}>
+        <Box id="suosittelut" sx={{ py: 6, backgroundColor: "grey.50" }}>
           <Container maxWidth="md">
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+            <Box
+              sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3 }}
+            >
               <Typography variant="h4" sx={{ fontWeight: 700 }}>
-                {lang === 'fi' ? 'Suosittelut' : 'Recommendations'}
+                {lang === "fi" ? "Suosittelut" : "Recommendations"}
               </Typography>
               <LinkButton href="/recommendations" variant="outlined" size="small">
-                {lang === 'fi' ? 'Näytä kaikki' : 'See all'}
+                {lang === "fi" ? "Näytä kaikki" : "See all"}
               </LinkButton>
             </Box>
             <Stack sx={{ gap: 0 }}>
               {recommendations.map((rec, i) => (
                 <Box key={rec.id}>
                   {i > 0 && <Divider />}
-                  <Stack direction="row" sx={{ gap: 1.5, py: 2.5, alignItems: 'flex-start' }}>
-                    <FormatQuoteIcon sx={{ color: 'secondary.main', mt: 0.25, flexShrink: 0 }} />
+                  <Stack direction="row" sx={{ gap: 1.5, py: 2.5, alignItems: "flex-start" }}>
+                    <FormatQuoteIcon sx={{ color: "secondary.main", mt: 0.25, flexShrink: 0 }} />
                     <Box>
                       <Typography variant="body1" sx={{ lineHeight: 1.7, mb: 0.75 }}>
-                        {rec.text.length > 200 ? rec.text.slice(0, 200).trimEnd() + '…' : rec.text}
+                        {rec.text.length > 200 ? rec.text.slice(0, 200).trimEnd() + "…" : rec.text}
                       </Typography>
-                      <Link href="/recommendations" underline="hover" color="text.secondary" variant="body2">
+                      <Link
+                        href="/recommendations"
+                        underline="hover"
+                        color="text.secondary"
+                        variant="body2"
+                      >
                         {rec.name} · {rec.role}, {rec.company}
                       </Link>
                     </Box>
@@ -149,5 +162,5 @@ export default async function HomePage() {
       {/* Civic activities, hobbies & strengths */}
       <AboutExtrasSection lang={lang} />
     </>
-  )
+  );
 }

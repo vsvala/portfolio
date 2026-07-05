@@ -18,39 +18,9 @@ import { LinkButton } from "@/components/ui/LinkButton";
 import { FeedbackForm } from "@/components/public/FeedbackForm";
 import { ProtectedDownload } from "@/components/public/ProtectedDownload";
 import { SidebarNav } from "@/components/public/SidebarNav";
+import { COURSE_CATEGORY_LABELS, COURSE_CATEGORY_ORDER } from "@/lib/constants/categories";
 
-const categoryLabels: Record<string, { fi: string; en: string }> = {
-  web_dev: { fi: "Web-kehitys", en: "Web Development" },
-  programming: { fi: "Ohjelmointi", en: "Programming" },
-  sw_engineering: {
-    fi: "Ohjelmistotuotanto & arkkitehtuuri",
-    en: "Software Engineering & Architecture",
-  },
-  databases: { fi: "Tietokannat", en: "Databases" },
-  design: { fi: "Suunnittelu & UX", en: "Design & UX" },
-  ai_data: { fi: "Tekoäly & data", en: "AI & Data" },
-  systems: { fi: "Järjestelmät & verkot", en: "Systems & Networks" },
-  math: { fi: "Matematiikka", en: "Mathematics" },
-  other: { fi: "Muut", en: "Other" },
-};
-
-const categoryOrder = [
-  "web_dev",
-  "programming",
-  "sw_engineering",
-  "databases",
-  "design",
-  "ai_data",
-  "systems",
-  "math",
-  "other",
-];
-
-export default async function EducationDetailPage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function EducationDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const cookieStore = await cookies();
   const lang = (cookieStore.get("lang")?.value ?? "en") as Lang;
@@ -59,9 +29,7 @@ export default async function EducationDetailPage({
   if (!education) notFound();
 
   const [document, courses] = await Promise.all([
-    education.document_id
-      ? getDocumentById(education.document_id)
-      : Promise.resolve(null),
+    education.document_id ? getDocumentById(education.document_id) : Promise.resolve(null),
     getCoursesByEducationId(education.id),
   ]);
 
@@ -79,18 +47,13 @@ export default async function EducationDetailPage({
   }, {});
 
   const sortedCategories = [
-    ...categoryOrder.filter((k) => grouped[k]?.length),
-    ...Object.keys(grouped).filter((k) => !categoryOrder.includes(k)),
+    ...COURSE_CATEGORY_ORDER.filter((k) => grouped[k]?.length),
+    ...Object.keys(grouped).filter((k) => !(COURSE_CATEGORY_ORDER as string[]).includes(k)),
   ];
 
   return (
     <Container maxWidth="md" sx={{ py: 6 }}>
-      <LinkButton
-        href="/education"
-        startIcon={<ArrowBackIcon />}
-        sx={{ mb: 3 }}
-        variant="text"
-      >
+      <LinkButton href="/education" startIcon={<ArrowBackIcon />} sx={{ mb: 3 }} variant="text">
         {lang === "fi" ? "Takaisin" : "Back"}
       </LinkButton>
 
@@ -100,11 +63,7 @@ export default async function EducationDetailPage({
       <Typography variant="h5" color="text.secondary" sx={{ mt: 1 }}>
         {lang === "fi" ? education.institution_fi : education.institution_en}
       </Typography>
-      <Typography
-        variant="body1"
-        color="text.secondary"
-        sx={{ mt: 0.5, mb: 3 }}
-      >
+      <Typography variant="body1" color="text.secondary" sx={{ mt: 0.5, mb: 3 }}>
         {education.start_date.slice(0, 4)} – {endLabel}
       </Typography>
 
@@ -143,7 +102,7 @@ export default async function EducationDetailPage({
           <SidebarNav
             items={sortedCategories.map((cat) => ({
               key: cat,
-              label: categoryLabels[cat]?.[lang] ?? cat,
+              label: COURSE_CATEGORY_LABELS[cat]?.[lang] ?? cat,
             }))}
             lang={lang}
           >
@@ -159,11 +118,9 @@ export default async function EducationDetailPage({
                     mb: 1.5,
                   }}
                 >
-                  {categoryLabels[cat]?.[lang] ?? cat}
+                  {COURSE_CATEGORY_LABELS[cat]?.[lang] ?? cat}
                 </Typography>
-                <Box
-                  sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}
-                >
+                <Box sx={{ display: "flex", flexDirection: "column", gap: 1.5 }}>
                   {grouped[cat].map((c) => (
                     <Box
                       key={c.id}
@@ -183,10 +140,7 @@ export default async function EducationDetailPage({
                           flexWrap: "wrap",
                         }}
                       >
-                        <Typography
-                          variant="subtitle2"
-                          sx={{ fontWeight: 600 }}
-                        >
+                        <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                           {lang === "fi" ? c.name_fi : c.name_en}
                         </Typography>
                         {c.credits && (

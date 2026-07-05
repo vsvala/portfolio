@@ -1,4 +1,4 @@
-import { AdminNav } from '@/components/admin/AdminNav'
+import { AdminNav } from "@/components/admin/AdminNav";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -6,5 +6,5 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <AdminNav />
       <main>{children}</main>
     </>
-  )
+  );
 }

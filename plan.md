@@ -71,11 +71,7 @@ export function MuiProvider({ children }: { children: React.ReactNode }) {
 1. **`proxy.ts` korvaa `middleware.ts`** — juuressa, funktio `proxy`
 2. **Dynaamiset params ovat Promiseja**:
    ```typescript
-   export default async function Page({
-     params,
-   }: {
-     params: Promise<{ id: string }>;
-   }) {
+   export default async function Page({ params }: { params: Promise<{ id: string }> }) {
      const { id } = await params;
    }
    ```

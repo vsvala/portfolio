@@ -1,23 +1,23 @@
-'use client'
-import { createTheme } from '@mui/material/styles'
+"use client";
+import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#1a1a2e',
-      light: '#16213e',
-      dark: '#0f0f1a',
+      main: "#1a1a2e",
+      light: "#16213e",
+      dark: "#0f0f1a",
     },
     secondary: {
-      main: '#e94560',
+      main: "#e94560",
     },
     background: {
-      default: '#f8f9fa',
-      paper: '#ffffff',
+      default: "#f8f9fa",
+      paper: "#ffffff",
     },
     text: {
-      primary: '#1a1a2e',
-      secondary: '#555577',
+      primary: "#1a1a2e",
+      secondary: "#555577",
     },
   },
   typography: {
@@ -36,7 +36,7 @@ export const theme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          textTransform: 'none',
+          textTransform: "none",
           fontWeight: 500,
         },
       },
@@ -44,14 +44,14 @@ export const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          boxShadow: '0 2px 12px rgba(0,0,0,0.08)',
-          transition: 'box-shadow 0.2s ease, transform 0.2s ease',
-          '&:hover': {
-            boxShadow: '0 6px 24px rgba(0,0,0,0.14)',
-            transform: 'translateY(-2px)',
+          boxShadow: "0 2px 12px rgba(0,0,0,0.08)",
+          transition: "box-shadow 0.2s ease, transform 0.2s ease",
+          "&:hover": {
+            boxShadow: "0 6px 24px rgba(0,0,0,0.14)",
+            transform: "translateY(-2px)",
           },
         },
       },
     },
   },
-})
+});

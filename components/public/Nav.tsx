@@ -1,65 +1,65 @@
-'use client'
-import { useState } from 'react'
-import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import AppBar from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import Drawer from '@mui/material/Drawer'
-import List from '@mui/material/List'
-import ListItemButton from '@mui/material/ListItemButton'
-import ListItemText from '@mui/material/ListItemText'
-import MenuIcon from '@mui/icons-material/Menu'
-import GitHubIcon from '@mui/icons-material/GitHub'
-import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import Box from '@mui/material/Box'
-import { LanguageToggle } from './LanguageToggle'
+"use client";
+import { useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
+import MenuIcon from "@mui/icons-material/Menu";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import Box from "@mui/material/Box";
+import { LanguageToggle } from "./LanguageToggle";
 
 const navLinks = [
-  { href: '/', labelFi: 'Etusivu', labelEn: 'Home' },
-  { href: '/work', labelFi: 'Työkokemus', labelEn: 'Experience' },
-  { href: '/education', labelFi: 'Koulutus', labelEn: 'Education' },
-  { href: '/projects', labelFi: 'Projektit', labelEn: 'Projects' },
-  { href: '/recommendations', labelFi: 'Suositukset', labelEn: 'Recommendations' },
-  { href: '/contact', labelFi: 'Yhteystiedot', labelEn: 'Contact' },
-]
+  { href: "/", labelFi: "Etusivu", labelEn: "Home" },
+  { href: "/work", labelFi: "Työkokemus", labelEn: "Experience" },
+  { href: "/education", labelFi: "Koulutus", labelEn: "Education" },
+  { href: "/projects", labelFi: "Projektit", labelEn: "Projects" },
+  { href: "/recommendations", labelFi: "Suositukset", labelEn: "Recommendations" },
+  { href: "/contact", labelFi: "Yhteystiedot", labelEn: "Contact" },
+];
 
-export function Nav({ lang }: { lang: 'fi' | 'en' }) {
-  const [drawerOpen, setDrawerOpen] = useState(false)
-  const pathname = usePathname()
+export function Nav({ lang }: { lang: "fi" | "en" }) {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <>
-      <AppBar position="sticky" elevation={0} sx={{ backgroundColor: 'primary.main' }}>
+      <AppBar position="sticky" elevation={0} sx={{ backgroundColor: "primary.main" }}>
         <Toolbar>
           <Typography
             component={Link}
             href="/"
             variant="h6"
-            sx={{ flexGrow: 1, color: 'white', textDecoration: 'none', fontWeight: 700 }}
+            sx={{ flexGrow: 1, color: "white", textDecoration: "none", fontWeight: 700 }}
           >
             Virva Svala
           </Typography>
 
           {/* Desktop nav */}
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 1, alignItems: 'center' }}>
+          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 1, alignItems: "center" }}>
             {navLinks.map((link) => (
               <Button
                 key={link.href}
                 component={Link}
                 href={link.href}
                 sx={{
-                  color: 'white',
+                  color: "white",
                   fontWeight: pathname === link.href ? 700 : 400,
-                  borderBottom: '2px solid',
-                  borderBottomColor: pathname === link.href ? 'secondary.main' : 'transparent',
+                  borderBottom: "2px solid",
+                  borderBottomColor: pathname === link.href ? "secondary.main" : "transparent",
                   borderRadius: 0,
-                  '&:hover': { backgroundColor: 'rgba(255,255,255,0.1)' },
+                  "&:hover": { backgroundColor: "rgba(255,255,255,0.1)" },
                 }}
               >
-                {lang === 'fi' ? link.labelFi : link.labelEn}
+                {lang === "fi" ? link.labelFi : link.labelEn}
               </Button>
             ))}
             <IconButton
@@ -68,7 +68,7 @@ export function Nav({ lang }: { lang: 'fi' | 'en' }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="GitHub"
-              sx={{ color: 'white', ml: 1 }}
+              sx={{ color: "white", ml: 1 }}
             >
               <GitHubIcon />
             </IconButton>
@@ -78,7 +78,7 @@ export function Nav({ lang }: { lang: 'fi' | 'en' }) {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="LinkedIn"
-              sx={{ color: 'white' }}
+              sx={{ color: "white" }}
             >
               <LinkedInIcon />
             </IconButton>
@@ -88,13 +88,9 @@ export function Nav({ lang }: { lang: 'fi' | 'en' }) {
           </Box>
 
           {/* Mobile hamburger */}
-          <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1, alignItems: 'center' }}>
+          <Box sx={{ display: { xs: "flex", md: "none" }, gap: 1, alignItems: "center" }}>
             <LanguageToggle currentLang={lang} />
-            <IconButton
-              color="inherit"
-              onClick={() => setDrawerOpen(true)}
-              aria-label="menu"
-            >
+            <IconButton color="inherit" onClick={() => setDrawerOpen(true)} aria-label="menu">
               <MenuIcon />
             </IconButton>
           </Box>
@@ -112,12 +108,12 @@ export function Nav({ lang }: { lang: 'fi' | 'en' }) {
                 selected={pathname === link.href}
                 onClick={() => setDrawerOpen(false)}
               >
-                <ListItemText primary={lang === 'fi' ? link.labelFi : link.labelEn} />
+                <ListItemText primary={lang === "fi" ? link.labelFi : link.labelEn} />
               </ListItemButton>
             ))}
           </List>
         </Box>
       </Drawer>
     </>
-  )
+  );
 }
