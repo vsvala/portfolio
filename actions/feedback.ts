@@ -1,60 +1,80 @@
-'use server'
-import { z } from 'zod'
-import { revalidatePath } from 'next/cache'
-import { requireAdmin } from '@/lib/auth'
-import { createFeedback, markFeedbackRead, deleteFeedback } from '@/lib/db/queries/feedback'
-import type { ActionState } from '@/lib/types'
+"use server";
+import { z } from "zod";
+import { revalidatePath } from "next/cache";
+import { requireAdmin } from "@/lib/auth";
+import { createFeedback, markFeedbackRead, deleteFeedback } from "@/lib/db/queries/feedback";
+import { logger } from "@/lib/logger";
+import type { ActionState } from "@/lib/types";
 
 const schema = z.object({
-  target_type: z.enum(['work', 'project', 'education']),
+  target_type: z.enum(["work", "project", "education"]),
   target_id: z.coerce.number(),
   target_title: z.string().max(200),
-  message: z.string().min(5, 'Viesti on liian lyhyt').max(2000),
-  sender_name: z.string().max(100).optional().transform(v => v || null),
-  sender_email: z.string().email().max(200).optional().or(z.literal('')).transform(v => v || null),
-  honeypot: z.string().max(0, 'Bot detected'),
-})
+  message: z.string().min(5, "Viesti on liian lyhyt").max(2000),
+  sender_name: z
+    .string()
+    .max(100)
+    .optional()
+    .transform((v) => v || null),
+  sender_email: z
+    .string()
+    .email()
+    .max(200)
+    .optional()
+    .or(z.literal(""))
+    .transform((v) => v || null),
+  honeypot: z.string().max(0, "Bot detected"),
+});
 
 export async function submitFeedback(_prev: ActionState, formData: FormData): Promise<ActionState> {
   const parsed = schema.safeParse({
-    target_type: formData.get('target_type'),
-    target_id: formData.get('target_id'),
-    target_title: formData.get('target_title'),
-    message: formData.get('message'),
-    sender_name: formData.get('sender_name'),
-    sender_email: formData.get('sender_email'),
-    honeypot: formData.get('honeypot') ?? '',
-  })
+    target_type: formData.get("target_type"),
+    target_id: formData.get("target_id"),
+    target_title: formData.get("target_title"),
+    message: formData.get("message"),
+    sender_name: formData.get("sender_name"),
+    sender_email: formData.get("sender_email"),
+    honeypot: formData.get("honeypot") ?? "",
+  });
 
   if (!parsed.success) {
-    return { success: false, errors: parsed.error.flatten().fieldErrors as Record<string, string[]> }
+    return {
+      success: false,
+      errors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
+    };
   }
 
-  const { honeypot: _h, ...data } = parsed.data
+  const { honeypot, ...data } = parsed.data;
+  void honeypot;
   try {
-    await createFeedback(data)
-    return { success: true }
-  } catch {
-    return { success: false, errors: {}, message: 'Lähetys epäonnistui / Send failed. Please try again.' }
+    await createFeedback(data);
+    return { success: true };
+  } catch (err) {
+    logger.error("submitFeedback failed", { error: String(err) });
+    return {
+      success: false,
+      errors: {},
+      message: "Lähetys epäonnistui / Send failed. Please try again.",
+    };
   }
 }
 
 export async function markReadAction(id: number): Promise<void> {
-  await requireAdmin()
+  await requireAdmin();
   try {
-    await markFeedbackRead(id)
-    revalidatePath('/admin/feedback')
+    await markFeedbackRead(id);
+    revalidatePath("/admin/feedback");
   } catch (err) {
-    console.error('markReadAction failed:', err)
+    logger.error("markReadAction failed", { id, error: String(err) });
   }
 }
 
 export async function deleteFeedbackAction(id: number): Promise<void> {
-  await requireAdmin()
+  await requireAdmin();
   try {
-    await deleteFeedback(id)
-    revalidatePath('/admin/feedback')
+    await deleteFeedback(id);
+    revalidatePath("/admin/feedback");
   } catch (err) {
-    console.error('deleteFeedbackAction failed:', err)
+    logger.error("deleteFeedbackAction failed", { id, error: String(err) });
   }
 }
