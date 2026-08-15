@@ -306,10 +306,10 @@ Notable issues discovered during development and now documented for future agent
 GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and PR to `main`:
 
 ```
-Build (tsc) → Lint → Unit tests → E2E tests → Deploy Gate
+Security audit → Build (tsc) → Lint → Unit tests → E2E tests → Deploy Gate
 ```
 
-The **Deploy Gate** job runs only on pushes to `main` and requires the full CI job to pass — production deployment is blocked if any step fails.
+The **Security audit** step runs `npm audit --audit-level=high` and fails the build on any high or critical severity vulnerability. The **Deploy Gate** job runs only on pushes to `main` and requires the full CI job to pass — production deployment is blocked if any step fails.
 
 Two repository secrets are required (GitHub → Settings → Secrets and variables → Actions):
 
