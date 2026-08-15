@@ -397,7 +397,7 @@ The contact form is not currently implemented — the `/contact` page shows cont
 **Deeper documentation** lives in [`docs/`](./docs/) — not just what the codebase does, but why it's built this way and what was traded off to get there:
 
 - [`docs/architecture.md`](./docs/architecture.md) — how a request actually moves through the system: routing, auth, data layer, file handling, testing, deployment
-- [`docs/tech-stack-decisions.md`](./docs/tech-stack-decisions.md) — every major technology choice, what else was considered, why this option won, and what was given up to get it
+- [`docs/adr.md`](./docs/adr.md) — an Architecture Decision Record: every major technology choice as a numbered entry, what else was considered, why this option won, and what was given up to get it
 
 Written for a technical reviewer, consultant, or future maintainer evaluating whether the decisions hold up — not for coding agents (agent-facing operational rules live in [`CLAUDE.md`](./CLAUDE.md) and [`AGENTS.md`](./AGENTS.md) instead). One scope note that applies throughout both documents: this is a personal portfolio for a single developer/admin, not a multi-tenant product — decisions like the single shared admin password, in-memory rate limiting, and a SQLite-family database are correct _for that scope_ and explicitly wouldn't be for a product with multiple admins or high write concurrency.
 

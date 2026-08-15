@@ -64,7 +64,7 @@ CREATE TABLE work_experience (
 );
 ```
 
-The active language is a `lang` cookie, read once per Server Component (`(cookieStore.get("lang")?.value ?? "en")`), and both columns exist for every row unconditionally — there's no "translation missing" state to handle, because the schema forces both languages to exist at write time. See [`tech-stack-decisions.md`](./tech-stack-decisions.md#bilingual-content-database-columns-vs-an-i18n-library) for why this beat `next-intl` for this project's shape.
+The active language is a `lang` cookie, read once per Server Component (`(cookieStore.get("lang")?.value ?? "en")`), and both columns exist for every row unconditionally — there's no "translation missing" state to handle, because the schema forces both languages to exist at write time. See [ADR-0004](./adr.md#adr-0004-model-bilingual-content-as-database-columns-not-an-i18n-library) for why this beat `next-intl` for this project's shape.
 
 ### Query layer
 
@@ -76,7 +76,7 @@ The active language is a `lang` cookie, read once per Server Component (`(cookie
 
 ### Sort order
 
-Every content table has an integer `sort_order` column, set through a plain number field in each admin form. There's no drag-and-drop reordering UI — see [`tech-stack-decisions.md`](./tech-stack-decisions.md#manual-sort_order-field-vs-drag-and-drop-reordering) for why that trade was made deliberately, not by omission.
+Every content table has an integer `sort_order` column, set through a plain number field in each admin form. There's no drag-and-drop reordering UI — see [ADR-0011](./adr.md#adr-0011-use-a-manual-sort_order-field-instead-of-drag-and-drop-reordering) for why that trade was made deliberately, not by omission.
 
 ---
 
@@ -125,4 +125,4 @@ GitHub push/PR → GitHub Actions (Build → Lint → Format check → Unit test
                                                         Vercel serverless functions ⇄ Turso (remote libSQL, EU West)
 ```
 
-CI and production deliberately use _different_ databases: CI points `TURSO_URL` at `file:./test.db` (a fresh local file) so pull requests never touch or depend on the real Turso instance; only `SESSION_SECRET` and `ADMIN_PASSWORD` are shared repository secrets, kept in sync with `.env.local` by convention (there's no automation enforcing this — see the note on env var drift in `docs/tech-stack-decisions.md`'s deployment section).
+CI and production deliberately use _different_ databases: CI points `TURSO_URL` at `file:./test.db` (a fresh local file) so pull requests never touch or depend on the real Turso instance; only `SESSION_SECRET` and `ADMIN_PASSWORD` are shared repository secrets, kept in sync with `.env.local` by convention (there's no automation enforcing this — see ADR-0012 in [`docs/adr.md`](./adr.md) for the env-var drift this has already caused).
