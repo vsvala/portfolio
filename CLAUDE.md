@@ -287,6 +287,8 @@ Never commit PNG files from the root — `*.png` is in `.gitignore` to prevent a
 
 ## Maintaining README.md
 
+Owned by the **Documentation Agent** (see `AGENTS.md`) — adopt that role for dedicated documentation passes; its checklist there covers accuracy, currency, and onboarding completeness in more depth than the bullets below.
+
 Keep `README.md` up to date as the project evolves. After completing any significant change, update the relevant section:
 
 - New feature or section → add to **Features**

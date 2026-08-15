@@ -11,18 +11,19 @@ This file defines the agent roles and responsibilities for this portfolio projec
 
 ## Agent Roles
 
-| Agent                  | Responsibility                                                                                                                                                                                        | Project Phase        |
-| :--------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------- |
-| **Architect Agent**    | System architecture, tech stack decisions, database modeling, API design, routing structure                                                                                                           | Phase 1 — Foundation |
-| **Data Agent**         | SQLite schemas, `lib/db/queries/*.ts`, Zod validation in Server Actions, `actions/*.ts`                                                                                                               | Phase 2 — Data layer |
-| **UI Agent**           | MUI components (`components/public/*`, `components/admin/*`), theme, responsiveness, bilingual support (fi/en)                                                                                        | Phase 2 — UI layer   |
-| **Auth Agent**         | `proxy.ts`, `lib/session.ts`, `lib/auth.ts`, admin login, cookie management                                                                                                                           | Phase 2 — Auth       |
-| **Upload Agent**       | `app/api/upload/route.ts`, PDF handling, `public/documents/` management                                                                                                                               | Phase 2 — Upload     |
-| **Pages Agent**        | Public pages (`app/(public)/**`), admin pages (`app/admin/**`), `loading.tsx`, `error.tsx`                                                                                                            | Phases 3–4           |
-| **Reviewer Agent**     | Code quality, TypeScript errors, security, MUI v9 compatibility, build verification                                                                                                                   | Phase 5 — Polish     |
-| **Security Agent**     | Input validation, XSS/injection prevention, spam protection, auth hardening, public exposure audit                                                                                                    | Any phase            |
-| **Test Agent**         | End-to-end tests (Playwright), smoke tests for all public routes, admin CRUD flows (list → create → edit/update → delete), language toggle, anchor navigation, form validation, mobile responsiveness | Phase 5+ — Ongoing   |
-| **Code Quality Agent** | Clean Code compliance, DRY violations, dead code, complexity, readability, maintainability, refactoring proposals                                                                                     | Any phase — ongoing  |
+| Agent                   | Responsibility                                                                                                                                                                                        | Project Phase        |
+| :---------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :------------------- |
+| **Architect Agent**     | System architecture, tech stack decisions, database modeling, API design, routing structure                                                                                                           | Phase 1 — Foundation |
+| **Data Agent**          | SQLite schemas, `lib/db/queries/*.ts`, Zod validation in Server Actions, `actions/*.ts`                                                                                                               | Phase 2 — Data layer |
+| **UI Agent**            | MUI components (`components/public/*`, `components/admin/*`), theme, responsiveness, bilingual support (fi/en)                                                                                        | Phase 2 — UI layer   |
+| **Auth Agent**          | `proxy.ts`, `lib/session.ts`, `lib/auth.ts`, admin login, cookie management                                                                                                                           | Phase 2 — Auth       |
+| **Upload Agent**        | `app/api/upload/route.ts`, PDF handling, `public/documents/` management                                                                                                                               | Phase 2 — Upload     |
+| **Pages Agent**         | Public pages (`app/(public)/**`), admin pages (`app/admin/**`), `loading.tsx`, `error.tsx`                                                                                                            | Phases 3–4           |
+| **Reviewer Agent**      | Code quality, TypeScript errors, security, MUI v9 compatibility, build verification                                                                                                                   | Phase 5 — Polish     |
+| **Security Agent**      | Input validation, XSS/injection prevention, spam protection, auth hardening, public exposure audit                                                                                                    | Any phase            |
+| **Test Agent**          | End-to-end tests (Playwright), smoke tests for all public routes, admin CRUD flows (list → create → edit/update → delete), language toggle, anchor navigation, form validation, mobile responsiveness | Phase 5+ — Ongoing   |
+| **Code Quality Agent**  | Clean Code compliance, DRY violations, dead code, complexity, readability, maintainability, refactoring proposals                                                                                     | Any phase — ongoing  |
+| **Documentation Agent** | Consultant-grade `README.md`: accuracy, onboarding flow, architecture overview; keeps documented numbers/versions/routes in sync with the actual repo across `README.md`, `CLAUDE.md`, `AGENTS.md`    | Any phase — ongoing  |
 
 ---
 
@@ -86,6 +87,26 @@ Severity guide:
 - **Public documents**: PDFs in `public/documents/` are intentionally public (CV downloads). Do not store sensitive files there.
 - **XSS**: all user input goes through Zod before any use. No `dangerouslySetInnerHTML` in the codebase.
 - **CSRF**: Next.js Server Actions have built-in CSRF protection via `SameSite` cookie and origin check.
+
+### Documentation Agent checklist
+
+Consultant-grade means a stranger — a client, a hiring manager, a new contributor — can read `README.md` alone and get an accurate, working picture of the project. Never write a number, version, or coverage claim from memory or assumption; verify it against the repo first (run the command, count the files, read the config).
+
+For each finding, report: **problem** · **severity** (low / medium / high) · **recommendation** · **example fix**.
+
+- **Accuracy**: every claimed number (test counts, dependency versions, route lists, file counts) must be verified against the actual repo state before being written — `npm test`, `npm run test:unit`, `grep`, `ls`, not recollection
+- **Currency**: a change to `package.json`, `tests/`, `app/api/`, `.env.local` variables, or `lib/db/schema.sql` is not done until `README.md` (and `CLAUDE.md`/`AGENTS.md` where relevant) reflect it — treat stale docs as a build break, not a nice-to-have
+- **Onboarding completeness**: a new developer must be able to go from `git clone` to a running app using only `README.md` — every required and optional env var listed, `.env.local.example` kept in sync, no undocumented setup step
+- **Duplication**: content copy-pasted across `README.md` / `CLAUDE.md` / `AGENTS.md` (e.g. the CI Pipeline description) drifts independently over time — prefer one source of truth with a cross-reference, or explicitly own the duplication if the audiences genuinely differ
+- **Audience separation**: `README.md` is written for humans evaluating the project (recruiters, consultants, new devs) — keep it free of agent-instruction phrasing; `CLAUDE.md`/`AGENTS.md` are written for coding agents and can be denser/more directive
+- **Structural drift**: `Project Structure` tree, API route tables, and admin CRUD lists must match `app/` and `app/api/` as they actually exist — regenerate by listing directories, don't hand-maintain from memory
+- **Notable issues discipline**: per `CLAUDE.md`'s "Maintaining README.md" instruction, every bug or constraint discovered during a session is a candidate for the Notable Issues list — surface candidates to the user rather than silently adding or silently skipping them
+
+Severity guide:
+
+- **High** — a claim that actively misleads (wrong test count, wrong required env var, a "known gap" that's actually already fixed)
+- **Medium** — missing but discoverable information (undocumented route, missing onboarding step)
+- **Low** — cosmetic, duplication, or audience-fit issues
 
 ### Testing Rules — MANDATORY
 
@@ -163,6 +184,7 @@ V2+      [Future]       Dark mode · /certifications standalone page (NOT YET BU
 | `app/cv/page.tsx`, `components/public/PrintButton.tsx`              | Pages Agent                  |
 | `app/layout.tsx`, `app/(public)/layout.tsx`, `app/admin/layout.tsx` | Pages Agent                  |
 | `lib/types.ts`, `CLAUDE.md`, `AGENTS.md`                            | Architect Agent              |
+| `README.md`, `.env.local.example`                                   | Documentation Agent          |
 
 <!-- BEGIN:nextjs-agent-rules -->
 
