@@ -2,7 +2,7 @@
 
 How rendering and state actually work in this codebase: what's a Server Component, what's a Client Component, where each piece of "state" lives, and why. Written by auditing the code directly (`grep` for `"use client"`, `useState`, `useActionState`, `createContext`; reading the actual build output) rather than from memory of how a typical Next.js app is put together.
 
-**Sources used:** Next.js's own App Router documentation, read from this repo's `node_modules/next/dist/docs/` — the canonical source for this project per `AGENTS.md`'s "this is not the Next.js you know" warning, since a version this new doesn't reliably match general training data. Full Stack Open's core curriculum supplies the underlying React state vocabulary this document uses (component state, lifting state up, props as one-way data flow) — Full Stack Open's dedicated Next.js part is hosted at `courses.mooc.fi` as a client-rendered app that couldn't be fetched as static content from here, so nothing below cites its syllabus specifically; the App Router docs above are the technical ground truth instead.
+**Sources used:** Next.js's own App Router documentation, read from this repo's `node_modules/next/dist/docs/` — the canonical source for this project per `AGENTS.md`'s "this is not the Next.js you know" warning, since a version this new doesn't reliably match general training data. Full Stack Open's core curriculum supplies the underlying React state vocabulary this document uses (component state, lifting state up, props as one-way data flow).
 
 ---
 
