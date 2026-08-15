@@ -107,7 +107,7 @@ portfolio/
 ├── components/
 │   ├── providers/MuiProvider.tsx   # SSR emotion + ThemeProvider
 │   ├── public/                     # Nav, Footer, HeroSection, cards, SkillsSection, CertificationsSection
-│   ├── admin/                      # AdminNav, *Form.tsx for all types, DeleteButton
+│   ├── admin/                      # AdminNav, *Form.tsx for all types, DeleteButton, AdminFormControls, AdminTableHelpers
 │   └── ui/
 │       ├── LinkButton.tsx          # 'use client' wrapper for MUI Button + Next.js Link
 │       └── ReadMoreChip.tsx        # Expandable "read more" chip component
@@ -248,7 +248,7 @@ npx vercel --prod
 
 ### 3 — Add environment variables in Vercel
 
-In the Vercel dashboard → **Settings → Environment Variables**, add all four variables for the **Production** environment:
+In the Vercel dashboard → **Settings → Environment Variables**, add the following for the **Production** environment:
 
 | Variable               | Value                                                             |
 | :--------------------- | :---------------------------------------------------------------- |
@@ -298,7 +298,7 @@ Notable issues discovered during development and now documented for future agent
 - MUI v9 does not accept layout props (`gap`, `justifyContent`, `flexWrap`) directly on `Stack` — they must go in `sx={{}}`
 - React 19 / Next.js 16 forbids passing functions (like `Link`) as props across the Server/Client boundary — solved with a `LinkButton` client wrapper and `'use client'` card components
 - `proxy.ts` matcher must explicitly skip `/admin/login` to avoid an infinite redirect loop
-- Zod optional FK fields need `.default(null)` to avoid better-sqlite3 "Missing named parameter" errors
+- Zod optional FK fields need `.default(null)` to avoid `@libsql/client` "Missing named parameter" errors
 - `/api/protected-doc` uses `POST` (password in JSON body) — a GET endpoint with a password query param would expose the secret in server logs and browser history
 
 ---
@@ -308,7 +308,7 @@ Notable issues discovered during development and now documented for future agent
 GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and PR to `main`:
 
 ```
-Security audit → Build (tsc) → Lint → Unit tests → E2E tests → Deploy Gate
+Security audit → Build (tsc) → Lint → Format check → Unit tests → E2E tests → Deploy Gate
 ```
 
 The **Security audit** step runs `npm audit --audit-level=high` and fails the build on any high or critical severity vulnerability. The **Deploy Gate** job runs only on pushes to `main` and requires the full CI job to pass — production deployment is blocked if any step fails.

@@ -133,7 +133,7 @@ implement → npm run build → npm run lint → npm test → git commit
 
 ### SQLite + Zod
 
-- Optional FK fields (`certificate_document_id`, `document_id`, `end_date`) need `.default(null)` or `.transform(v => v || null)` — otherwise better-sqlite3 throws "Missing named parameter"
+- Optional FK fields (`certificate_document_id`, `document_id`, `end_date`) need `.default(null)` or `.transform(v => v || null)` — otherwise `@libsql/client` throws "Missing named parameter"
 - `technologies` field: stored as a JSON array string; forms submit CSV → actions convert automatically
 
 ---
