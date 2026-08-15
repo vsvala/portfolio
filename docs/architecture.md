@@ -126,3 +126,10 @@ GitHub push/PR → GitHub Actions (Build → Lint → Format check → Unit test
 ```
 
 CI and production deliberately use _different_ databases: CI points `TURSO_URL` at `file:./test.db` (a fresh local file) so pull requests never touch or depend on the real Turso instance; only `SESSION_SECRET` and `ADMIN_PASSWORD` are shared repository secrets, kept in sync with `.env.local` by convention (there's no automation enforcing this — see ADR-0012 in [`docs/adr.md`](./adr.md) for the env-var drift this has already caused).
+
+---
+
+## Related documents
+
+- [`adr.md`](./adr.md) — why each technology and pattern above was chosen, with alternatives and trade-offs
+- [`state.md`](./state.md) — a closer look at the frontend half of this diagram: Server vs. Client Components and where every kind of state lives
