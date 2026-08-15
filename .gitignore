@@ -73,3 +73,6 @@ public/documents/*.png
 *.png
 
 plan/
+
+# Password-protected documents served only via /api/protected-doc — must never be committed
+private-documents/
