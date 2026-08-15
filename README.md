@@ -58,6 +58,7 @@ Public requests flow straight from route to query layer; admin writes go through
 - **File upload** — PDF documents uploaded through the admin panel are stored in `public/documents/` and linked to content entries
 - **Responsive** — mobile-first layout with a hamburger menu on small screens
 - **HTTP security headers** — `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Strict-Transport-Security`, and `Content-Security-Policy` set in `next.config.ts`
+- **Admin login rate limiting** — in-memory limiter (`lib/rate-limiter.ts`) blocks after 5 failed attempts within 15 minutes; active in production only
 
 ---
 
@@ -86,11 +87,12 @@ portfolio/
 │   ├── (public)/                   # Route group: public pages with Nav + Footer
 │   │   ├── layout.tsx
 │   │   ├── page.tsx                # Homepage: Hero + Skills + section previews
-│   │   ├── work/[id]/page.tsx
-│   │   ├── projects/[id]/page.tsx
-│   │   ├── education/[id]/page.tsx
+│   │   ├── work/page.tsx           # List · work/[id]/page.tsx for detail
+│   │   ├── projects/page.tsx       # List · projects/[id]/page.tsx for detail
+│   │   ├── education/page.tsx      # List · education/[id]/page.tsx for detail
 │   │   ├── courses/page.tsx
-│   │   └── recommendations/page.tsx
+│   │   ├── recommendations/page.tsx
+│   │   └── contact/page.tsx
 │   ├── admin/                      # Protected admin panel
 │   │   ├── layout.tsx              # AdminNav only (no public Nav)
 │   │   ├── login/page.tsx
@@ -119,15 +121,19 @@ portfolio/
 │   │   ├── utils.ts                # toArgs() helper — converts object to libSQL named params
 │   │   └── queries/                # work.ts · projects.ts · education.ts · courses.ts · skills.ts · recommendations.ts · documents.ts · feedback.ts
 │   ├── hooks/useAdminForm.ts       # Shared hook for admin form state + redirect on success
+│   ├── constants/categories.ts     # Shared category enums for select fields
 │   ├── action-utils.ts             # validationError() — normalises Zod errors to ActionState
+│   ├── server-action-utils.ts      # Shared helper used by every Server Action in actions/
 │   ├── zod-fields.ts               # Shared Zod field definitions (technologiesField, etc.)
 │   ├── static-content.ts           # Static certifications data (images, credential URLs)
 │   ├── utils.ts                    # parseTechnologies() — JSON array string → string[]
 │   ├── session.ts                  # JWT encrypt / decrypt
 │   ├── auth.ts                     # getSession(), requireAdmin()
+│   ├── rate-limiter.ts             # In-memory rate limit for admin login (5 attempts / 15 min)
+│   ├── logger.ts                   # Structured JSON logging (info/warn/error)
 │   ├── types.ts                    # Shared TypeScript interfaces
 │   └── mui-theme.ts                # MUI theme (primary #1a1a2e, accent #e94560)
-├── actions/                        # Server Actions: auth · work · projects · education · courses · skills · recommendations
+├── actions/                        # Server Actions: auth · work · projects · education · courses · skills · recommendations · contact · documents
 ├── tests/
 │   ├── e2e/                        # Playwright end-to-end tests (88 tests across 12 spec files)
 │   └── unit/                       # Vitest unit tests for pure helper functions
