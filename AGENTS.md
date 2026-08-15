@@ -151,19 +151,35 @@ implement → npm run build → npm run lint → npm test → git commit
 ## Project Phases
 
 ```
-Phase 1  [Foundation]   .env.local · types · db · session · auth · proxy
+Phase 1  [Foundation]           Architect Agent          .env.local · types · db · session · auth · proxy
               │
-Phase 2  [Parallel]     Data Agent · Auth Agent · UI Agent · Upload Agent
+Phase 2  [Parallel]             Data · Auth · UI ·        Data queries, Server Actions, UI components,
+                                 Upload Agent              file upload
               │
-Phase 3  [Public pages]   app/(public)/** — list and detail pages
-Phase 4  [Admin UI]       app/admin/** — CRUD forms, dashboard
+Phase 3  [Public pages]         Pages Agent              app/(public)/** — list and detail pages
+Phase 4  [Admin UI]             Pages Agent              app/admin/** — CRUD forms, dashboard
               │
-Phase 5  [Polish]       loading.tsx · error.tsx · SEO · end-to-end testing
+Phase 5  [Polish]               Reviewer Agent           loading.tsx · error.tsx · SEO · bug fixes
               │
-V2+      [Future]       Dark mode · /certifications standalone page (NOT YET BUILT — only
-                        a homepage section exists via CertificationsSection + lib/static-content.ts)
-                        GitHub integration · RAG chat · Privacy analytics
+Phase 6  [Testing]              Test Agent               Playwright E2E + Vitest unit test suites
+              │
+Phase 7  [Refactor]             Code Quality Agent       Shared action utils, Zod field helpers,
+                                                          DB utils, useAdminForm hook
+              │
+Phase 8  [Security hardening]   Security Agent           Rate limiting, dependency CVE remediation,
+                                                          purged private-documents/ from git history,
+                                                          CI security-audit gate
+              │
+Phase 9  [Documentation]        Documentation Agent      docs/ architecture + tech-stack rationale,
+                                                          README/CLAUDE.md/AGENTS.md accuracy pass
+              │
+V2+      [Future]               —                        Dark mode · /certifications standalone page
+                                                          (NOT YET BUILT — only a homepage section exists
+                                                          via CertificationsSection + lib/static-content.ts)
+                                                          GitHub integration · RAG chat · Privacy analytics
 ```
+
+This mirrors the "Agentic Development Workflow" table in [`README.md`](./README.md#agentic-development-workflow) — keep both in sync when a phase is added or an agent's scope changes.
 
 ---
 
