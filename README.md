@@ -31,9 +31,6 @@ graph TD
     UploadAPI --> Documents[("public/documents/")]
     UploadAPI --> Queries
 
-    PublicPages -->|contact form| ContactAction["actions/contact.ts"]
-    ContactAction -->|"Resend API"| Resend[("Resend — email delivery")]
-
     PublicPages -->|protected certificate| ProtectedDoc["/api/protected-doc"]
     ProtectedDoc --> PrivateDocs[("private-documents/<br/>password protected")]
 ```
