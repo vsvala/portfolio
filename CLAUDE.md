@@ -100,11 +100,11 @@ code change → npm run build (TypeScript check) → npm run lint → npm run te
 
 **`admin.spec.ts` has a hardcoded password** (`const ADMIN_PASSWORD = 'vaihda_tama_salasana'`). If you change the password in `.env.local`, update this constant too. Other admin tests use saved `storageState` so they won't break, making the mismatch easy to miss.
 
-**Known E2E gaps (pre-existing):** Admin edit/update flows for all content types are untested. `/courses` and `/cv` are not in `smoke.spec.ts`. API routes (`/api/upload`, `/api/protected-doc`) and feedback form submission have no tests.
+**Known E2E gaps (pre-existing):** `/courses` and `/cv` are not in `smoke.spec.ts` (each has its own dedicated spec file instead). API routes `/api/upload` and `/api/protected-doc` have no tests.
 
 ## Next.js 16 Breaking Changes
 
-This project uses **Next.js 16.2.9**, which differs from earlier versions:
+This project uses **Next.js 16.3.1**, which differs from earlier versions:
 
 - **`proxy.ts` replaces `middleware.ts`** — repo root exports `async function proxy(request: NextRequest)`, not `middleware`.
 - **Dynamic route params are Promises** — always `await params` before destructuring:

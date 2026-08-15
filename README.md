@@ -65,7 +65,7 @@ Public requests flow straight from route to query layer; admin writes go through
 
 | Layer         | Technology                  | Notes                                                                        |
 | :------------ | :-------------------------- | :--------------------------------------------------------------------------- |
-| Framework     | Next.js 16.2.9 (App Router) | Uses `proxy.ts` instead of `middleware.ts`; dynamic params are Promises      |
+| Framework     | Next.js 16.3.1 (App Router) | Uses `proxy.ts` instead of `middleware.ts`; dynamic params are Promises      |
 | UI            | Material UI v9              | `AppRouterCacheProvider` for SSR emotion fix; all layout props via `sx={{}}` |
 | Database      | Turso (libSQL / SQLite)     | `@libsql/client`; local dev also works with SQLite via same client           |
 | Auth          | jose (JWT)                  | HS256, 7-day session cookie; single admin password                           |
@@ -101,7 +101,10 @@ portfolio/
 │   │   ├── courses/
 │   │   ├── skills/
 │   │   └── recommendations/
-│   └── api/upload/route.ts         # PDF upload endpoint
+│   └── api/
+│       ├── health/route.ts         # Health check — used by Playwright webServer startup
+│       ├── upload/route.ts         # PDF upload endpoint
+│       └── protected-doc/route.ts  # Password-gated document serving from private-documents/
 ├── components/
 │   ├── providers/MuiProvider.tsx   # SSR emotion + ThemeProvider
 │   ├── public/                     # Nav, Footer, HeroSection, cards, SkillsSection, CertificationsSection
@@ -126,7 +129,7 @@ portfolio/
 │   └── mui-theme.ts                # MUI theme (primary #1a1a2e, accent #e94560)
 ├── actions/                        # Server Actions: auth · work · projects · education · courses · skills · recommendations
 ├── tests/
-│   ├── e2e/                        # Playwright end-to-end tests (80 tests across 12 spec files)
+│   ├── e2e/                        # Playwright end-to-end tests (88 tests across 12 spec files)
 │   └── unit/                       # Vitest unit tests for pure helper functions
 └── public/documents/               # Uploaded PDFs served as static files
 ```
@@ -153,11 +156,21 @@ npm install
 Create `.env.local` in the project root:
 
 ```env
+# Required — app will not start without these
 SESSION_SECRET=<base64-encoded-32-byte-key>
 ADMIN_PASSWORD=<your-admin-password>
 TURSO_URL=libsql://<your-db>.turso.io
 TURSO_AUTH_TOKEN=<your-turso-token>
+
+# Required only for /api/protected-doc (password-gated certificates in private-documents/)
+CERTIFICATE_PASSWORD=<your-certificate-password>
+
+# Optional — contact form stays hidden without these (see "Enabling the Contact Form" below)
+RESEND_API_KEY=<your-resend-api-key>
+CONTACT_EMAIL=<recipient-email>
 ```
+
+A ready-to-copy template is in [`.env.local.example`](./.env.local.example).
 
 Generate a session secret:
 
@@ -318,7 +331,7 @@ npm run test:unit      # run unit tests (Vitest, no server needed)
 
 `npm test` spins up a dedicated Next.js server on port **3001** backed by a local SQLite `test.db` — production Turso data is never touched. The test DB is created fresh on every run (seeded in `tests/e2e/seed-test-db.ts`). Stop any existing server on port 3001 before running tests.
 
-**E2E coverage (80 tests across 12 spec files):**
+**E2E coverage (88 tests across 12 spec files):**
 
 | File                      | What it covers                                                         |
 | :------------------------ | :--------------------------------------------------------------------- |
@@ -335,13 +348,15 @@ npm run test:unit      # run unit tests (Vitest, no server needed)
 | `recommendations.spec.ts` | Recommendations public page, admin CRUD                                |
 | `cv.spec.ts`              | `/cv` page: all sections, print button, bilingual content              |
 
-**Unit tests (20 tests across 3 files):**
+**Unit tests (28 tests across 5 files):**
 
-| File                 | What it covers                                      |
-| :------------------- | :-------------------------------------------------- |
-| `utils.test.ts`      | `parseTechnologies` — JSON parse and error cases    |
-| `zod-fields.test.ts` | `technologiesField` — CSV and JSON array transforms |
-| `db-utils.test.ts`   | `toArgs` — object-to-named-params conversion        |
+| File                   | What it covers                                           |
+| :--------------------- | :------------------------------------------------------- |
+| `utils.test.ts`        | `parseTechnologies` — JSON parse and error cases         |
+| `zod-fields.test.ts`   | `technologiesField` — CSV and JSON array transforms      |
+| `db-utils.test.ts`     | `toArgs` — object-to-named-params conversion             |
+| `action-utils.test.ts` | `validationError` — normalises Zod errors to ActionState |
+| `auth.test.ts`         | Session `encrypt` / `decrypt` (`lib/session.ts`)         |
 
 ---
 

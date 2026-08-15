@@ -103,7 +103,7 @@ Required workflow for every change:
 implement → npm run build → npm run lint → npm test → git commit
 ```
 
-**Known test gaps (pre-existing):** Admin edit/update flows for work, projects, education, courses, skills, and recommendations are not yet tested. API routes (`/api/health`, `/api/upload`, `/api/protected-doc`) have no tests. Feedback form submission is not tested.
+**Known test gaps (pre-existing):** API routes `/api/health`, `/api/upload`, and `/api/protected-doc` have no tests (`/api/health` is only exercised indirectly, as the Playwright `webServer` readiness check).
 
 ### proxy.ts Redirect Loop
 
