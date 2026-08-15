@@ -278,15 +278,17 @@ public/documents/cv_26_virva_svala_en.pdf
 
 This project was built as a hands-on exercise in **agentic software development** using Claude Code. The implementation followed a structured multi-agent plan:
 
-| Phase            | Agents                    | What was built                                                      |
-| :--------------- | :------------------------ | :------------------------------------------------------------------ |
-| 1 — Foundation   | Single agent (sequential) | Dependencies, `.env.local`, types, DB schema, session, auth, proxy  |
-| 2 — Core layers  | 4 agents in parallel      | Data queries, Server Actions, UI components, file upload            |
-| 3 — Public pages | Pages Agent               | Homepage, list pages, detail pages                                  |
-| 4 — Admin UI     | Pages Agent               | Login, dashboard, CRUD forms for all content types                  |
-| 5 — Polish       | Reviewer Agent            | Build fixes, TypeScript errors, runtime bug fixes, CLAUDE.md        |
-| 6 — Testing      | Test Agent                | 80 Playwright E2E tests + 20 Vitest unit tests in `tests/`          |
-| 7 — Refactor     | Code Quality Agent        | Shared action utils, Zod field helpers, DB utils, useAdminForm hook |
+| Phase                  | Agents                                            | What was built                                                                                                                    |
+| :--------------------- | :------------------------------------------------ | :-------------------------------------------------------------------------------------------------------------------------------- |
+| 1 — Foundation         | Architect Agent                                   | Dependencies, `.env.local`, types, DB schema, session, auth, proxy                                                                |
+| 2 — Core layers        | Data Agent · Auth Agent · UI Agent · Upload Agent | Data queries, Server Actions, UI components, file upload                                                                          |
+| 3 — Public pages       | Pages Agent                                       | Homepage, list pages, detail pages                                                                                                |
+| 4 — Admin UI           | Pages Agent                                       | Login, dashboard, CRUD forms for all content types                                                                                |
+| 5 — Polish             | Reviewer Agent                                    | Build fixes, TypeScript errors, runtime bug fixes, CLAUDE.md                                                                      |
+| 6 — Testing            | Test Agent                                        | 88 Playwright E2E tests + 28 Vitest unit tests in `tests/`                                                                        |
+| 7 — Refactor           | Code Quality Agent                                | Shared action utils, Zod field helpers, DB utils, useAdminForm hook                                                               |
+| 8 — Security hardening | Security Agent                                    | Admin login rate limiting, dependency CVE remediation, purged `private-documents/` from git history, CI security-audit gate       |
+| 9 — Documentation      | Documentation Agent                               | `docs/` architecture + tech-stack rationale, README/CLAUDE.md/AGENTS.md accuracy pass, removed stale per-directory planning stubs |
 
 Each agent received a scoped task with clear input/output contracts. Shared knowledge (breaking API changes, MUI constraints, security rules) was captured in [`CLAUDE.md`](./CLAUDE.md) and [`AGENTS.md`](./AGENTS.md) so that every agent — and every future Claude Code session — starts with the same context.
 
