@@ -6,7 +6,6 @@ import { getAllDocuments } from "@/lib/db/queries/documents";
 import { getAllRecommendations } from "@/lib/db/queries/recommendations";
 import { getAllSkills } from "@/lib/db/queries/skills";
 import { getAllCourses } from "@/lib/db/queries/courses";
-import Alert from "@mui/material/Alert";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
@@ -54,12 +53,13 @@ export default async function AdminDashboard() {
       <Typography variant="h4" sx={{ fontWeight: 700, mb: 4 }}>
         Dashboard
       </Typography>
+      {/* Yhteydenottolomake ei ole tällä hetkellä käytössä — varoitus pois käytöstä.
       {!process.env.RESEND_API_KEY && (
         <Alert severity="warning" sx={{ mb: 3 }}>
           Yhteydenottolomake ei ole käytössä — aseta <strong>RESEND_API_KEY</strong> ja{" "}
           <strong>CONTACT_EMAIL</strong> ympäristömuuttujiin.
         </Alert>
-      )}
+      )} */}
       <Grid container spacing={2}>
         {stats.map((s) => (
           <Grid key={s.label} size={{ xs: 12, sm: 6 }}>
