@@ -9,6 +9,39 @@ A personal portfolio website for software developer Virva Svala. Built with Next
 
 ---
 
+## Architecture
+
+```mermaid
+graph TD
+    User(("Browser")) -->|HTTPS| Vercel["Vercel — Next.js 16 App Router"]
+    Vercel --> Proxy["proxy.ts<br/>guards /admin/* routes"]
+
+    Proxy -->|public route| PublicPages["app/(public)/**<br/>Server Components"]
+    Proxy -->|valid session| AdminPages["app/admin/**<br/>Server Components + Client Forms"]
+    Proxy -.->|no/invalid session| Login["/admin/login"]
+
+    AdminPages -->|useActionState| Actions["actions/*.ts<br/>Server Actions — Zod validation"]
+    PublicPages --> Queries
+    Actions --> Queries["lib/db/queries/*.ts"]
+    Actions <--> SessionLib["lib/session.ts + lib/auth.ts<br/>JWT sign / verify"]
+
+    Queries -->|"@libsql/client"| Turso[("Turso — libSQL/SQLite<br/>TURSO_URL + TURSO_AUTH_TOKEN")]
+
+    AdminPages -->|PDF upload| UploadAPI["/api/upload"]
+    UploadAPI --> Documents[("public/documents/")]
+    UploadAPI --> Queries
+
+    PublicPages -->|contact form| ContactAction["actions/contact.ts"]
+    ContactAction -->|"Resend API"| Resend[("Resend — email delivery")]
+
+    PublicPages -->|protected certificate| ProtectedDoc["/api/protected-doc"]
+    ProtectedDoc --> PrivateDocs[("private-documents/<br/>password protected")]
+```
+
+Public requests flow straight from route to query layer; admin writes go through `proxy.ts` for auth, then Server Actions for Zod validation before touching the database. See [Project Structure](#project-structure) below for the full file-level breakdown.
+
+---
+
 ## Features
 
 - **Bilingual (Finnish / English)** — all content has `_fi` and `_en` variants; a language toggle cookie switches the active language across all server-rendered pages
