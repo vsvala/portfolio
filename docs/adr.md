@@ -77,6 +77,18 @@ This is a **single-file ADR log** — one file holding every decision as its own
 - No locale-prefixed URLs means no per-language SEO indexing (`/work` serves either language depending on a cookie, not two distinct crawlable URLs) — a real SEO cost accepted because this is a personal portfolio, not a content site competing on search traffic.
 - Every new content field means writing the same field twice (`_fi`/`_en`) in the schema, the Zod schema, and the admin form — a small but real tax on every future field, with no abstraction hiding the duplication.
 - An i18n library would suit static UI copy (nav labels, buttons) better than this pattern does — and in fact the project doesn't use one for that either; nav strings are hardcoded per language inline. A smaller-scope inconsistency worth flagging rather than hiding.
+- The cookie also forces every route to render dynamically — every Server Component calls `cookies()` to read `lang`, which opts the whole route out of static generation (verified: all 36 routes build as `ƒ` Dynamic, none prerendered). A locale-in-URL approach would have allowed static generation per locale instead.
+
+**If SEO became a priority, here's what would actually have to change** — not a small tweak, the single largest restructuring this codebase could undergo:
+
+- Move routing to `app/[lang]/(public)/**` so language is a URL segment (`/fi/work`, `/en/work`), with `proxy.ts` redirecting on first visit based on `Accept-Language`
+- Restore static generation via `generateStaticParams` per locale, now that language no longer depends on a per-request cookie
+- Add `hreflang` alternate tags on every page (`fi`⇄`en` plus `x-default`) so the two versions are indexed as translations, not flagged as duplicate content
+- Add a `sitemap.ts` listing both locale URLs
+- Add per-locale `generateMetadata` (`title`, `description`, canonical URL, `og:locale`)
+- Turn `LanguageToggle` into a real `<Link>` to the equivalent URL in the other locale, not a `document.cookie` write + `router.refresh()` — crawlers don't execute the cookie toggle, so as it stands today they'd never discover the alternate-language version of a page at all
+
+This would supersede this ADR's Decision (URL-based locale, not cookie-based) while keeping the Context and the "columns not an i18n library" reasoning for user-generated content unchanged.
 
 ---
 
