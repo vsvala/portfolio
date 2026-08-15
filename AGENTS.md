@@ -184,7 +184,7 @@ V2+      [Future]       Dark mode · /certifications standalone page (NOT YET BU
 | `app/cv/page.tsx`, `components/public/PrintButton.tsx`              | Pages Agent                  |
 | `app/layout.tsx`, `app/(public)/layout.tsx`, `app/admin/layout.tsx` | Pages Agent                  |
 | `lib/types.ts`, `CLAUDE.md`, `AGENTS.md`                            | Architect Agent              |
-| `README.md`, `.env.local.example`                                   | Documentation Agent          |
+| `README.md`, `.env.local.example`, `docs/**`                        | Documentation Agent          |
 
 <!-- BEGIN:nextjs-agent-rules -->
 

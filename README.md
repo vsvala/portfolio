@@ -35,7 +35,7 @@ graph TD
     ProtectedDoc --> PrivateDocs[("private-documents/<br/>password protected")]
 ```
 
-Public requests flow straight from route to query layer; admin writes go through `proxy.ts` for auth, then Server Actions for Zod validation before touching the database. See [Project Structure](#project-structure) below for the full file-level breakdown.
+Public requests flow straight from route to query layer; admin writes go through `proxy.ts` for auth, then Server Actions for Zod validation before touching the database. See [Project Structure](#project-structure) below for the full file-level breakdown, or [`docs/`](./docs/) for the reasoning behind each architecture and tech-stack decision, including trade-offs.
 
 ---
 
