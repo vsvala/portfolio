@@ -2,6 +2,7 @@
 import { deleteDocument } from "@/lib/db/queries/documents";
 import { runAdminTaskAction } from "@/lib/server-action-utils";
 import type { ActionState } from "@/lib/types";
+import { DELETE_FAILED_MESSAGE } from "@/lib/utils";
 
 export async function deleteDocumentAction(id: number): Promise<ActionState> {
   return runAdminTaskAction(
@@ -9,6 +10,6 @@ export async function deleteDocumentAction(id: number): Promise<ActionState> {
       await deleteDocument(id);
     },
     ["/admin/documents"],
-    "Poisto epaonnistui / Delete failed. Please try again."
+    DELETE_FAILED_MESSAGE
   );
 }

@@ -6,8 +6,8 @@ import { validationError } from "@/lib/action-utils";
 import { logger } from "@/lib/logger";
 import type { ActionState } from "@/lib/types";
 
-const SAVE_FAILED_MESSAGE = "Tallennus epaonnistui / Save failed. Please try again.";
-const ACTION_FAILED_MESSAGE = "Toiminto epaonnistui / Action failed. Please try again.";
+const SAVE_FAILED_MESSAGE = "Tallennus epäonnistui / Save failed. Please try again.";
+const ACTION_FAILED_MESSAGE = "Toiminto epäonnistui / Action failed. Please try again.";
 
 export function revalidatePaths(paths: readonly string[]) {
   for (const path of paths) {

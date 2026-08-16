@@ -4,6 +4,7 @@ import { createEducation, updateEducation, deleteEducation } from "@/lib/db/quer
 import { nullableStringField, nullableUrlField } from "@/lib/zod-fields";
 import { runValidatedAdminAction, runAdminTaskAction } from "@/lib/server-action-utils";
 import type { ActionState } from "@/lib/types";
+import { DELETE_FAILED_MESSAGE } from "@/lib/utils";
 
 const EducationSchema = z.object({
   institution_fi: z.string().min(1),
@@ -58,6 +59,6 @@ export async function deleteEducationAction(id: number): Promise<ActionState> {
       await deleteEducation(id);
     },
     REVALIDATE_PATHS,
-    "Poisto epaonnistui / Delete failed. Please try again."
+    DELETE_FAILED_MESSAGE
   );
 }

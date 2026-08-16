@@ -7,6 +7,7 @@ import {
 } from "@/lib/db/queries/recommendations";
 import { runValidatedAdminAction, runAdminTaskAction } from "@/lib/server-action-utils";
 import type { ActionState } from "@/lib/types";
+import { DELETE_FAILED_MESSAGE } from "@/lib/utils";
 
 const RecommendationSchema = z.object({
   name: z.string().min(1),
@@ -57,6 +58,6 @@ export async function deleteRecommendationAction(id: number): Promise<ActionStat
       await deleteRecommendation(id);
     },
     REVALIDATE_PATHS,
-    "Poisto epaonnistui / Delete failed. Please try again."
+    DELETE_FAILED_MESSAGE
   );
 }

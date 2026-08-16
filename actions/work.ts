@@ -4,6 +4,7 @@ import { createWork, updateWork, deleteWork } from "@/lib/db/queries/work";
 import { technologiesField, nullableStringField } from "@/lib/zod-fields";
 import { runValidatedAdminAction, runAdminTaskAction } from "@/lib/server-action-utils";
 import type { ActionState } from "@/lib/types";
+import { DELETE_FAILED_MESSAGE } from "@/lib/utils";
 
 const WorkSchema = z.object({
   company_name_fi: z.string().min(1),
@@ -56,6 +57,6 @@ export async function deleteWorkAction(id: number): Promise<ActionState> {
       await deleteWork(id);
     },
     REVALIDATE_PATHS,
-    "Poisto epaonnistui / Delete failed. Please try again."
+    DELETE_FAILED_MESSAGE
   );
 }

@@ -3,10 +3,13 @@ import type { Course, Education } from "@/lib/types";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import { useAdminForm, type FormAction } from "@/lib/hooks/useAdminForm";
 import { COURSE_CATEGORIES } from "@/lib/constants/categories";
-import { AdminFormError, AdminSubmitButton } from "@/components/admin/AdminFormControls";
+import {
+  AdminFormError,
+  AdminFormSectionLabel,
+  AdminSubmitButton,
+} from "@/components/admin/AdminFormControls";
 
 interface Props {
   action: FormAction;
@@ -22,11 +25,7 @@ export function CourseForm({ action, defaultValues, educationOptions }: Props) {
       <AdminFormError message={state && !state.success ? state.message : undefined} />
 
       <Grid container spacing={2}>
-        <Grid size={{ xs: 12 }}>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
-            Suomi
-          </Typography>
-        </Grid>
+        <AdminFormSectionLabel first>Suomi</AdminFormSectionLabel>
         <Grid size={{ xs: 12, sm: 8 }}>
           <TextField
             fullWidth
@@ -56,11 +55,7 @@ export function CourseForm({ action, defaultValues, educationOptions }: Props) {
           />
         </Grid>
 
-        <Grid size={{ xs: 12 }}>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 1, mb: 1 }}>
-            English
-          </Typography>
-        </Grid>
+        <AdminFormSectionLabel>English</AdminFormSectionLabel>
         <Grid size={{ xs: 12, sm: 8 }}>
           <TextField
             fullWidth
@@ -90,11 +85,7 @@ export function CourseForm({ action, defaultValues, educationOptions }: Props) {
           />
         </Grid>
 
-        <Grid size={{ xs: 12 }}>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mt: 1, mb: 1 }}>
-            Lisätiedot
-          </Typography>
-        </Grid>
+        <AdminFormSectionLabel>Lisätiedot</AdminFormSectionLabel>
         <Grid size={{ xs: 12, sm: 4 }}>
           <TextField
             fullWidth

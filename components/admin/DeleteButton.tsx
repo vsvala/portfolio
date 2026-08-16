@@ -8,6 +8,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Alert from "@mui/material/Alert";
 import type { ActionState } from "@/lib/types";
+import { DELETE_FAILED_MESSAGE } from "@/lib/utils";
 
 interface Props {
   action: () => Promise<void | ActionState>;
@@ -25,12 +26,12 @@ export function DeleteButton({ action, label = "Poista" }: Props) {
     try {
       const result = await action();
       if (result && typeof result === "object" && "success" in result && !result.success) {
-        setErrorMessage(result.message ?? "Poisto epaonnistui / Delete failed. Please try again.");
+        setErrorMessage(result.message ?? DELETE_FAILED_MESSAGE);
         return;
       }
       setOpen(false);
     } catch {
-      setErrorMessage("Poisto epaonnistui / Delete failed. Please try again.");
+      setErrorMessage(DELETE_FAILED_MESSAGE);
     } finally {
       setPending(false);
     }

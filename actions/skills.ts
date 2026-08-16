@@ -4,6 +4,7 @@ import { createSkill, updateSkill, deleteSkill } from "@/lib/db/queries/skills";
 import { SKILL_CATEGORY_KEYS } from "@/lib/constants/categories";
 import { runValidatedAdminAction, runAdminTaskAction } from "@/lib/server-action-utils";
 import type { ActionState } from "@/lib/types";
+import { DELETE_FAILED_MESSAGE } from "@/lib/utils";
 
 const SkillSchema = z.object({
   category: z.enum(SKILL_CATEGORY_KEYS),
@@ -50,6 +51,6 @@ export async function deleteSkillAction(id: number): Promise<ActionState> {
       await deleteSkill(id);
     },
     REVALIDATE_PATHS,
-    "Poisto epaonnistui / Delete failed. Please try again."
+    DELETE_FAILED_MESSAGE
   );
 }

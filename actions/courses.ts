@@ -5,6 +5,7 @@ import { COURSE_CATEGORIES } from "@/lib/constants/categories";
 import { nullableNumberField, nullableStringField, nullableUrlField } from "@/lib/zod-fields";
 import { runValidatedAdminAction, runAdminTaskAction } from "@/lib/server-action-utils";
 import type { ActionState } from "@/lib/types";
+import { DELETE_FAILED_MESSAGE } from "@/lib/utils";
 
 const CourseSchema = z.object({
   name_fi: z.string().min(1),
@@ -66,6 +67,6 @@ export async function deleteCourseAction(id: number): Promise<ActionState> {
       await deleteCourse(id);
     },
     REVALIDATE_PATHS,
-    "Poisto epaonnistui / Delete failed. Please try again."
+    DELETE_FAILED_MESSAGE
   );
 }
