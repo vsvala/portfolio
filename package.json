@@ -11,7 +11,8 @@
     "format:check": "prettier --check .",
     "test": "playwright test",
     "test:ui": "playwright test --ui",
-    "test:unit": "vitest run"
+    "test:unit": "vitest run",
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{ts,tsx}": [
@@ -46,6 +47,7 @@
     "@vitest/coverage-v8": "^4.1.8",
     "eslint": "^9",
     "eslint-config-next": "16.3.1",
+    "husky": "^9.1.7",
     "lint-staged": "^16.4.0",
     "prettier": "^3.9.4",
     "tailwindcss": "^4",
