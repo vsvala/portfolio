@@ -30,13 +30,25 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "File too large (max 10MB)" }, { status: 400 });
   }
 
-  const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-  const filename = `${randomUUID()}-${safeName}`;
-  const filepath = path.join(process.cwd(), "public", "documents", filename);
   const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
+
+  // file.type is client-supplied and can be spoofed — check the actual PDF magic bytes too,
+  // and always save with a .pdf extension so a mislabelled upload can't be served as
+  // text/html (or another executable-in-browser type) from public/documents/.
+  if (buffer.subarray(0, 5).toString("latin1") !== "%PDF-") {
+    return NextResponse.json({ error: "File is not a valid PDF" }, { status: 400 });
+  }
+
+  const safeStem = path
+    .parse(file.name)
+    .name.replace(/[^a-zA-Z0-9._-]/g, "_")
+    .slice(0, 100);
+  const filename = `${randomUUID()}-${safeStem}.pdf`;
+  const filepath = path.join(process.cwd(), "public", "documents", filename);
 
   try {
-    await writeFile(filepath, Buffer.from(bytes));
+    await writeFile(filepath, buffer);
     const result = await db.execute({
       sql: `INSERT INTO pdf_documents (filename, label_fi, label_en, document_type, file_size)
             VALUES (:filename, :label_fi, :label_en, :document_type, :file_size)`,

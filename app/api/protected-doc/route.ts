@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import { join } from "path";
 import { existsSync } from "fs";
+import { safeCompare } from "@/lib/auth";
+import { checkRateLimit, resetRateLimit } from "@/lib/rate-limiter";
 
 export async function POST(request: NextRequest) {
   let filename: string | undefined;
@@ -19,9 +21,23 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid filename" }, { status: 400 });
   }
 
+  if (process.env.NODE_ENV === "production") {
+    const { allowed } = checkRateLimit("protected-doc");
+    if (!allowed) {
+      return NextResponse.json(
+        { error: "Liian monta yritystä. Odota 15 min / Too many attempts. Wait 15 min." },
+        { status: 429 }
+      );
+    }
+  }
+
   const expected = process.env.CERTIFICATE_PASSWORD;
-  if (!expected || password !== expected) {
+  if (!expected || !safeCompare(password ?? "", expected)) {
     return NextResponse.json({ error: "Väärä salasana" }, { status: 401 });
+  }
+
+  if (process.env.NODE_ENV === "production") {
+    resetRateLimit("protected-doc");
   }
 
   const filepath = join(process.cwd(), "private-documents", filename);
