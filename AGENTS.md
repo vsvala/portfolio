@@ -154,11 +154,9 @@ implement → npm run build → npm run lint → npm test → git commit
 - **Build before advancing:** Always run `npm run build` before moving to the next phase — TypeScript errors are caught there
 - **Tests before commit:** Always run `npm test` from the project root before committing — see **Testing Rules** above
 
-### Periodic maintenance sweep — no automation on purpose
+### Periodic maintenance sweep — no automation, run manually
 
-This repo can sit untouched for months at a time (personal portfolio, not actively developed daily), so there is **deliberately no scheduled/cron-based agent run** — a time-based sweep would mostly fire against an unchanged repo and waste runs. Instead: **whenever you (human or agent) pick this project back up after a gap, or every few months during an active stretch, run one manually.**
-
-Prompt to use:
+No scheduled/cron agent run (repo can sit untouched for months). Run manually when picking the project back up, or every few months:
 
 ```
 Adopt the Code Quality Agent, Security Agent, and Documentation Agent roles from AGENTS.md
@@ -166,12 +164,6 @@ and run their checklists against the current state of the repo. Fix clear-cut, l
 findings directly, following the mandatory build → lint → test workflow before any commit.
 Report larger or ambiguous findings instead of fixing them, so a human can decide.
 ```
-
-This is the same three-role pass used in the 2026-08 session that fixed a duplicated/misspelled
-error-message constant, a repeated form-label JSX block, a timing-unsafe password comparison on
-`/api/protected-doc`, missing rate limiting on that same route, and spoofable file-upload
-validation on `/api/upload` — worth repeating periodically as the codebase grows, since none of
-it is caught by `npm run lint` or CI.
 
 ---
 
