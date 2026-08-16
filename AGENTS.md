@@ -124,6 +124,14 @@ Required workflow for every change:
 implement → npm run build → npm run lint → npm test → git commit
 ```
 
+**Role checks alongside the workflow above — not optional extras, part of the same change:**
+
+- Touched `app/api/**`, auth (`proxy.ts`, `lib/session.ts`, `lib/auth.ts`), or any input validation → adopt the **Security Agent** role and run its checklist before committing.
+- Added/removed a file, route, test, dependency version, or env var; or a "Known gaps"/count claim anywhere in `README.md`/`CLAUDE.md`/`AGENTS.md` is now stale → adopt the **Documentation Agent** role and fix it in the same change.
+- Non-trivial new code (new component, new Server Action, a refactor) → run the **Code Quality Agent** checklist before committing.
+
+`git commit` runs `lint-staged` via a Husky pre-commit hook (`.husky/pre-commit`) — ESLint + Prettier on staged files happen automatically and block a failing commit. This covers formatting/lint only; it does not run tests or the role checks above, which still require deliberately following this workflow.
+
 **Known test gaps (pre-existing):** API routes `/api/health`, `/api/upload`, and `/api/protected-doc` have no tests (`/api/health` is only exercised indirectly, as the Playwright `webServer` readiness check).
 
 ### proxy.ts Redirect Loop

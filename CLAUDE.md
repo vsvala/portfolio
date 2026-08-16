@@ -88,6 +88,14 @@ Workflow:
 code change → npm run build (TypeScript check) → npm run lint → npm run test:unit → npm test → git commit
 ```
 
+**Role checks alongside the workflow above — not optional extras, part of the same change:**
+
+- Touched `app/api/**`, auth (`proxy.ts`, `lib/session.ts`, `lib/auth.ts`), or any input validation → adopt the **Security Agent** role (checklist in `AGENTS.md`) before committing.
+- Added/removed a file, route, test, dependency version, or env var; or a "Known gaps"/count claim in `README.md`/`CLAUDE.md`/`AGENTS.md` is now stale → adopt the **Documentation Agent** role and fix it in the same change, not a follow-up.
+- Non-trivial new code (new component, new Server Action, a refactor) → run a **Code Quality Agent** pass (DRY, dead code, complexity — checklist in `AGENTS.md`) before committing.
+
+`git commit` itself now runs `lint-staged` via a Husky pre-commit hook (`.husky/pre-commit`) — ESLint + Prettier on staged files happen automatically and will block a commit that fails them. This does **not** run tests or the role checks above; those still require deliberately following the workflow.
+
 **Test database:** `npm test` starts its own Next.js server on port 3001 using a local SQLite file (`test.db` in the repo root). The test database is created and seeded fresh on every run by `tests/e2e/global-setup.ts` → `seed-test-db.ts`. This means tests never touch the production Turso database. Do not run a separate dev server on port 3001 when running tests.
 
 **Concurrency:** `playwright.config.ts` sets `workers: 2`. Do not raise this — 6 parallel workers overwhelm the dev server and cause spurious admin login failures.
